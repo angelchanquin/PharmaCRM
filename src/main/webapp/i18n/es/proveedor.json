@@ -1,0 +1,30 @@
+{
+    "pharmacrmApp": {
+        "proveedor" : {
+            "home": {
+                "title": "Proveedors",
+                "createLabel": "Crear nuevo Proveedor",
+                "createOrEditLabel": "Crear o editar Proveedor"
+            },
+            "created": "Un nuevo Proveedor ha sido creado con el identificador {{ param }}",
+            "updated": "Un Proveedor ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Proveedor ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Proveedor {{ id }}?"
+            },
+            "detail": {
+                "title": "Proveedor"
+            },
+            "nombre": "Nombre",
+            "nombreDeContacto": "Nombre De Contacto",
+            "apellidoDeContacto": "Apellido De Contacto",
+            "correoElectronico": "Correo Electronico",
+            "telefono": "Telefono",
+            "celular": "Celular",
+            "sitioWeb": "Sitio Web",
+            "direccionDeFacturacion": "Direccion De Facturacion",
+            "direccionDeEnvio": "Direccion De Envio",
+            "producto": "Producto"
+        }
+    }
+}

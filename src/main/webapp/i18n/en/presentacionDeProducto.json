@@ -1,0 +1,22 @@
+{
+    "pharmacrmApp": {
+        "presentacionDeProducto" : {
+            "home": {
+                "title": "Presentacion De Productos",
+                "createLabel": "Create a new Presentacion De Producto",
+                "createOrEditLabel": "Create or edit a Presentacion De Producto"
+            },
+            "created": "A new Presentacion De Producto is created with identifier {{ param }}",
+            "updated": "A Presentacion De Producto is updated with identifier {{ param }}",
+            "deleted": "A Presentacion De Producto is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Presentacion De Producto {{ id }}?"
+            },
+            "detail": {
+                "title": "Presentacion De Producto"
+            },
+            "nombre": "Nombre",
+            "producto": "Producto"
+        }
+    }
+}

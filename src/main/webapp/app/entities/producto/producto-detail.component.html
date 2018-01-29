@@ -1,0 +1,74 @@
+
+<div *ngIf="producto">
+    <h2><span jhiTranslate="pharmacrmApp.producto.detail.title">Producto</span> {{producto.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="pharmacrmApp.producto.sku">Sku</span></dt>
+        <dd>
+            <span>{{producto.sku}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{producto.nombre}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.upc">Upc</span></dt>
+        <dd>
+            <span>{{producto.upc}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.precioDeVenta">Precio De Venta</span></dt>
+        <dd>
+            <span>{{producto.precioDeVenta}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.precioDeVenta2">Precio De Venta 2</span></dt>
+        <dd>
+            <span>{{producto.precioDeVenta2}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.precioDeVenta3">Precio De Venta 3</span></dt>
+        <dd>
+            <span>{{producto.precioDeVenta3}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.precioDeCompra">Precio De Compra</span></dt>
+        <dd>
+            <span>{{producto.precioDeCompra}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.unidadesEnStock">Unidades En Stock</span></dt>
+        <dd>
+            <span>{{producto.unidadesEnStock}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.estado">Estado</span></dt>
+        <dd>
+            <span jhiTranslate="{{'pharmacrmApp.EstadoDeProducto.' + producto.estado}}">{{producto.estado}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.fechaDeExpiracion">Fecha De Expiracion</span></dt>
+        <dd>
+            <span>{{producto.fechaDeExpiracion | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span></dt>
+        <dd>
+            <div *ngIf="producto.presentacion">
+                <a [routerLink]="['/presentacion-de-producto', producto.presentacion?.id]">{{producto.presentacion?.nombre}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span></dt>
+        <dd>
+            <div *ngIf="producto.proveedor">
+                <a [routerLink]="['/proveedor', producto.proveedor?.id]">{{producto.proveedor?.nombre}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'producto/'+ producto.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

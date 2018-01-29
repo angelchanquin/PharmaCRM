@@ -1,0 +1,32 @@
+{
+    "pharmacrmApp": {
+        "producto" : {
+            "home": {
+                "title": "Productos",
+                "createLabel": "Create a new Producto",
+                "createOrEditLabel": "Create or edit a Producto"
+            },
+            "created": "A new Producto is created with identifier {{ param }}",
+            "updated": "A Producto is updated with identifier {{ param }}",
+            "deleted": "A Producto is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Producto {{ id }}?"
+            },
+            "detail": {
+                "title": "Producto"
+            },
+            "sku": "Sku",
+            "nombre": "Nombre",
+            "upc": "Upc",
+            "precioDeVenta": "Precio De Venta",
+            "precioDeVenta2": "Precio De Venta 2",
+            "precioDeVenta3": "Precio De Venta 3",
+            "precioDeCompra": "Precio De Compra",
+            "unidadesEnStock": "Unidades En Stock",
+            "estado": "Estado",
+            "fechaDeExpiracion": "Fecha De Expiracion",
+            "presentacion": "Presentacion",
+            "proveedor": "Proveedor"
+        }
+    }
+}

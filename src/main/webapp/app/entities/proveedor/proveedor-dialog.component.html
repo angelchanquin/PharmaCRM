@@ -1,0 +1,94 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myProveedorLabel" jhiTranslate="pharmacrmApp.proveedor.home.createOrEditLabel">Create or edit a Proveedor</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!proveedor.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="proveedor.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.nombre" for="field_nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="field_nombre"
+                [(ngModel)]="proveedor.nombre" required/>
+            <div [hidden]="!(editForm.controls.nombre?.dirty && editForm.controls.nombre?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nombre?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.nombreDeContacto" for="field_nombreDeContacto">Nombre De Contacto</label>
+            <input type="text" class="form-control" name="nombreDeContacto" id="field_nombreDeContacto"
+                [(ngModel)]="proveedor.nombreDeContacto" required/>
+            <div [hidden]="!(editForm.controls.nombreDeContacto?.dirty && editForm.controls.nombreDeContacto?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.nombreDeContacto?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.apellidoDeContacto" for="field_apellidoDeContacto">Apellido De Contacto</label>
+            <input type="text" class="form-control" name="apellidoDeContacto" id="field_apellidoDeContacto"
+                [(ngModel)]="proveedor.apellidoDeContacto" required/>
+            <div [hidden]="!(editForm.controls.apellidoDeContacto?.dirty && editForm.controls.apellidoDeContacto?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.apellidoDeContacto?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.correoElectronico" for="field_correoElectronico">Correo Electronico</label>
+            <input type="text" class="form-control" name="correoElectronico" id="field_correoElectronico"
+                [(ngModel)]="proveedor.correoElectronico" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.telefono" for="field_telefono">Telefono</label>
+            <input type="text" class="form-control" name="telefono" id="field_telefono"
+                [(ngModel)]="proveedor.telefono" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.celular" for="field_celular">Celular</label>
+            <input type="text" class="form-control" name="celular" id="field_celular"
+                [(ngModel)]="proveedor.celular" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.sitioWeb" for="field_sitioWeb">Sitio Web</label>
+            <input type="text" class="form-control" name="sitioWeb" id="field_sitioWeb"
+                [(ngModel)]="proveedor.sitioWeb" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.direccionDeFacturacion" for="field_direccionDeFacturacion">Direccion De Facturacion</label>
+            <input type="text" class="form-control" name="direccionDeFacturacion" id="field_direccionDeFacturacion"
+                [(ngModel)]="proveedor.direccionDeFacturacion" required/>
+            <div [hidden]="!(editForm.controls.direccionDeFacturacion?.dirty && editForm.controls.direccionDeFacturacion?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.direccionDeFacturacion?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.direccionDeEnvio" for="field_direccionDeEnvio">Direccion De Envio</label>
+            <input type="text" class="form-control" name="direccionDeEnvio" id="field_direccionDeEnvio"
+                [(ngModel)]="proveedor.direccionDeEnvio" />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
