@@ -1,0 +1,9 @@
+{
+    "pharmacrmApp": {
+        "EstadoDeProducto" : {
+            "null": "",
+            "ACTIVO": "ACTIVO",
+            "INACTIVO": "INACTIVO"
+        }
+    }
+}
