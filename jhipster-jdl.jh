@@ -1,0 +1,57 @@
+entity Proveedor {
+	nombre String required,
+	contacto String required,
+    correoElectronico String,
+    telefono String,
+    celular String, 
+    sitioWeb String,
+    direccionDeFacturacion String required,
+    direccionDeEnvio String
+}
+
+enum EstadoDeProducto {
+	ACTIVO, INACTIVO
+}
+
+entity PresentacionDeProducto {
+	nombre String required
+}
+
+entity Producto {
+	sku Long required min(1),
+	nombre String required,
+    precioDeVenta Double required min(0),
+    precioDeVenta2 Double required min(0),
+    precioDeVenta3 Double required min(0),
+    precioDeCosto Double required min(0),
+    unidadesEnStock Integer required min(0),
+	estado EstadoDeProducto required,
+    fechaDeExpiracion LocalDate
+}
+
+entity OrdenDeCompra {
+	numeroDeReferencia String required,
+    fecha LocalDate required,
+    total Long min(0)
+}
+
+entity DetalleDeCompra {
+	cantidad Integer required,
+    precio Double required min(0),
+    subTotal Double required min(0)
+}
+
+relationship OneToMany {
+	PresentacionDeProducto{producto} to Producto{presentacion(nombre) required}
+}
+relationship OneToMany {
+	Proveedor{producto} to Producto {proveedor(nombre) required} 
+}
+
+relationship OneToMany {
+	OrdenDeCompra{detalle} to DetalleDeCompra{ordenDeCompra(id) required}
+}
+
+relationship OneToMany {
+	Producto{orden} to DetalleDeCompra{producto(nombre) required}
+}

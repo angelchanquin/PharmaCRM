@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180129021545_added_entity_Proveedor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180129021546_added_entity_PresentacionDeProducto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180129021547_added_entity_Producto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180215214453_added_entity_OrdenDeCompra.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180215214454_added_entity_DetalleDeCompra.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20180129021547_added_entity_constraints_Producto.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180215214454_added_entity_constraints_DetalleDeCompra.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+</databaseChangeLog>

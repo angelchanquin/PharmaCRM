@@ -1,0 +1,52 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myOrdenDeCompraLabel" jhiTranslate="pharmacrmApp.ordenDeCompra.home.createOrEditLabel">Create or edit a Orden De Compra</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!ordenDeCompra.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="ordenDeCompra.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia" for="field_numeroDeReferencia">Numero De Referencia</label>
+            <input type="text" class="form-control" name="numeroDeReferencia" id="field_numeroDeReferencia"
+                [(ngModel)]="ordenDeCompra.numeroDeReferencia" required/>
+            <div [hidden]="!(editForm.controls.numeroDeReferencia?.dirty && editForm.controls.numeroDeReferencia?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.numeroDeReferencia?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.fecha" for="field_fecha">Fecha</label>
+            <div class="input-group">
+                <input id="field_fecha" type="text" class="form-control" name="fecha" ngbDatepicker  #fechaDp="ngbDatepicker" [(ngModel)]="ordenDeCompra.fecha"
+                required/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="fechaDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.fecha?.dirty && editForm.controls.fecha?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.fecha?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

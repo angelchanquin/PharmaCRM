@@ -1,0 +1,101 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDetalleDeCompraLabel" jhiTranslate="pharmacrmApp.detalleDeCompra.home.createOrEditLabel">Create or edit a Detalle De Compra</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!detalleDeCompra.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="detalleDeCompra.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeCompra.ordenDeCompra" for="field_ordenDeCompra">Orden De Compra</label>
+            <input type="text" class="form-control" id="field_ordenDeCompra" name="ordenDeCompra"
+                   [(ngModel)]="ordenId" readonly />
+        </div>
+        <div [hidden]="!(editForm.controls.ordenDeCompra?.dirty && editForm.controls.ordenDeCompra?.invalid)">
+            <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.ordenDeCompra?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeCompra.producto" for="field_producto">Producto</label>
+            <select class="form-control" id="field_producto" name="producto" [(ngModel)]="detalleDeCompra.producto"  (ngModelChange)="onProductChange($event)"  required>
+                <option *ngIf="!editForm.value.producto" [ngValue]="null" selected></option>
+                <option [ngValue]="productoOption.id === detalleDeCompra.producto?.id ? detalleDeCompra.producto : productoOption" *ngFor="let productoOption of productos; trackBy: trackProductoById">{{productoOption.nombre}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.producto?.dirty && editForm.controls.producto?.invalid)">
+            <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.producto?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeCompra.cantidad" for="field_cantidad">Cantidad</label>
+            <input type="number" class="form-control" name="cantidad" id="field_cantidad"
+                [(ngModel)]="detalleDeCompra.cantidad" (ngModelChange)="onQuantityChange($event)" required/>
+            <div [hidden]="!(editForm.controls.cantidad?.dirty && editForm.controls.cantidad?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.cantidad?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.cantidad?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeCompra.precio" for="field_precio">Precio</label>
+            <input type="number" class="form-control" name="precio" id="field_precio"
+                [(ngModel)]="detalleDeCompra.precio" (ngModelChange)="onPriceChange($event)" required min="0"/>
+            <div [hidden]="!(editForm.controls.precio?.dirty && editForm.controls.precio?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.precio?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.precio?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.precio?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeCompra.subTotal" for="field_subTotal">Sub Total</label>
+            <input type="text" class="form-control" name="subTotal" id="field_subTotal"
+                   [(ngModel)]="detalleDeCompra.subTotal" required readonly/>
+            <div [hidden]="!(editForm.controls.subTotal?.dirty && editForm.controls.subTotal?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.subTotal?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.subTotal?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.subTotal?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

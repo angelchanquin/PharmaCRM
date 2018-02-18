@@ -1,0 +1,25 @@
+{
+    "pharmacrmApp": {
+        "detalleDeCompra" : {
+            "home": {
+                "title": "Detalle De Compras",
+                "createLabel": "Create a new Detalle De Compra",
+                "createOrEditLabel": "Create or edit a Detalle De Compra"
+            },
+            "created": "A new Detalle De Compra is created with identifier {{ param }}",
+            "updated": "A Detalle De Compra is updated with identifier {{ param }}",
+            "deleted": "A Detalle De Compra is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Detalle De Compra {{ id }}?"
+            },
+            "detail": {
+                "title": "Detalle De Compra"
+            },
+            "cantidad": "Cantidad",
+            "precio": "Precio",
+            "subTotal": "Sub Total",
+            "ordenDeCompra": "Orden De Compra",
+            "producto": "Producto"
+        }
+    }
+}

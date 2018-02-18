@@ -1,0 +1,46 @@
+
+<div *ngIf="detalleDeCompra">
+    <h2><span jhiTranslate="pharmacrmApp.detalleDeCompra.detail.title">Detalle De Compra</span> {{detalleDeCompra.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="pharmacrmApp.detalleDeCompra.cantidad">Cantidad</span></dt>
+        <dd>
+            <span>{{detalleDeCompra.cantidad}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.detalleDeCompra.precio">Precio</span></dt>
+        <dd>
+            <span>{{detalleDeCompra.precio}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.detalleDeCompra.subTotal">Sub Total</span></dt>
+        <dd>
+            <span>{{detalleDeCompra.subTotal}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.detalleDeCompra.ordenDeCompra">Orden De Compra</span></dt>
+        <dd>
+            <div *ngIf="detalleDeCompra.ordenDeCompra">
+                <a [routerLink]="['/orden-de-compra', detalleDeCompra.ordenDeCompra?.id]">{{detalleDeCompra.ordenDeCompra?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.detalleDeCompra.producto">Producto</span></dt>
+        <dd>
+            <div *ngIf="detalleDeCompra.producto">
+                <a [routerLink]="['/producto', detalleDeCompra.producto?.id]">{{detalleDeCompra.producto?.nombre}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'detalle-de-compra/'+ detalleDeCompra.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

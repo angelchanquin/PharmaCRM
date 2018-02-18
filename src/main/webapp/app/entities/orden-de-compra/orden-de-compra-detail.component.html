@@ -1,0 +1,89 @@
+
+<div *ngIf="ordenDeCompra">
+    <h2><span jhiTranslate="pharmacrmApp.ordenDeCompra.detail.title">Orden De Compra</span> {{ordenDeCompra.id}}</h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia">Numero De Referencia</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fecha">Fecha</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.total">Total</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ordenDeCompra.numeroDeReferencia}}</td>
+            <td>{{ordenDeCompra.fecha | date:'mediumDate'}}</td>
+            <td>{{ordenDeCompra.total}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <hr>
+    <h2>
+        <span jhiTranslate="pharmacrmApp.detalleDeCompra.home.title">Detalle De Compras</span>
+        <button class="btn btn-primary float-right jh-create-entity create-detalle-de-compra" [routerLink]="['/', { outlets: { popup: 'detalle-de-compra-new/' + ordenDeCompra.id } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="pharmacrmApp.detalleDeCompra.home.createLabel">
+            Create new Detalle De Compra
+            </span>
+        </button>
+    </h2>
+    <hr>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="detalleDeCompras">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.producto">Producto</span></th>
+                <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.cantidad">Cantidad</span></th>
+                <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.precio">Precio</span></th>
+                <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.subTotal">Sub Total</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let detalleDeCompra of detalleDeCompras ;trackBy: trackId">
+                <td>
+                    <div *ngIf="detalleDeCompra.producto">
+                        <a [routerLink]="['../producto', detalleDeCompra.producto?.id ]" >{{detalleDeCompra.producto?.nombre}}</a>
+                    </div>
+                </td>
+                <td>{{detalleDeCompra.cantidad}}</td>
+                <td>{{detalleDeCompra.precio}}</td>
+                <td>{{detalleDeCompra.subTotal}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'detalle-de-compra/'+ detalleDeCompra.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'detalle-de-compra/'+ detalleDeCompra.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+</div>

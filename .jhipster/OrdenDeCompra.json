@@ -1,0 +1,41 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "detalle",
+            "otherEntityName": "detalleDeCompra",
+            "otherEntityRelationshipName": "ordenDeCompra"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "numeroDeReferencia",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "fecha",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "total",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        }
+    ],
+    "changelogDate": "20180215214453",
+    "entityTableName": "orden_de_compra",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

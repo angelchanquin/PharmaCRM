@@ -1,0 +1,24 @@
+{
+    "pharmacrmApp": {
+        "ordenDeCompra" : {
+            "home": {
+                "title": "Orden De Compras",
+                "createLabel": "Create a new Orden De Compra",
+                "createOrEditLabel": "Create or edit a Orden De Compra"
+            },
+            "created": "A new Orden De Compra is created with identifier {{ param }}",
+            "updated": "A Orden De Compra is updated with identifier {{ param }}",
+            "deleted": "A Orden De Compra is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Orden De Compra {{ id }}?"
+            },
+            "detail": {
+                "title": "Orden De Compra"
+            },
+            "numeroDeReferencia": "Numero De Referencia",
+            "fecha": "Fecha",
+            "total": "Total",
+            "detalle": "Detalle"
+        }
+    }
+}

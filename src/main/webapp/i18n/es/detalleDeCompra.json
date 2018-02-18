@@ -1,0 +1,25 @@
+{
+    "pharmacrmApp": {
+        "detalleDeCompra" : {
+            "home": {
+                "title": "Detalle de Compra",
+                "createLabel": "Agregar Productos",
+                "createOrEditLabel": "Crear o Editar Producto"
+            },
+            "created": "Un nuevo producto ha sido creado con el identificador {{ param }}",
+            "updated": "Un producto ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un producto ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar este producto {{ id }} del detalle?"
+            },
+            "detail": {
+                "title": "Detalle de Compra"
+            },
+            "cantidad": "Cantidad",
+            "precio": "Precio",
+            "subTotal": "Sub Total",
+            "ordenDeCompra": "Orden De Compra",
+            "producto": "Producto"
+        }
+    }
+}

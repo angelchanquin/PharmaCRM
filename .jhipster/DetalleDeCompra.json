@@ -1,0 +1,52 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "ordenDeCompra",
+            "otherEntityName": "ordenDeCompra",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "producto",
+            "otherEntityName": "producto",
+            "otherEntityField": "nombre"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "cantidad",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "precio",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "subTotal",
+            "fieldType": "Double",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        }
+    ],
+    "changelogDate": "20180215214454",
+    "entityTableName": "detalle_de_compra",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}
