@@ -41,11 +41,8 @@ public class ProveedorResourceIntTest {
     private static final String DEFAULT_NOMBRE = "AAAAAAAAAA";
     private static final String UPDATED_NOMBRE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NOMBRE_DE_CONTACTO = "AAAAAAAAAA";
-    private static final String UPDATED_NOMBRE_DE_CONTACTO = "BBBBBBBBBB";
-
-    private static final String DEFAULT_APELLIDO_DE_CONTACTO = "AAAAAAAAAA";
-    private static final String UPDATED_APELLIDO_DE_CONTACTO = "BBBBBBBBBB";
+    private static final String DEFAULT_CONTACTO = "AAAAAAAAAA";
+    private static final String UPDATED_CONTACTO = "BBBBBBBBBB";
 
     private static final String DEFAULT_CORREO_ELECTRONICO = "AAAAAAAAAA";
     private static final String UPDATED_CORREO_ELECTRONICO = "BBBBBBBBBB";
@@ -104,8 +101,7 @@ public class ProveedorResourceIntTest {
     public static Proveedor createEntity(EntityManager em) {
         Proveedor proveedor = new Proveedor()
             .nombre(DEFAULT_NOMBRE)
-            .nombreDeContacto(DEFAULT_NOMBRE_DE_CONTACTO)
-            .apellidoDeContacto(DEFAULT_APELLIDO_DE_CONTACTO)
+            .contacto(DEFAULT_CONTACTO)
             .correoElectronico(DEFAULT_CORREO_ELECTRONICO)
             .telefono(DEFAULT_TELEFONO)
             .celular(DEFAULT_CELULAR)
@@ -136,8 +132,7 @@ public class ProveedorResourceIntTest {
         assertThat(proveedorList).hasSize(databaseSizeBeforeCreate + 1);
         Proveedor testProveedor = proveedorList.get(proveedorList.size() - 1);
         assertThat(testProveedor.getNombre()).isEqualTo(DEFAULT_NOMBRE);
-        assertThat(testProveedor.getNombreDeContacto()).isEqualTo(DEFAULT_NOMBRE_DE_CONTACTO);
-        assertThat(testProveedor.getApellidoDeContacto()).isEqualTo(DEFAULT_APELLIDO_DE_CONTACTO);
+        assertThat(testProveedor.getContacto()).isEqualTo(DEFAULT_CONTACTO);
         assertThat(testProveedor.getCorreoElectronico()).isEqualTo(DEFAULT_CORREO_ELECTRONICO);
         assertThat(testProveedor.getTelefono()).isEqualTo(DEFAULT_TELEFONO);
         assertThat(testProveedor.getCelular()).isEqualTo(DEFAULT_CELULAR);
@@ -185,28 +180,10 @@ public class ProveedorResourceIntTest {
 
     @Test
     @Transactional
-    public void checkNombreDeContactoIsRequired() throws Exception {
+    public void checkContactoIsRequired() throws Exception {
         int databaseSizeBeforeTest = proveedorRepository.findAll().size();
         // set the field null
-        proveedor.setNombreDeContacto(null);
-
-        // Create the Proveedor, which fails.
-
-        restProveedorMockMvc.perform(post("/api/proveedors")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(proveedor)))
-            .andExpect(status().isBadRequest());
-
-        List<Proveedor> proveedorList = proveedorRepository.findAll();
-        assertThat(proveedorList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkApellidoDeContactoIsRequired() throws Exception {
-        int databaseSizeBeforeTest = proveedorRepository.findAll().size();
-        // set the field null
-        proveedor.setApellidoDeContacto(null);
+        proveedor.setContacto(null);
 
         // Create the Proveedor, which fails.
 
@@ -249,8 +226,7 @@ public class ProveedorResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(proveedor.getId().intValue())))
             .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())))
-            .andExpect(jsonPath("$.[*].nombreDeContacto").value(hasItem(DEFAULT_NOMBRE_DE_CONTACTO.toString())))
-            .andExpect(jsonPath("$.[*].apellidoDeContacto").value(hasItem(DEFAULT_APELLIDO_DE_CONTACTO.toString())))
+            .andExpect(jsonPath("$.[*].contacto").value(hasItem(DEFAULT_CONTACTO.toString())))
             .andExpect(jsonPath("$.[*].correoElectronico").value(hasItem(DEFAULT_CORREO_ELECTRONICO.toString())))
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO.toString())))
             .andExpect(jsonPath("$.[*].celular").value(hasItem(DEFAULT_CELULAR.toString())))
@@ -271,8 +247,7 @@ public class ProveedorResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(proveedor.getId().intValue()))
             .andExpect(jsonPath("$.nombre").value(DEFAULT_NOMBRE.toString()))
-            .andExpect(jsonPath("$.nombreDeContacto").value(DEFAULT_NOMBRE_DE_CONTACTO.toString()))
-            .andExpect(jsonPath("$.apellidoDeContacto").value(DEFAULT_APELLIDO_DE_CONTACTO.toString()))
+            .andExpect(jsonPath("$.contacto").value(DEFAULT_CONTACTO.toString()))
             .andExpect(jsonPath("$.correoElectronico").value(DEFAULT_CORREO_ELECTRONICO.toString()))
             .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO.toString()))
             .andExpect(jsonPath("$.celular").value(DEFAULT_CELULAR.toString()))
@@ -302,8 +277,7 @@ public class ProveedorResourceIntTest {
         em.detach(updatedProveedor);
         updatedProveedor
             .nombre(UPDATED_NOMBRE)
-            .nombreDeContacto(UPDATED_NOMBRE_DE_CONTACTO)
-            .apellidoDeContacto(UPDATED_APELLIDO_DE_CONTACTO)
+            .contacto(UPDATED_CONTACTO)
             .correoElectronico(UPDATED_CORREO_ELECTRONICO)
             .telefono(UPDATED_TELEFONO)
             .celular(UPDATED_CELULAR)
@@ -321,8 +295,7 @@ public class ProveedorResourceIntTest {
         assertThat(proveedorList).hasSize(databaseSizeBeforeUpdate);
         Proveedor testProveedor = proveedorList.get(proveedorList.size() - 1);
         assertThat(testProveedor.getNombre()).isEqualTo(UPDATED_NOMBRE);
-        assertThat(testProveedor.getNombreDeContacto()).isEqualTo(UPDATED_NOMBRE_DE_CONTACTO);
-        assertThat(testProveedor.getApellidoDeContacto()).isEqualTo(UPDATED_APELLIDO_DE_CONTACTO);
+        assertThat(testProveedor.getContacto()).isEqualTo(UPDATED_CONTACTO);
         assertThat(testProveedor.getCorreoElectronico()).isEqualTo(UPDATED_CORREO_ELECTRONICO);
         assertThat(testProveedor.getTelefono()).isEqualTo(UPDATED_TELEFONO);
         assertThat(testProveedor.getCelular()).isEqualTo(UPDATED_CELULAR);

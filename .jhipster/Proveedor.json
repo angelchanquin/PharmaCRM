@@ -17,14 +17,7 @@
             ]
         },
         {
-            "fieldName": "nombreDeContacto",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "apellidoDeContacto",
+            "fieldName": "contacto",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"

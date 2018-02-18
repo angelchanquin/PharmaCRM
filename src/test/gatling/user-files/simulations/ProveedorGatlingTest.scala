@@ -68,7 +68,7 @@ class ProveedorGatlingTest extends Simulation {
             .exec(http("Create new proveedor")
             .post("/api/proveedors")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "nombre":"SAMPLE_TEXT", "nombreDeContacto":"SAMPLE_TEXT", "apellidoDeContacto":"SAMPLE_TEXT", "correoElectronico":"SAMPLE_TEXT", "telefono":"SAMPLE_TEXT", "celular":"SAMPLE_TEXT", "sitioWeb":"SAMPLE_TEXT", "direccionDeFacturacion":"SAMPLE_TEXT", "direccionDeEnvio":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "nombre":"SAMPLE_TEXT", "contacto":"SAMPLE_TEXT", "correoElectronico":"SAMPLE_TEXT", "telefono":"SAMPLE_TEXT", "celular":"SAMPLE_TEXT", "sitioWeb":"SAMPLE_TEXT", "direccionDeFacturacion":"SAMPLE_TEXT", "direccionDeEnvio":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_proveedor_url"))).exitHereIfFailed
             .pause(10)

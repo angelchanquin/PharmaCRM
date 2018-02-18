@@ -29,10 +29,6 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="upc" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="precio_de_venta" type="double">
                 <constraints nullable="false" />
             </column>
@@ -45,7 +41,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="precio_de_compra" type="double">
+            <column name="precio_de_costo" type="double">
                 <constraints nullable="false" />
             </column>
 

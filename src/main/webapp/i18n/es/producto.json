@@ -17,14 +17,14 @@
             },
             "sku": "Sku",
             "nombre": "Nombre",
-            "upc": "Upc",
             "precioDeVenta": "Precio De Venta",
             "precioDeVenta2": "Precio De Venta 2",
             "precioDeVenta3": "Precio De Venta 3",
-            "precioDeCompra": "Precio De Compra",
+            "precioDeCosto": "Precio De Costo",
             "unidadesEnStock": "Unidades En Stock",
             "estado": "Estado",
             "fechaDeExpiracion": "Fecha De Expiracion",
+            "orden": "Orden",
             "presentacion": "Presentacion",
             "proveedor": "Proveedor"
         }

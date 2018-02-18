@@ -25,11 +25,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="nombre_de_contacto" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="apellido_de_contacto" type="varchar(255)">
+            <column name="contacto" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 

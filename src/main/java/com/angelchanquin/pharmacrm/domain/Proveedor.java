@@ -32,12 +32,8 @@ public class Proveedor implements Serializable {
     private String nombre;
 
     @NotNull
-    @Column(name = "nombre_de_contacto", nullable = false)
-    private String nombreDeContacto;
-
-    @NotNull
-    @Column(name = "apellido_de_contacto", nullable = false)
-    private String apellidoDeContacto;
+    @Column(name = "contacto", nullable = false)
+    private String contacto;
 
     @Column(name = "correo_electronico")
     private String correoElectronico;
@@ -85,30 +81,17 @@ public class Proveedor implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getNombreDeContacto() {
-        return nombreDeContacto;
+    public String getContacto() {
+        return contacto;
     }
 
-    public Proveedor nombreDeContacto(String nombreDeContacto) {
-        this.nombreDeContacto = nombreDeContacto;
+    public Proveedor contacto(String contacto) {
+        this.contacto = contacto;
         return this;
     }
 
-    public void setNombreDeContacto(String nombreDeContacto) {
-        this.nombreDeContacto = nombreDeContacto;
-    }
-
-    public String getApellidoDeContacto() {
-        return apellidoDeContacto;
-    }
-
-    public Proveedor apellidoDeContacto(String apellidoDeContacto) {
-        this.apellidoDeContacto = apellidoDeContacto;
-        return this;
-    }
-
-    public void setApellidoDeContacto(String apellidoDeContacto) {
-        this.apellidoDeContacto = apellidoDeContacto;
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
     }
 
     public String getCorreoElectronico() {
@@ -240,8 +223,7 @@ public class Proveedor implements Serializable {
         return "Proveedor{" +
             "id=" + getId() +
             ", nombre='" + getNombre() + "'" +
-            ", nombreDeContacto='" + getNombreDeContacto() + "'" +
-            ", apellidoDeContacto='" + getApellidoDeContacto() + "'" +
+            ", contacto='" + getContacto() + "'" +
             ", correoElectronico='" + getCorreoElectronico() + "'" +
             ", telefono='" + getTelefono() + "'" +
             ", celular='" + getCelular() + "'" +

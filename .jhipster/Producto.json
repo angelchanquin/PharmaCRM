@@ -2,6 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orden",
+            "otherEntityName": "detalleDeCompra",
+            "otherEntityRelationshipName": "producto"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "presentacion",
@@ -34,10 +40,6 @@
             ]
         },
         {
-            "fieldName": "upc",
-            "fieldType": "Long"
-        },
-        {
             "fieldName": "precioDeVenta",
             "fieldType": "Double",
             "fieldValidateRules": [
@@ -65,7 +67,7 @@
             "fieldValidateRulesMin": 0
         },
         {
-            "fieldName": "precioDeCompra",
+            "fieldName": "precioDeCosto",
             "fieldType": "Double",
             "fieldValidateRules": [
                 "required",

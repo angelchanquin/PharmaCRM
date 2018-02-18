@@ -35,10 +35,8 @@ describe('Proveedor e2e test', () => {
         proveedorComponentsPage.clickOnCreateButton();
         proveedorDialogPage.setNombreInput('nombre');
         expect(proveedorDialogPage.getNombreInput()).toMatch('nombre');
-        proveedorDialogPage.setNombreDeContactoInput('nombreDeContacto');
-        expect(proveedorDialogPage.getNombreDeContactoInput()).toMatch('nombreDeContacto');
-        proveedorDialogPage.setApellidoDeContactoInput('apellidoDeContacto');
-        expect(proveedorDialogPage.getApellidoDeContactoInput()).toMatch('apellidoDeContacto');
+        proveedorDialogPage.setContactoInput('contacto');
+        expect(proveedorDialogPage.getContactoInput()).toMatch('contacto');
         proveedorDialogPage.setCorreoElectronicoInput('correoElectronico');
         expect(proveedorDialogPage.getCorreoElectronicoInput()).toMatch('correoElectronico');
         proveedorDialogPage.setTelefonoInput('telefono');
@@ -78,8 +76,7 @@ export class ProveedorDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     nombreInput = element(by.css('input#field_nombre'));
-    nombreDeContactoInput = element(by.css('input#field_nombreDeContacto'));
-    apellidoDeContactoInput = element(by.css('input#field_apellidoDeContacto'));
+    contactoInput = element(by.css('input#field_contacto'));
     correoElectronicoInput = element(by.css('input#field_correoElectronico'));
     telefonoInput = element(by.css('input#field_telefono'));
     celularInput = element(by.css('input#field_celular'));
@@ -99,20 +96,12 @@ export class ProveedorDialogPage {
         return this.nombreInput.getAttribute('value');
     }
 
-    setNombreDeContactoInput = function(nombreDeContacto) {
-        this.nombreDeContactoInput.sendKeys(nombreDeContacto);
+    setContactoInput = function(contacto) {
+        this.contactoInput.sendKeys(contacto);
     }
 
-    getNombreDeContactoInput = function() {
-        return this.nombreDeContactoInput.getAttribute('value');
-    }
-
-    setApellidoDeContactoInput = function(apellidoDeContacto) {
-        this.apellidoDeContactoInput.sendKeys(apellidoDeContacto);
-    }
-
-    getApellidoDeContactoInput = function() {
-        return this.apellidoDeContactoInput.getAttribute('value');
+    getContactoInput = function() {
+        return this.contactoInput.getAttribute('value');
     }
 
     setCorreoElectronicoInput = function(correoElectronico) {

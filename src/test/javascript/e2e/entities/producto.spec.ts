@@ -37,16 +37,14 @@ describe('Producto e2e test', () => {
         expect(productoDialogPage.getSkuInput()).toMatch('5');
         productoDialogPage.setNombreInput('nombre');
         expect(productoDialogPage.getNombreInput()).toMatch('nombre');
-        productoDialogPage.setUpcInput('5');
-        expect(productoDialogPage.getUpcInput()).toMatch('5');
         productoDialogPage.setPrecioDeVentaInput('5');
         expect(productoDialogPage.getPrecioDeVentaInput()).toMatch('5');
         productoDialogPage.setPrecioDeVenta2Input('5');
         expect(productoDialogPage.getPrecioDeVenta2Input()).toMatch('5');
         productoDialogPage.setPrecioDeVenta3Input('5');
         expect(productoDialogPage.getPrecioDeVenta3Input()).toMatch('5');
-        productoDialogPage.setPrecioDeCompraInput('5');
-        expect(productoDialogPage.getPrecioDeCompraInput()).toMatch('5');
+        productoDialogPage.setPrecioDeCostoInput('5');
+        expect(productoDialogPage.getPrecioDeCostoInput()).toMatch('5');
         productoDialogPage.setUnidadesEnStockInput('5');
         expect(productoDialogPage.getUnidadesEnStockInput()).toMatch('5');
         productoDialogPage.estadoSelectLastOption();
@@ -82,11 +80,10 @@ export class ProductoDialogPage {
     closeButton = element(by.css('button.close'));
     skuInput = element(by.css('input#field_sku'));
     nombreInput = element(by.css('input#field_nombre'));
-    upcInput = element(by.css('input#field_upc'));
     precioDeVentaInput = element(by.css('input#field_precioDeVenta'));
     precioDeVenta2Input = element(by.css('input#field_precioDeVenta2'));
     precioDeVenta3Input = element(by.css('input#field_precioDeVenta3'));
-    precioDeCompraInput = element(by.css('input#field_precioDeCompra'));
+    precioDeCostoInput = element(by.css('input#field_precioDeCosto'));
     unidadesEnStockInput = element(by.css('input#field_unidadesEnStock'));
     estadoSelect = element(by.css('select#field_estado'));
     fechaDeExpiracionInput = element(by.css('input#field_fechaDeExpiracion'));
@@ -113,14 +110,6 @@ export class ProductoDialogPage {
         return this.nombreInput.getAttribute('value');
     }
 
-    setUpcInput = function(upc) {
-        this.upcInput.sendKeys(upc);
-    }
-
-    getUpcInput = function() {
-        return this.upcInput.getAttribute('value');
-    }
-
     setPrecioDeVentaInput = function(precioDeVenta) {
         this.precioDeVentaInput.sendKeys(precioDeVenta);
     }
@@ -145,12 +134,12 @@ export class ProductoDialogPage {
         return this.precioDeVenta3Input.getAttribute('value');
     }
 
-    setPrecioDeCompraInput = function(precioDeCompra) {
-        this.precioDeCompraInput.sendKeys(precioDeCompra);
+    setPrecioDeCostoInput = function(precioDeCosto) {
+        this.precioDeCostoInput.sendKeys(precioDeCosto);
     }
 
-    getPrecioDeCompraInput = function() {
-        return this.precioDeCompraInput.getAttribute('value');
+    getPrecioDeCostoInput = function() {
+        return this.precioDeCostoInput.getAttribute('value');
     }
 
     setUnidadesEnStockInput = function(unidadesEnStock) {

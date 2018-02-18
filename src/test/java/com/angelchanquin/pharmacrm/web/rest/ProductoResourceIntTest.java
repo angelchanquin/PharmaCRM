@@ -49,9 +49,6 @@ public class ProductoResourceIntTest {
     private static final String DEFAULT_NOMBRE = "AAAAAAAAAA";
     private static final String UPDATED_NOMBRE = "BBBBBBBBBB";
 
-    private static final Long DEFAULT_UPC = 1L;
-    private static final Long UPDATED_UPC = 2L;
-
     private static final Double DEFAULT_PRECIO_DE_VENTA = 0D;
     private static final Double UPDATED_PRECIO_DE_VENTA = 1D;
 
@@ -61,8 +58,8 @@ public class ProductoResourceIntTest {
     private static final Double DEFAULT_PRECIO_DE_VENTA_3 = 0D;
     private static final Double UPDATED_PRECIO_DE_VENTA_3 = 1D;
 
-    private static final Double DEFAULT_PRECIO_DE_COMPRA = 0D;
-    private static final Double UPDATED_PRECIO_DE_COMPRA = 1D;
+    private static final Double DEFAULT_PRECIO_DE_COSTO = 0D;
+    private static final Double UPDATED_PRECIO_DE_COSTO = 1D;
 
     private static final Integer DEFAULT_UNIDADES_EN_STOCK = 0;
     private static final Integer UPDATED_UNIDADES_EN_STOCK = 1;
@@ -113,11 +110,10 @@ public class ProductoResourceIntTest {
         Producto producto = new Producto()
             .sku(DEFAULT_SKU)
             .nombre(DEFAULT_NOMBRE)
-            .upc(DEFAULT_UPC)
             .precioDeVenta(DEFAULT_PRECIO_DE_VENTA)
             .precioDeVenta2(DEFAULT_PRECIO_DE_VENTA_2)
             .precioDeVenta3(DEFAULT_PRECIO_DE_VENTA_3)
-            .precioDeCompra(DEFAULT_PRECIO_DE_COMPRA)
+            .precioDeCosto(DEFAULT_PRECIO_DE_COSTO)
             .unidadesEnStock(DEFAULT_UNIDADES_EN_STOCK)
             .estado(DEFAULT_ESTADO)
             .fechaDeExpiracion(DEFAULT_FECHA_DE_EXPIRACION);
@@ -156,11 +152,10 @@ public class ProductoResourceIntTest {
         Producto testProducto = productoList.get(productoList.size() - 1);
         assertThat(testProducto.getSku()).isEqualTo(DEFAULT_SKU);
         assertThat(testProducto.getNombre()).isEqualTo(DEFAULT_NOMBRE);
-        assertThat(testProducto.getUpc()).isEqualTo(DEFAULT_UPC);
         assertThat(testProducto.getPrecioDeVenta()).isEqualTo(DEFAULT_PRECIO_DE_VENTA);
         assertThat(testProducto.getPrecioDeVenta2()).isEqualTo(DEFAULT_PRECIO_DE_VENTA_2);
         assertThat(testProducto.getPrecioDeVenta3()).isEqualTo(DEFAULT_PRECIO_DE_VENTA_3);
-        assertThat(testProducto.getPrecioDeCompra()).isEqualTo(DEFAULT_PRECIO_DE_COMPRA);
+        assertThat(testProducto.getPrecioDeCosto()).isEqualTo(DEFAULT_PRECIO_DE_COSTO);
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(DEFAULT_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(DEFAULT_ESTADO);
         assertThat(testProducto.getFechaDeExpiracion()).isEqualTo(DEFAULT_FECHA_DE_EXPIRACION);
@@ -277,10 +272,10 @@ public class ProductoResourceIntTest {
 
     @Test
     @Transactional
-    public void checkPrecioDeCompraIsRequired() throws Exception {
+    public void checkPrecioDeCostoIsRequired() throws Exception {
         int databaseSizeBeforeTest = productoRepository.findAll().size();
         // set the field null
-        producto.setPrecioDeCompra(null);
+        producto.setPrecioDeCosto(null);
 
         // Create the Producto, which fails.
 
@@ -342,11 +337,10 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(producto.getId().intValue())))
             .andExpect(jsonPath("$.[*].sku").value(hasItem(DEFAULT_SKU.intValue())))
             .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())))
-            .andExpect(jsonPath("$.[*].upc").value(hasItem(DEFAULT_UPC.intValue())))
             .andExpect(jsonPath("$.[*].precioDeVenta").value(hasItem(DEFAULT_PRECIO_DE_VENTA.doubleValue())))
             .andExpect(jsonPath("$.[*].precioDeVenta2").value(hasItem(DEFAULT_PRECIO_DE_VENTA_2.doubleValue())))
             .andExpect(jsonPath("$.[*].precioDeVenta3").value(hasItem(DEFAULT_PRECIO_DE_VENTA_3.doubleValue())))
-            .andExpect(jsonPath("$.[*].precioDeCompra").value(hasItem(DEFAULT_PRECIO_DE_COMPRA.doubleValue())))
+            .andExpect(jsonPath("$.[*].precioDeCosto").value(hasItem(DEFAULT_PRECIO_DE_COSTO.doubleValue())))
             .andExpect(jsonPath("$.[*].unidadesEnStock").value(hasItem(DEFAULT_UNIDADES_EN_STOCK)))
             .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
             .andExpect(jsonPath("$.[*].fechaDeExpiracion").value(hasItem(DEFAULT_FECHA_DE_EXPIRACION.toString())));
@@ -365,11 +359,10 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.id").value(producto.getId().intValue()))
             .andExpect(jsonPath("$.sku").value(DEFAULT_SKU.intValue()))
             .andExpect(jsonPath("$.nombre").value(DEFAULT_NOMBRE.toString()))
-            .andExpect(jsonPath("$.upc").value(DEFAULT_UPC.intValue()))
             .andExpect(jsonPath("$.precioDeVenta").value(DEFAULT_PRECIO_DE_VENTA.doubleValue()))
             .andExpect(jsonPath("$.precioDeVenta2").value(DEFAULT_PRECIO_DE_VENTA_2.doubleValue()))
             .andExpect(jsonPath("$.precioDeVenta3").value(DEFAULT_PRECIO_DE_VENTA_3.doubleValue()))
-            .andExpect(jsonPath("$.precioDeCompra").value(DEFAULT_PRECIO_DE_COMPRA.doubleValue()))
+            .andExpect(jsonPath("$.precioDeCosto").value(DEFAULT_PRECIO_DE_COSTO.doubleValue()))
             .andExpect(jsonPath("$.unidadesEnStock").value(DEFAULT_UNIDADES_EN_STOCK))
             .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()))
             .andExpect(jsonPath("$.fechaDeExpiracion").value(DEFAULT_FECHA_DE_EXPIRACION.toString()));
@@ -397,11 +390,10 @@ public class ProductoResourceIntTest {
         updatedProducto
             .sku(UPDATED_SKU)
             .nombre(UPDATED_NOMBRE)
-            .upc(UPDATED_UPC)
             .precioDeVenta(UPDATED_PRECIO_DE_VENTA)
             .precioDeVenta2(UPDATED_PRECIO_DE_VENTA_2)
             .precioDeVenta3(UPDATED_PRECIO_DE_VENTA_3)
-            .precioDeCompra(UPDATED_PRECIO_DE_COMPRA)
+            .precioDeCosto(UPDATED_PRECIO_DE_COSTO)
             .unidadesEnStock(UPDATED_UNIDADES_EN_STOCK)
             .estado(UPDATED_ESTADO)
             .fechaDeExpiracion(UPDATED_FECHA_DE_EXPIRACION);
@@ -417,11 +409,10 @@ public class ProductoResourceIntTest {
         Producto testProducto = productoList.get(productoList.size() - 1);
         assertThat(testProducto.getSku()).isEqualTo(UPDATED_SKU);
         assertThat(testProducto.getNombre()).isEqualTo(UPDATED_NOMBRE);
-        assertThat(testProducto.getUpc()).isEqualTo(UPDATED_UPC);
         assertThat(testProducto.getPrecioDeVenta()).isEqualTo(UPDATED_PRECIO_DE_VENTA);
         assertThat(testProducto.getPrecioDeVenta2()).isEqualTo(UPDATED_PRECIO_DE_VENTA_2);
         assertThat(testProducto.getPrecioDeVenta3()).isEqualTo(UPDATED_PRECIO_DE_VENTA_3);
-        assertThat(testProducto.getPrecioDeCompra()).isEqualTo(UPDATED_PRECIO_DE_COMPRA);
+        assertThat(testProducto.getPrecioDeCosto()).isEqualTo(UPDATED_PRECIO_DE_COSTO);
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(UPDATED_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(UPDATED_ESTADO);
         assertThat(testProducto.getFechaDeExpiracion()).isEqualTo(UPDATED_FECHA_DE_EXPIRACION);

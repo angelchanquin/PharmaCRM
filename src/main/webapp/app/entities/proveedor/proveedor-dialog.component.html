@@ -24,23 +24,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.nombreDeContacto" for="field_nombreDeContacto">Nombre De Contacto</label>
-            <input type="text" class="form-control" name="nombreDeContacto" id="field_nombreDeContacto"
-                [(ngModel)]="proveedor.nombreDeContacto" required/>
-            <div [hidden]="!(editForm.controls.nombreDeContacto?.dirty && editForm.controls.nombreDeContacto?.invalid)">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.contacto" for="field_contacto">Contacto</label>
+            <input type="text" class="form-control" name="contacto" id="field_contacto"
+                [(ngModel)]="proveedor.contacto" required/>
+            <div [hidden]="!(editForm.controls.contacto?.dirty && editForm.controls.contacto?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.nombreDeContacto?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.apellidoDeContacto" for="field_apellidoDeContacto">Apellido De Contacto</label>
-            <input type="text" class="form-control" name="apellidoDeContacto" id="field_apellidoDeContacto"
-                [(ngModel)]="proveedor.apellidoDeContacto" required/>
-            <div [hidden]="!(editForm.controls.apellidoDeContacto?.dirty && editForm.controls.apellidoDeContacto?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.apellidoDeContacto?.errors?.required" jhiTranslate="entity.validation.required">
+                   [hidden]="!editForm.controls.contacto?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
             </div>

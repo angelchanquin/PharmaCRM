@@ -16,8 +16,7 @@
                 "title": "Proveedor"
             },
             "nombre": "Nombre",
-            "nombreDeContacto": "Nombre De Contacto",
-            "apellidoDeContacto": "Apellido De Contacto",
+            "contacto": "Contacto",
             "correoElectronico": "Correo Electronico",
             "telefono": "Telefono",
             "celular": "Celular",

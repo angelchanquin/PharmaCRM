@@ -18,8 +18,7 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="pharmacrmApp.proveedor.nombre">Nombre</span></th>
-            <th><span jhiTranslate="pharmacrmApp.proveedor.nombreDeContacto">Nombre De Contacto</span></th>
-            <th><span jhiTranslate="pharmacrmApp.proveedor.apellidoDeContacto">Apellido De Contacto</span></th>
+            <th><span jhiTranslate="pharmacrmApp.proveedor.contacto">Contacto</span></th>
             <th><span jhiTranslate="pharmacrmApp.proveedor.correoElectronico">Correo Electronico</span></th>
             <th><span jhiTranslate="pharmacrmApp.proveedor.telefono">Telefono</span></th>
             <th><span jhiTranslate="pharmacrmApp.proveedor.celular">Celular</span></th>
@@ -33,8 +32,7 @@
             <tr *ngFor="let proveedor of proveedors ;trackBy: trackId">
                 <td><a [routerLink]="['../proveedor', proveedor.id ]">{{proveedor.id}}</a></td>
                 <td>{{proveedor.nombre}}</td>
-                <td>{{proveedor.nombreDeContacto}}</td>
-                <td>{{proveedor.apellidoDeContacto}}</td>
+                <td>{{proveedor.contacto}}</td>
                 <td>{{proveedor.correoElectronico}}</td>
                 <td>{{proveedor.telefono}}</td>
                 <td>{{proveedor.celular}}</td>

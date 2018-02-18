@@ -47,6 +47,18 @@
                             <span jhiTranslate="global.menu.entities.producto">Producto</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="orden-de-compra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.ordenDeCompra">Orden De Compra</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="detalle-de-compra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.detalleDeCompra">Detalle De Compra</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

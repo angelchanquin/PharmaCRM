@@ -4,8 +4,7 @@ export class Proveedor implements BaseEntity {
     constructor(
         public id?: number,
         public nombre?: string,
-        public nombreDeContacto?: string,
-        public apellidoDeContacto?: string,
+        public contacto?: string,
         public correoElectronico?: string,
         public telefono?: string,
         public celular?: string,

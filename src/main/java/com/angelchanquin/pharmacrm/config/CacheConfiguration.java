@@ -47,6 +47,10 @@ public class CacheConfiguration {
             cm.createCache(com.angelchanquin.pharmacrm.domain.PresentacionDeProducto.class.getName(), jcacheConfiguration);
             cm.createCache(com.angelchanquin.pharmacrm.domain.PresentacionDeProducto.class.getName() + ".productos", jcacheConfiguration);
             cm.createCache(com.angelchanquin.pharmacrm.domain.Producto.class.getName(), jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.Producto.class.getName() + ".ordens", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.OrdenDeCompra.class.getName(), jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.OrdenDeCompra.class.getName() + ".detalles", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.DetalleDeCompra.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

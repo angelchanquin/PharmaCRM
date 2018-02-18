@@ -1,5 +1,6 @@
 package com.angelchanquin.pharmacrm.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +9,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.angelchanquin.pharmacrm.domain.enumeration.EstadoDeProducto;
@@ -36,9 +39,6 @@ public class Producto implements Serializable {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "upc")
-    private Long upc;
-
     @NotNull
     @DecimalMin(value = "0")
     @Column(name = "precio_de_venta", nullable = false)
@@ -56,8 +56,8 @@ public class Producto implements Serializable {
 
     @NotNull
     @DecimalMin(value = "0")
-    @Column(name = "precio_de_compra", nullable = false)
-    private Double precioDeCompra;
+    @Column(name = "precio_de_costo", nullable = false)
+    private Double precioDeCosto;
 
     @NotNull
     @Min(value = 0)
@@ -71,6 +71,11 @@ public class Producto implements Serializable {
 
     @Column(name = "fecha_de_expiracion")
     private LocalDate fechaDeExpiracion;
+
+    @OneToMany(mappedBy = "producto")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<DetalleDeCompra> ordens = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
@@ -115,19 +120,6 @@ public class Producto implements Serializable {
         this.nombre = nombre;
     }
 
-    public Long getUpc() {
-        return upc;
-    }
-
-    public Producto upc(Long upc) {
-        this.upc = upc;
-        return this;
-    }
-
-    public void setUpc(Long upc) {
-        this.upc = upc;
-    }
-
     public Double getPrecioDeVenta() {
         return precioDeVenta;
     }
@@ -167,17 +159,17 @@ public class Producto implements Serializable {
         this.precioDeVenta3 = precioDeVenta3;
     }
 
-    public Double getPrecioDeCompra() {
-        return precioDeCompra;
+    public Double getPrecioDeCosto() {
+        return precioDeCosto;
     }
 
-    public Producto precioDeCompra(Double precioDeCompra) {
-        this.precioDeCompra = precioDeCompra;
+    public Producto precioDeCosto(Double precioDeCosto) {
+        this.precioDeCosto = precioDeCosto;
         return this;
     }
 
-    public void setPrecioDeCompra(Double precioDeCompra) {
-        this.precioDeCompra = precioDeCompra;
+    public void setPrecioDeCosto(Double precioDeCosto) {
+        this.precioDeCosto = precioDeCosto;
     }
 
     public Integer getUnidadesEnStock() {
@@ -217,6 +209,31 @@ public class Producto implements Serializable {
 
     public void setFechaDeExpiracion(LocalDate fechaDeExpiracion) {
         this.fechaDeExpiracion = fechaDeExpiracion;
+    }
+
+    public Set<DetalleDeCompra> getOrdens() {
+        return ordens;
+    }
+
+    public Producto ordens(Set<DetalleDeCompra> detalleDeCompras) {
+        this.ordens = detalleDeCompras;
+        return this;
+    }
+
+    public Producto addOrden(DetalleDeCompra detalleDeCompra) {
+        this.ordens.add(detalleDeCompra);
+        detalleDeCompra.setProducto(this);
+        return this;
+    }
+
+    public Producto removeOrden(DetalleDeCompra detalleDeCompra) {
+        this.ordens.remove(detalleDeCompra);
+        detalleDeCompra.setProducto(null);
+        return this;
+    }
+
+    public void setOrdens(Set<DetalleDeCompra> detalleDeCompras) {
+        this.ordens = detalleDeCompras;
     }
 
     public PresentacionDeProducto getPresentacion() {
@@ -272,11 +289,10 @@ public class Producto implements Serializable {
             "id=" + getId() +
             ", sku=" + getSku() +
             ", nombre='" + getNombre() + "'" +
-            ", upc=" + getUpc() +
             ", precioDeVenta=" + getPrecioDeVenta() +
             ", precioDeVenta2=" + getPrecioDeVenta2() +
             ", precioDeVenta3=" + getPrecioDeVenta3() +
-            ", precioDeCompra=" + getPrecioDeCompra() +
+            ", precioDeCosto=" + getPrecioDeCosto() +
             ", unidadesEnStock=" + getUnidadesEnStock() +
             ", estado='" + getEstado() + "'" +
             ", fechaDeExpiracion='" + getFechaDeExpiracion() + "'" +

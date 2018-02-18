@@ -10,6 +10,8 @@
                 "proveedor": "Proveedor",
                 "presentacionDeProducto": "Presentacion De Producto",
                 "producto": "Producto",
+                "ordenDeCompra": "Orden De Compra",
+                "detalleDeCompra": "Detalle De Compra",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

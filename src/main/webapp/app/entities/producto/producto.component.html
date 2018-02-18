@@ -19,11 +19,10 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.sku">Sku</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.nombre">Nombre</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.upc">Upc</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.precioDeVenta">Precio De Venta</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.precioDeVenta2">Precio De Venta 2</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.precioDeVenta3">Precio De Venta 3</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.precioDeCompra">Precio De Compra</span></th>
+            <th><span jhiTranslate="pharmacrmApp.producto.precioDeCosto">Precio De Costo</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.unidadesEnStock">Unidades En Stock</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.estado">Estado</span></th>
             <th><span jhiTranslate="pharmacrmApp.producto.fechaDeExpiracion">Fecha De Expiracion</span></th>
@@ -37,11 +36,10 @@
                 <td><a [routerLink]="['../producto', producto.id ]">{{producto.id}}</a></td>
                 <td>{{producto.sku}}</td>
                 <td>{{producto.nombre}}</td>
-                <td>{{producto.upc}}</td>
                 <td>{{producto.precioDeVenta}}</td>
                 <td>{{producto.precioDeVenta2}}</td>
                 <td>{{producto.precioDeVenta3}}</td>
-                <td>{{producto.precioDeCompra}}</td>
+                <td>{{producto.precioDeCosto}}</td>
                 <td>{{producto.unidadesEnStock}}</td>
                 <td jhiTranslate="{{'pharmacrmApp.EstadoDeProducto.' + producto.estado}}">{{producto.estado}}</td>
                 <td>{{producto.fechaDeExpiracion | date:'mediumDate'}}</td>
