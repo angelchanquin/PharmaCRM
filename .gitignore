@@ -115,6 +115,7 @@ Desktop.ini
 /bin/
 /deploy/
 /data/elasticsearch/
+/out/
 ######################
 # Logs
 ######################
