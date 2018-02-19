@@ -4,7 +4,8 @@
             "home": {
                 "title": "Inventarios",
                 "createLabel": "Crear nuevo Inventario",
-                "createOrEditLabel": "Crear o editar Inventario"
+                "createOrEditLabel": "Crear o editar Inventario",
+                "search": "Buscar Inventario"
             },
             "created": "Un nuevo Inventario ha sido creado con el identificador {{ param }}",
             "updated": "Un Inventario ha sido actualizado con el identificador {{ param }}",
@@ -17,7 +18,8 @@
             },
             "fecha": "Fecha",
             "cantidad": "Cantidad",
-            "tipoDeMovimiento": "Tipo De Movimiento",
+            "tipoDeMovimiento": "Tipo de Movimiento",
+            "precio": "Precio",
             "producto": "Producto"
         }
     }

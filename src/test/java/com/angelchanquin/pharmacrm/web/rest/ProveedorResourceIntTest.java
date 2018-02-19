@@ -4,6 +4,7 @@ import com.angelchanquin.pharmacrm.PharmacrmApp;
 
 import com.angelchanquin.pharmacrm.domain.Proveedor;
 import com.angelchanquin.pharmacrm.repository.ProveedorRepository;
+import com.angelchanquin.pharmacrm.repository.search.ProveedorSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -66,6 +67,9 @@ public class ProveedorResourceIntTest {
     private ProveedorRepository proveedorRepository;
 
     @Autowired
+    private ProveedorSearchRepository proveedorSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -84,7 +88,7 @@ public class ProveedorResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProveedorResource proveedorResource = new ProveedorResource(proveedorRepository);
+        final ProveedorResource proveedorResource = new ProveedorResource(proveedorRepository, proveedorSearchRepository);
         this.restProveedorMockMvc = MockMvcBuilders.standaloneSetup(proveedorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -113,6 +117,7 @@ public class ProveedorResourceIntTest {
 
     @Before
     public void initTest() {
+        proveedorSearchRepository.deleteAll();
         proveedor = createEntity(em);
     }
 
@@ -139,6 +144,10 @@ public class ProveedorResourceIntTest {
         assertThat(testProveedor.getSitioWeb()).isEqualTo(DEFAULT_SITIO_WEB);
         assertThat(testProveedor.getDireccionDeFacturacion()).isEqualTo(DEFAULT_DIRECCION_DE_FACTURACION);
         assertThat(testProveedor.getDireccionDeEnvio()).isEqualTo(DEFAULT_DIRECCION_DE_ENVIO);
+
+        // Validate the Proveedor in Elasticsearch
+        Proveedor proveedorEs = proveedorSearchRepository.findOne(testProveedor.getId());
+        assertThat(proveedorEs).isEqualToIgnoringGivenFields(testProveedor);
     }
 
     @Test
@@ -269,6 +278,7 @@ public class ProveedorResourceIntTest {
     public void updateProveedor() throws Exception {
         // Initialize the database
         proveedorRepository.saveAndFlush(proveedor);
+        proveedorSearchRepository.save(proveedor);
         int databaseSizeBeforeUpdate = proveedorRepository.findAll().size();
 
         // Update the proveedor
@@ -302,6 +312,10 @@ public class ProveedorResourceIntTest {
         assertThat(testProveedor.getSitioWeb()).isEqualTo(UPDATED_SITIO_WEB);
         assertThat(testProveedor.getDireccionDeFacturacion()).isEqualTo(UPDATED_DIRECCION_DE_FACTURACION);
         assertThat(testProveedor.getDireccionDeEnvio()).isEqualTo(UPDATED_DIRECCION_DE_ENVIO);
+
+        // Validate the Proveedor in Elasticsearch
+        Proveedor proveedorEs = proveedorSearchRepository.findOne(testProveedor.getId());
+        assertThat(proveedorEs).isEqualToIgnoringGivenFields(testProveedor);
     }
 
     @Test
@@ -327,6 +341,7 @@ public class ProveedorResourceIntTest {
     public void deleteProveedor() throws Exception {
         // Initialize the database
         proveedorRepository.saveAndFlush(proveedor);
+        proveedorSearchRepository.save(proveedor);
         int databaseSizeBeforeDelete = proveedorRepository.findAll().size();
 
         // Get the proveedor
@@ -334,9 +349,35 @@ public class ProveedorResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean proveedorExistsInEs = proveedorSearchRepository.exists(proveedor.getId());
+        assertThat(proveedorExistsInEs).isFalse();
+
         // Validate the database is empty
         List<Proveedor> proveedorList = proveedorRepository.findAll();
         assertThat(proveedorList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchProveedor() throws Exception {
+        // Initialize the database
+        proveedorRepository.saveAndFlush(proveedor);
+        proveedorSearchRepository.save(proveedor);
+
+        // Search the proveedor
+        restProveedorMockMvc.perform(get("/api/_search/proveedors?query=id:" + proveedor.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(proveedor.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())))
+            .andExpect(jsonPath("$.[*].contacto").value(hasItem(DEFAULT_CONTACTO.toString())))
+            .andExpect(jsonPath("$.[*].correoElectronico").value(hasItem(DEFAULT_CORREO_ELECTRONICO.toString())))
+            .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO.toString())))
+            .andExpect(jsonPath("$.[*].celular").value(hasItem(DEFAULT_CELULAR.toString())))
+            .andExpect(jsonPath("$.[*].sitioWeb").value(hasItem(DEFAULT_SITIO_WEB.toString())))
+            .andExpect(jsonPath("$.[*].direccionDeFacturacion").value(hasItem(DEFAULT_DIRECCION_DE_FACTURACION.toString())))
+            .andExpect(jsonPath("$.[*].direccionDeEnvio").value(hasItem(DEFAULT_DIRECCION_DE_ENVIO.toString())));
     }
 
     @Test

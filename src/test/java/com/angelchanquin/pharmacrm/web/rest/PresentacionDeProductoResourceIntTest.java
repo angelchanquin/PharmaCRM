@@ -4,6 +4,7 @@ import com.angelchanquin.pharmacrm.PharmacrmApp;
 
 import com.angelchanquin.pharmacrm.domain.PresentacionDeProducto;
 import com.angelchanquin.pharmacrm.repository.PresentacionDeProductoRepository;
+import com.angelchanquin.pharmacrm.repository.search.PresentacionDeProductoSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -45,6 +46,9 @@ public class PresentacionDeProductoResourceIntTest {
     private PresentacionDeProductoRepository presentacionDeProductoRepository;
 
     @Autowired
+    private PresentacionDeProductoSearchRepository presentacionDeProductoSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -63,7 +67,7 @@ public class PresentacionDeProductoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PresentacionDeProductoResource presentacionDeProductoResource = new PresentacionDeProductoResource(presentacionDeProductoRepository);
+        final PresentacionDeProductoResource presentacionDeProductoResource = new PresentacionDeProductoResource(presentacionDeProductoRepository, presentacionDeProductoSearchRepository);
         this.restPresentacionDeProductoMockMvc = MockMvcBuilders.standaloneSetup(presentacionDeProductoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -85,6 +89,7 @@ public class PresentacionDeProductoResourceIntTest {
 
     @Before
     public void initTest() {
+        presentacionDeProductoSearchRepository.deleteAll();
         presentacionDeProducto = createEntity(em);
     }
 
@@ -104,6 +109,10 @@ public class PresentacionDeProductoResourceIntTest {
         assertThat(presentacionDeProductoList).hasSize(databaseSizeBeforeCreate + 1);
         PresentacionDeProducto testPresentacionDeProducto = presentacionDeProductoList.get(presentacionDeProductoList.size() - 1);
         assertThat(testPresentacionDeProducto.getNombre()).isEqualTo(DEFAULT_NOMBRE);
+
+        // Validate the PresentacionDeProducto in Elasticsearch
+        PresentacionDeProducto presentacionDeProductoEs = presentacionDeProductoSearchRepository.findOne(testPresentacionDeProducto.getId());
+        assertThat(presentacionDeProductoEs).isEqualToIgnoringGivenFields(testPresentacionDeProducto);
     }
 
     @Test
@@ -184,6 +193,7 @@ public class PresentacionDeProductoResourceIntTest {
     public void updatePresentacionDeProducto() throws Exception {
         // Initialize the database
         presentacionDeProductoRepository.saveAndFlush(presentacionDeProducto);
+        presentacionDeProductoSearchRepository.save(presentacionDeProducto);
         int databaseSizeBeforeUpdate = presentacionDeProductoRepository.findAll().size();
 
         // Update the presentacionDeProducto
@@ -203,6 +213,10 @@ public class PresentacionDeProductoResourceIntTest {
         assertThat(presentacionDeProductoList).hasSize(databaseSizeBeforeUpdate);
         PresentacionDeProducto testPresentacionDeProducto = presentacionDeProductoList.get(presentacionDeProductoList.size() - 1);
         assertThat(testPresentacionDeProducto.getNombre()).isEqualTo(UPDATED_NOMBRE);
+
+        // Validate the PresentacionDeProducto in Elasticsearch
+        PresentacionDeProducto presentacionDeProductoEs = presentacionDeProductoSearchRepository.findOne(testPresentacionDeProducto.getId());
+        assertThat(presentacionDeProductoEs).isEqualToIgnoringGivenFields(testPresentacionDeProducto);
     }
 
     @Test
@@ -228,6 +242,7 @@ public class PresentacionDeProductoResourceIntTest {
     public void deletePresentacionDeProducto() throws Exception {
         // Initialize the database
         presentacionDeProductoRepository.saveAndFlush(presentacionDeProducto);
+        presentacionDeProductoSearchRepository.save(presentacionDeProducto);
         int databaseSizeBeforeDelete = presentacionDeProductoRepository.findAll().size();
 
         // Get the presentacionDeProducto
@@ -235,9 +250,28 @@ public class PresentacionDeProductoResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean presentacionDeProductoExistsInEs = presentacionDeProductoSearchRepository.exists(presentacionDeProducto.getId());
+        assertThat(presentacionDeProductoExistsInEs).isFalse();
+
         // Validate the database is empty
         List<PresentacionDeProducto> presentacionDeProductoList = presentacionDeProductoRepository.findAll();
         assertThat(presentacionDeProductoList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchPresentacionDeProducto() throws Exception {
+        // Initialize the database
+        presentacionDeProductoRepository.saveAndFlush(presentacionDeProducto);
+        presentacionDeProductoSearchRepository.save(presentacionDeProducto);
+
+        // Search the presentacionDeProducto
+        restPresentacionDeProductoMockMvc.perform(get("/api/_search/presentacion-de-productos?query=id:" + presentacionDeProducto.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(presentacionDeProducto.getId().intValue())))
+            .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())));
     }
 
     @Test

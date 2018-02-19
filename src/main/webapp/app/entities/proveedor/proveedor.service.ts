@@ -10,6 +10,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 export class ProveedorService {
 
     private resourceUrl =  SERVER_API_URL + 'api/proveedors';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/proveedors';
 
     constructor(private http: Http) { }
 
@@ -44,6 +45,12 @@ export class ProveedorService {
 
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
+    }
+
+    search(req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(this.resourceSearchUrl, options)
+            .map((res: any) => this.convertResponse(res));
     }
 
     private convertResponse(res: Response): ResponseWrapper {

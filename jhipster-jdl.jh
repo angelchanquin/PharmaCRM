@@ -36,7 +36,7 @@ entity OrdenDeCompra {
     total Double min(0)
 }
 
-entity DetalleDeCompra {
+entity DetalleDeCompra { 
 	cantidad Integer required,
     precio Double required min(0),
     subTotal Double required min(0)
@@ -49,7 +49,8 @@ enum TipoDeMovimiento {
 entity Inventario {
 	fecha LocalDate required,
     cantidad Integer required,
-    tipoDeMovimiento TipoDeMovimiento required
+    tipoDeMovimiento TipoDeMovimiento required,
+    precio Double required min(0)
 }
 
 relationship OneToMany {

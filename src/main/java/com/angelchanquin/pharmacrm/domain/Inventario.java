@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -18,6 +19,7 @@ import com.angelchanquin.pharmacrm.domain.enumeration.TipoDeMovimiento;
 @Entity
 @Table(name = "inventario")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Document(indexName = "inventario")
 public class Inventario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +41,11 @@ public class Inventario implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_de_movimiento", nullable = false)
     private TipoDeMovimiento tipoDeMovimiento;
+
+    @NotNull
+    @DecimalMin(value = "0")
+    @Column(name = "precio", nullable = false)
+    private Double precio;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -92,6 +99,19 @@ public class Inventario implements Serializable {
         this.tipoDeMovimiento = tipoDeMovimiento;
     }
 
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public Inventario precio(Double precio) {
+        this.precio = precio;
+        return this;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
     public Producto getProducto() {
         return producto;
     }
@@ -133,6 +153,7 @@ public class Inventario implements Serializable {
             ", fecha='" + getFecha() + "'" +
             ", cantidad=" + getCantidad() +
             ", tipoDeMovimiento='" + getTipoDeMovimiento() + "'" +
+            ", precio=" + getPrecio() +
             "}";
     }
 }

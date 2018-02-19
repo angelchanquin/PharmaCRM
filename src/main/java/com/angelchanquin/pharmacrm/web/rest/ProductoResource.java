@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.Producto;
 
 import com.angelchanquin.pharmacrm.repository.ProductoRepository;
+import com.angelchanquin.pharmacrm.repository.search.ProductoSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,6 +19,10 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Producto.
@@ -32,8 +37,11 @@ public class ProductoResource {
 
     private final ProductoRepository productoRepository;
 
-    public ProductoResource(ProductoRepository productoRepository) {
+    private final ProductoSearchRepository productoSearchRepository;
+
+    public ProductoResource(ProductoRepository productoRepository, ProductoSearchRepository productoSearchRepository) {
         this.productoRepository = productoRepository;
+        this.productoSearchRepository = productoSearchRepository;
     }
 
     /**
@@ -51,6 +59,7 @@ public class ProductoResource {
             throw new BadRequestAlertException("A new producto cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Producto result = productoRepository.save(producto);
+        productoSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/productos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,6 +82,7 @@ public class ProductoResource {
             return createProducto(producto);
         }
         Producto result = productoRepository.save(producto);
+        productoSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, producto.getId().toString()))
             .body(result);
@@ -115,6 +125,24 @@ public class ProductoResource {
     public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
         log.debug("REST request to delete Producto : {}", id);
         productoRepository.delete(id);
+        productoSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/productos?query=:query : search for the producto corresponding
+     * to the query.
+     *
+     * @param query the query of the producto search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/productos")
+    @Timed
+    public List<Producto> searchProductos(@RequestParam String query) {
+        log.debug("REST request to search Productos for query {}", query);
+        return StreamSupport
+            .stream(productoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
 }

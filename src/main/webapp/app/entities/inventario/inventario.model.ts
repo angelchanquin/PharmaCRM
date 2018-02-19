@@ -12,6 +12,7 @@ export class Inventario implements BaseEntity {
         public fecha?: any,
         public cantidad?: number,
         public tipoDeMovimiento?: TipoDeMovimiento,
+        public precio?: number,
         public producto?: BaseEntity,
     ) {
     }

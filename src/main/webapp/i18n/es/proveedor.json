@@ -2,9 +2,10 @@
     "pharmacrmApp": {
         "proveedor" : {
             "home": {
-                "title": "Proveedors",
+                "title": "Proveedores",
                 "createLabel": "Crear nuevo Proveedor",
-                "createOrEditLabel": "Crear o editar Proveedor"
+                "createOrEditLabel": "Crear o editar Proveedor",
+                "search": "Buscar Proveedor"
             },
             "created": "Un nuevo Proveedor ha sido creado con el identificador {{ param }}",
             "updated": "Un Proveedor ha sido actualizado con el identificador {{ param }}",
@@ -21,8 +22,8 @@
             "telefono": "Telefono",
             "celular": "Celular",
             "sitioWeb": "Sitio Web",
-            "direccionDeFacturacion": "Direccion De Facturacion",
-            "direccionDeEnvio": "Direccion De Envio",
+            "direccionDeFacturacion": "Direccion de Facturacion",
+            "direccionDeEnvio": "Direccion de Envio",
             "producto": "Producto"
         }
     }

@@ -38,6 +38,8 @@ describe('Inventario e2e test', () => {
         inventarioDialogPage.setCantidadInput('5');
         expect(inventarioDialogPage.getCantidadInput()).toMatch('5');
         inventarioDialogPage.tipoDeMovimientoSelectLastOption();
+        inventarioDialogPage.setPrecioInput('5');
+        expect(inventarioDialogPage.getPrecioInput()).toMatch('5');
         inventarioDialogPage.productoSelectLastOption();
         inventarioDialogPage.save();
         expect(inventarioDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -68,6 +70,7 @@ export class InventarioDialogPage {
     fechaInput = element(by.css('input#field_fecha'));
     cantidadInput = element(by.css('input#field_cantidad'));
     tipoDeMovimientoSelect = element(by.css('select#field_tipoDeMovimiento'));
+    precioInput = element(by.css('input#field_precio'));
     productoSelect = element(by.css('select#field_producto'));
 
     getModalTitle() {
@@ -101,6 +104,14 @@ export class InventarioDialogPage {
     tipoDeMovimientoSelectLastOption = function() {
         this.tipoDeMovimientoSelect.all(by.tagName('option')).last().click();
     }
+    setPrecioInput = function(precio) {
+        this.precioInput.sendKeys(precio);
+    }
+
+    getPrecioInput = function() {
+        return this.precioInput.getAttribute('value');
+    }
+
     productoSelectLastOption = function() {
         this.productoSelect.all(by.tagName('option')).last().click();
     }
