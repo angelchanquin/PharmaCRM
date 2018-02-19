@@ -48,12 +48,12 @@ public class Producto implements Serializable {
 
     @NotNull
     @DecimalMin(value = "0")
-    @Column(name = "precio_de_venta_2", nullable = false)
+    @Column(name = "precio_de_venta_2")
     private Double precioDeVenta2;
 
     @NotNull
     @DecimalMin(value = "0")
-    @Column(name = "precio_de_venta_3", nullable = false)
+    @Column(name = "precio_de_venta_3")
     private Double precioDeVenta3;
 
     @NotNull

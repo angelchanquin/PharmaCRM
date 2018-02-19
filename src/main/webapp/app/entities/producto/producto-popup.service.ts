@@ -1,7 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Producto } from './producto.model';
+import {EstadoDeProducto, Producto} from './producto.model';
 import { ProductoService } from './producto.service';
 
 @Injectable()
@@ -39,7 +39,10 @@ export class ProductoPopupService {
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.productoModalRef(component, new Producto());
+                    const producto = new Producto();
+                    producto.estado = EstadoDeProducto.ACTIVO;
+                    producto.unidadesEnStock = 0;
+                    this.ngbModalRef = this.productoModalRef(component, producto);
                     resolve(this.ngbModalRef);
                 }, 0);
             }

@@ -24,8 +24,8 @@
         <dd>
             <span>{{producto.precioDeVenta3}}</span>
         </dd>
-        <dt><span jhiTranslate="pharmacrmApp.producto.precioDeCosto">Precio De Costo</span></dt>
-        <dd>
+        <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="pharmacrmApp.producto.precioDeCosto">Precio De Costo</span></dt>
+        <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{producto.precioDeCosto}}</span>
         </dd>
         <dt><span jhiTranslate="pharmacrmApp.producto.unidadesEnStock">Unidades En Stock</span></dt>
@@ -36,14 +36,10 @@
         <dd>
             <span jhiTranslate="{{'pharmacrmApp.EstadoDeProducto.' + producto.estado}}">{{producto.estado}}</span>
         </dd>
-        <dt><span jhiTranslate="pharmacrmApp.producto.fechaDeExpiracion">Fecha De Expiracion</span></dt>
-        <dd>
-            <span>{{producto.fechaDeExpiracion | date:'mediumDate'}}</span>
-        </dd>
         <dt><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span></dt>
         <dd>
             <div *ngIf="producto.presentacion">
-                <a [routerLink]="['/presentacion-de-producto', producto.presentacion?.id]">{{producto.presentacion?.nombre}}</a>
+                {{producto.presentacion?.nombre}}
             </div>
         </dd>
         <dt><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span></dt>
@@ -64,7 +60,7 @@
             [routerLink]="['/', { outlets: { popup: 'producto/'+ producto.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"
-            class="btn btn-primary">
+            class="btn btn-primary" *jhiHasAnyAuthority="'ROLE_ADMIN'">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>
 </div>

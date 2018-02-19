@@ -43,6 +43,32 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.presentacion" for="field_presentacion">Presentacion</label>
+            <select class="form-control" id="field_presentacion" name="presentacion" [(ngModel)]="producto.presentacion"  required>
+                <option *ngIf="!editForm.value.presentacion" [ngValue]="null" selected></option>
+                <option [ngValue]="presentacionDeProductoOption.id === producto.presentacion?.id ? producto.presentacion : presentacionDeProductoOption" *ngFor="let presentacionDeProductoOption of presentaciondeproductos; trackBy: trackPresentacionDeProductoById">{{presentacionDeProductoOption.nombre}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.presentacion?.dirty && editForm.controls.presentacion?.invalid)">
+            <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.presentacion?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.proveedor" for="field_proveedor">Proveedor</label>
+            <select class="form-control" id="field_proveedor" name="proveedor" [(ngModel)]="producto.proveedor"  required>
+                <option *ngIf="!editForm.value.proveedor" [ngValue]="null" selected></option>
+                <option [ngValue]="proveedorOption.id === producto.proveedor?.id ? producto.proveedor : proveedorOption" *ngFor="let proveedorOption of proveedors; trackBy: trackProveedorById">{{proveedorOption.nombre}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.proveedor?.dirty && editForm.controls.proveedor?.invalid)">
+            <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.proveedor?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.precioDeVenta" for="field_precioDeVenta">Precio De Venta</label>
             <input type="number" class="form-control" name="precioDeVenta" id="field_precioDeVenta"
                 [(ngModel)]="producto.precioDeVenta" required min="0"/>
@@ -64,7 +90,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.precioDeVenta2" for="field_precioDeVenta2">Precio De Venta 2</label>
             <input type="number" class="form-control" name="precioDeVenta2" id="field_precioDeVenta2"
-                [(ngModel)]="producto.precioDeVenta2" required min="0"/>
+                [(ngModel)]="producto.precioDeVenta2" min="0"/>
             <div [hidden]="!(editForm.controls.precioDeVenta2?.dirty && editForm.controls.precioDeVenta2?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.precioDeVenta2?.errors?.required" jhiTranslate="entity.validation.required">
@@ -83,7 +109,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.precioDeVenta3" for="field_precioDeVenta3">Precio De Venta 3</label>
             <input type="number" class="form-control" name="precioDeVenta3" id="field_precioDeVenta3"
-                [(ngModel)]="producto.precioDeVenta3" required min="0"/>
+                [(ngModel)]="producto.precioDeVenta3" min="0"/>
             <div [hidden]="!(editForm.controls.precioDeVenta3?.dirty && editForm.controls.precioDeVenta3?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.precioDeVenta3?.errors?.required" jhiTranslate="entity.validation.required">
@@ -136,56 +162,6 @@
                     This field should be a number.
                 </small>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.estado" for="field_estado">Estado</label>
-            <select class="form-control" name="estado" [(ngModel)]="producto.estado" id="field_estado"  required>
-                <option value="ACTIVO">{{'pharmacrmApp.EstadoDeProducto.ACTIVO' | translate}}</option>
-                <option value="INACTIVO">{{'pharmacrmApp.EstadoDeProducto.INACTIVO' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.estado?.dirty && editForm.controls.estado?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.estado?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.fechaDeExpiracion" for="field_fechaDeExpiracion">Fecha De Expiracion</label>
-            <div class="input-group">
-                <input id="field_fechaDeExpiracion" type="text" class="form-control" name="fechaDeExpiracion" ngbDatepicker  #fechaDeExpiracionDp="ngbDatepicker" [(ngModel)]="producto.fechaDeExpiracion"
-                />
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-secondary" (click)="fechaDeExpiracionDp.toggle()"><i class="fa fa-calendar"></i></button>
-                </span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.presentacion" for="field_presentacion">Presentacion</label>
-            <select class="form-control" id="field_presentacion" name="presentacion" [(ngModel)]="producto.presentacion"  required>
-                <option *ngIf="!editForm.value.presentacion" [ngValue]="null" selected></option>
-                <option [ngValue]="presentacionDeProductoOption.id === producto.presentacion?.id ? producto.presentacion : presentacionDeProductoOption" *ngFor="let presentacionDeProductoOption of presentaciondeproductos; trackBy: trackPresentacionDeProductoById">{{presentacionDeProductoOption.nombre}}</option>
-            </select>
-        </div>
-        <div [hidden]="!(editForm.controls.presentacion?.dirty && editForm.controls.presentacion?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.presentacion?.errors?.required" jhiTranslate="entity.validation.required">
-                This field is required.
-            </small>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.proveedor" for="field_proveedor">Proveedor</label>
-            <select class="form-control" id="field_proveedor" name="proveedor" [(ngModel)]="producto.proveedor"  required>
-                <option *ngIf="!editForm.value.proveedor" [ngValue]="null" selected></option>
-                <option [ngValue]="proveedorOption.id === producto.proveedor?.id ? producto.proveedor : proveedorOption" *ngFor="let proveedorOption of proveedors; trackBy: trackProveedorById">{{proveedorOption.nombre}}</option>
-            </select>
-        </div>
-        <div [hidden]="!(editForm.controls.proveedor?.dirty && editForm.controls.proveedor?.invalid)">
-            <small class="form-text text-danger"
-                [hidden]="!editForm.controls.proveedor?.errors?.required" jhiTranslate="entity.validation.required">
-                This field is required.
-            </small>
         </div>
     </div>
     <div class="modal-footer">

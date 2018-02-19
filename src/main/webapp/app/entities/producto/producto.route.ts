@@ -31,7 +31,7 @@ export const productoPopupRoute: Routes = [
         path: 'producto-new',
         component: ProductoPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.producto.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const productoPopupRoute: Routes = [
         path: 'producto/:id/edit',
         component: ProductoPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.producto.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const productoPopupRoute: Routes = [
         path: 'producto/:id/delete',
         component: ProductoDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.producto.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -22,7 +22,7 @@
             "precioDeVenta2": "Precio 2",
             "precioDeVenta3": "Precio 3",
             "precioDeCosto": "Precio de Costo",
-            "unidadesEnStock": "Disponible",
+            "unidadesEnStock": "Existencia",
             "estado": "Estado",
             "fechaDeExpiracion": "Fecha de Expiracion",
             "inventario": "Inventario",
