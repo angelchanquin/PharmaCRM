@@ -2,19 +2,19 @@
     "pharmacrmApp": {
         "presentacionDeProducto" : {
             "home": {
-                "title": "Presentacion De Productos",
-                "createLabel": "Crear nuevo Presentacion De Producto",
-                "createOrEditLabel": "Crear o editar Presentacion De Producto",
-                "search": "Search for Presentacion De Producto"
+                "title": "Presentacion de Productos",
+                "createLabel": "Crear nueva Presentacion de Producto",
+                "createOrEditLabel": "Crear o editar Presentacion de Producto",
+                "search": "Buscar Presentacion de Producto"
             },
-            "created": "Un nuevo Presentacion De Producto ha sido creado con el identificador {{ param }}",
-            "updated": "Un Presentacion De Producto ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Presentacion De Producto ha sido eliminado con el identificador {{ param }}",
+            "created": "Una nueva Presentacion de Producto ha sido creada con el identificador {{ param }}",
+            "updated": "Una Presentacion de Producto ha sido actualizada con el identificador {{ param }}",
+            "deleted": "Una Presentacion de Producto ha sido eliminada con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Presentacion De Producto {{ id }}?"
+                "question": "¿Seguro que quiere eliminar la Presentacion de Producto {{ id }}?"
             },
             "detail": {
-                "title": "Presentacion De Producto"
+                "title": "Presentacion de Producto"
             },
             "nombre": "Nombre",
             "producto": "Producto"

@@ -2,21 +2,21 @@
     "pharmacrmApp": {
         "ordenDeCompra" : {
             "home": {
-                "title": "Orden De Compras",
-                "createLabel": "Crear nuevo Orden De Compra",
-                "createOrEditLabel": "Crear o editar Orden De Compra",
-                "search": "Buscar Orden De Compra"
+                "title": "Orden de Compras",
+                "createLabel": "Crear nuevo Orden de Compra",
+                "createOrEditLabel": "Crear o editar Orden de Compra",
+                "search": "Buscar Orden de Compra"
             },
-            "created": "Un nuevo Orden De Compra ha sido creado con el identificador {{ param }}",
-            "updated": "Un Orden De Compra ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un Orden De Compra ha sido eliminado con el identificador {{ param }}",
+            "created": "Una nueva Orden de Compra ha sido creada con el identificador {{ param }}",
+            "updated": "Una Orden de Compra ha sido actualizada con el identificador {{ param }}",
+            "deleted": "Una Orden de Compra ha sido eliminada con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar Orden De Compra {{ id }}?"
+                "question": "¿Seguro que quiere eliminar la Orden de Compra {{ id }}?"
             },
             "detail": {
-                "title": "Orden De Compra"
+                "title": "Orden de Compra"
             },
-            "numeroDeReferencia": "Numero De Referencia",
+            "numeroDeReferencia": "Numero de Referencia",
             "fecha": "Fecha",
             "total": "Total",
             "detalle": "Detalle"
