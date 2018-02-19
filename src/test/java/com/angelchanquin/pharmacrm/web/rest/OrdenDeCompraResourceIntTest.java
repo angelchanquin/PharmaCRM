@@ -4,6 +4,7 @@ import com.angelchanquin.pharmacrm.PharmacrmApp;
 
 import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
 import com.angelchanquin.pharmacrm.repository.OrdenDeCompraRepository;
+import com.angelchanquin.pharmacrm.repository.search.OrdenDeCompraSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -53,6 +54,9 @@ public class OrdenDeCompraResourceIntTest {
     private OrdenDeCompraRepository ordenDeCompraRepository;
 
     @Autowired
+    private OrdenDeCompraSearchRepository ordenDeCompraSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +75,7 @@ public class OrdenDeCompraResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OrdenDeCompraResource ordenDeCompraResource = new OrdenDeCompraResource(ordenDeCompraRepository);
+        final OrdenDeCompraResource ordenDeCompraResource = new OrdenDeCompraResource(ordenDeCompraRepository, ordenDeCompraSearchRepository);
         this.restOrdenDeCompraMockMvc = MockMvcBuilders.standaloneSetup(ordenDeCompraResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -95,6 +99,7 @@ public class OrdenDeCompraResourceIntTest {
 
     @Before
     public void initTest() {
+        ordenDeCompraSearchRepository.deleteAll();
         ordenDeCompra = createEntity(em);
     }
 
@@ -116,6 +121,10 @@ public class OrdenDeCompraResourceIntTest {
         assertThat(testOrdenDeCompra.getNumeroDeReferencia()).isEqualTo(DEFAULT_NUMERO_DE_REFERENCIA);
         assertThat(testOrdenDeCompra.getFecha()).isEqualTo(DEFAULT_FECHA);
         assertThat(testOrdenDeCompra.getTotal()).isEqualTo(DEFAULT_TOTAL);
+
+        // Validate the OrdenDeCompra in Elasticsearch
+        OrdenDeCompra ordenDeCompraEs = ordenDeCompraSearchRepository.findOne(testOrdenDeCompra.getId());
+        assertThat(ordenDeCompraEs).isEqualToIgnoringGivenFields(testOrdenDeCompra);
     }
 
     @Test
@@ -218,6 +227,7 @@ public class OrdenDeCompraResourceIntTest {
     public void updateOrdenDeCompra() throws Exception {
         // Initialize the database
         ordenDeCompraRepository.saveAndFlush(ordenDeCompra);
+        ordenDeCompraSearchRepository.save(ordenDeCompra);
         int databaseSizeBeforeUpdate = ordenDeCompraRepository.findAll().size();
 
         // Update the ordenDeCompra
@@ -241,6 +251,10 @@ public class OrdenDeCompraResourceIntTest {
         assertThat(testOrdenDeCompra.getNumeroDeReferencia()).isEqualTo(UPDATED_NUMERO_DE_REFERENCIA);
         assertThat(testOrdenDeCompra.getFecha()).isEqualTo(UPDATED_FECHA);
         assertThat(testOrdenDeCompra.getTotal()).isEqualTo(UPDATED_TOTAL);
+
+        // Validate the OrdenDeCompra in Elasticsearch
+        OrdenDeCompra ordenDeCompraEs = ordenDeCompraSearchRepository.findOne(testOrdenDeCompra.getId());
+        assertThat(ordenDeCompraEs).isEqualToIgnoringGivenFields(testOrdenDeCompra);
     }
 
     @Test
@@ -266,6 +280,7 @@ public class OrdenDeCompraResourceIntTest {
     public void deleteOrdenDeCompra() throws Exception {
         // Initialize the database
         ordenDeCompraRepository.saveAndFlush(ordenDeCompra);
+        ordenDeCompraSearchRepository.save(ordenDeCompra);
         int databaseSizeBeforeDelete = ordenDeCompraRepository.findAll().size();
 
         // Get the ordenDeCompra
@@ -273,9 +288,30 @@ public class OrdenDeCompraResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean ordenDeCompraExistsInEs = ordenDeCompraSearchRepository.exists(ordenDeCompra.getId());
+        assertThat(ordenDeCompraExistsInEs).isFalse();
+
         // Validate the database is empty
         List<OrdenDeCompra> ordenDeCompraList = ordenDeCompraRepository.findAll();
         assertThat(ordenDeCompraList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchOrdenDeCompra() throws Exception {
+        // Initialize the database
+        ordenDeCompraRepository.saveAndFlush(ordenDeCompra);
+        ordenDeCompraSearchRepository.save(ordenDeCompra);
+
+        // Search the ordenDeCompra
+        restOrdenDeCompraMockMvc.perform(get("/api/_search/orden-de-compras?query=id:" + ordenDeCompra.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(ordenDeCompra.getId().intValue())))
+            .andExpect(jsonPath("$.[*].numeroDeReferencia").value(hasItem(DEFAULT_NUMERO_DE_REFERENCIA.toString())))
+            .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
+            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.doubleValue())));
     }
 
     @Test

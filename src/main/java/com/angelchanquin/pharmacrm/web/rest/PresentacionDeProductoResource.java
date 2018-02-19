@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.PresentacionDeProducto;
 
 import com.angelchanquin.pharmacrm.repository.PresentacionDeProductoRepository;
+import com.angelchanquin.pharmacrm.repository.search.PresentacionDeProductoSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,6 +19,10 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing PresentacionDeProducto.
@@ -32,8 +37,11 @@ public class PresentacionDeProductoResource {
 
     private final PresentacionDeProductoRepository presentacionDeProductoRepository;
 
-    public PresentacionDeProductoResource(PresentacionDeProductoRepository presentacionDeProductoRepository) {
+    private final PresentacionDeProductoSearchRepository presentacionDeProductoSearchRepository;
+
+    public PresentacionDeProductoResource(PresentacionDeProductoRepository presentacionDeProductoRepository, PresentacionDeProductoSearchRepository presentacionDeProductoSearchRepository) {
         this.presentacionDeProductoRepository = presentacionDeProductoRepository;
+        this.presentacionDeProductoSearchRepository = presentacionDeProductoSearchRepository;
     }
 
     /**
@@ -51,6 +59,7 @@ public class PresentacionDeProductoResource {
             throw new BadRequestAlertException("A new presentacionDeProducto cannot already have an ID", ENTITY_NAME, "idexists");
         }
         PresentacionDeProducto result = presentacionDeProductoRepository.save(presentacionDeProducto);
+        presentacionDeProductoSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/presentacion-de-productos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,6 +82,7 @@ public class PresentacionDeProductoResource {
             return createPresentacionDeProducto(presentacionDeProducto);
         }
         PresentacionDeProducto result = presentacionDeProductoRepository.save(presentacionDeProducto);
+        presentacionDeProductoSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, presentacionDeProducto.getId().toString()))
             .body(result);
@@ -115,6 +125,24 @@ public class PresentacionDeProductoResource {
     public ResponseEntity<Void> deletePresentacionDeProducto(@PathVariable Long id) {
         log.debug("REST request to delete PresentacionDeProducto : {}", id);
         presentacionDeProductoRepository.delete(id);
+        presentacionDeProductoSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/presentacion-de-productos?query=:query : search for the presentacionDeProducto corresponding
+     * to the query.
+     *
+     * @param query the query of the presentacionDeProducto search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/presentacion-de-productos")
+    @Timed
+    public List<PresentacionDeProducto> searchPresentacionDeProductos(@RequestParam String query) {
+        log.debug("REST request to search PresentacionDeProductos for query {}", query);
+        return StreamSupport
+            .stream(presentacionDeProductoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
 }

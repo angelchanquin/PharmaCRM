@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
@@ -14,22 +15,49 @@ export class ProveedorComponent implements OnInit, OnDestroy {
 proveedors: Proveedor[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    currentSearch: string;
 
     constructor(
         private proveedorService: ProveedorService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
+        private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
+        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
+            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
+        if (this.currentSearch) {
+            this.proveedorService.search({
+                query: this.currentSearch,
+                }).subscribe(
+                    (res: ResponseWrapper) => this.proveedors = res.json,
+                    (res: ResponseWrapper) => this.onError(res.json)
+                );
+            return;
+       }
         this.proveedorService.query().subscribe(
             (res: ResponseWrapper) => {
                 this.proveedors = res.json;
+                this.currentSearch = '';
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
+    }
+
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.currentSearch = query;
+        this.loadAll();
+    }
+
+    clear() {
+        this.currentSearch = '';
+        this.loadAll();
     }
     ngOnInit() {
         this.loadAll();

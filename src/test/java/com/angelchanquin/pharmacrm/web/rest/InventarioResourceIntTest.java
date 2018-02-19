@@ -5,6 +5,7 @@ import com.angelchanquin.pharmacrm.PharmacrmApp;
 import com.angelchanquin.pharmacrm.domain.Inventario;
 import com.angelchanquin.pharmacrm.domain.Producto;
 import com.angelchanquin.pharmacrm.repository.InventarioRepository;
+import com.angelchanquin.pharmacrm.repository.search.InventarioSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -51,8 +52,14 @@ public class InventarioResourceIntTest {
     private static final TipoDeMovimiento DEFAULT_TIPO_DE_MOVIMIENTO = TipoDeMovimiento.INGRESO;
     private static final TipoDeMovimiento UPDATED_TIPO_DE_MOVIMIENTO = TipoDeMovimiento.EGRESO;
 
+    private static final Double DEFAULT_PRECIO = 0D;
+    private static final Double UPDATED_PRECIO = 1D;
+
     @Autowired
     private InventarioRepository inventarioRepository;
+
+    @Autowired
+    private InventarioSearchRepository inventarioSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -73,7 +80,7 @@ public class InventarioResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final InventarioResource inventarioResource = new InventarioResource(inventarioRepository);
+        final InventarioResource inventarioResource = new InventarioResource(inventarioRepository, inventarioSearchRepository);
         this.restInventarioMockMvc = MockMvcBuilders.standaloneSetup(inventarioResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -91,7 +98,8 @@ public class InventarioResourceIntTest {
         Inventario inventario = new Inventario()
             .fecha(DEFAULT_FECHA)
             .cantidad(DEFAULT_CANTIDAD)
-            .tipoDeMovimiento(DEFAULT_TIPO_DE_MOVIMIENTO);
+            .tipoDeMovimiento(DEFAULT_TIPO_DE_MOVIMIENTO)
+            .precio(DEFAULT_PRECIO);
         // Add required entity
         Producto producto = ProductoResourceIntTest.createEntity(em);
         em.persist(producto);
@@ -102,6 +110,7 @@ public class InventarioResourceIntTest {
 
     @Before
     public void initTest() {
+        inventarioSearchRepository.deleteAll();
         inventario = createEntity(em);
     }
 
@@ -123,6 +132,11 @@ public class InventarioResourceIntTest {
         assertThat(testInventario.getFecha()).isEqualTo(DEFAULT_FECHA);
         assertThat(testInventario.getCantidad()).isEqualTo(DEFAULT_CANTIDAD);
         assertThat(testInventario.getTipoDeMovimiento()).isEqualTo(DEFAULT_TIPO_DE_MOVIMIENTO);
+        assertThat(testInventario.getPrecio()).isEqualTo(DEFAULT_PRECIO);
+
+        // Validate the Inventario in Elasticsearch
+        Inventario inventarioEs = inventarioSearchRepository.findOne(testInventario.getId());
+        assertThat(inventarioEs).isEqualToIgnoringGivenFields(testInventario);
     }
 
     @Test
@@ -200,6 +214,24 @@ public class InventarioResourceIntTest {
 
     @Test
     @Transactional
+    public void checkPrecioIsRequired() throws Exception {
+        int databaseSizeBeforeTest = inventarioRepository.findAll().size();
+        // set the field null
+        inventario.setPrecio(null);
+
+        // Create the Inventario, which fails.
+
+        restInventarioMockMvc.perform(post("/api/inventarios")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(inventario)))
+            .andExpect(status().isBadRequest());
+
+        List<Inventario> inventarioList = inventarioRepository.findAll();
+        assertThat(inventarioList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllInventarios() throws Exception {
         // Initialize the database
         inventarioRepository.saveAndFlush(inventario);
@@ -211,7 +243,8 @@ public class InventarioResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(inventario.getId().intValue())))
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
             .andExpect(jsonPath("$.[*].cantidad").value(hasItem(DEFAULT_CANTIDAD)))
-            .andExpect(jsonPath("$.[*].tipoDeMovimiento").value(hasItem(DEFAULT_TIPO_DE_MOVIMIENTO.toString())));
+            .andExpect(jsonPath("$.[*].tipoDeMovimiento").value(hasItem(DEFAULT_TIPO_DE_MOVIMIENTO.toString())))
+            .andExpect(jsonPath("$.[*].precio").value(hasItem(DEFAULT_PRECIO.doubleValue())));
     }
 
     @Test
@@ -227,7 +260,8 @@ public class InventarioResourceIntTest {
             .andExpect(jsonPath("$.id").value(inventario.getId().intValue()))
             .andExpect(jsonPath("$.fecha").value(DEFAULT_FECHA.toString()))
             .andExpect(jsonPath("$.cantidad").value(DEFAULT_CANTIDAD))
-            .andExpect(jsonPath("$.tipoDeMovimiento").value(DEFAULT_TIPO_DE_MOVIMIENTO.toString()));
+            .andExpect(jsonPath("$.tipoDeMovimiento").value(DEFAULT_TIPO_DE_MOVIMIENTO.toString()))
+            .andExpect(jsonPath("$.precio").value(DEFAULT_PRECIO.doubleValue()));
     }
 
     @Test
@@ -243,6 +277,7 @@ public class InventarioResourceIntTest {
     public void updateInventario() throws Exception {
         // Initialize the database
         inventarioRepository.saveAndFlush(inventario);
+        inventarioSearchRepository.save(inventario);
         int databaseSizeBeforeUpdate = inventarioRepository.findAll().size();
 
         // Update the inventario
@@ -252,7 +287,8 @@ public class InventarioResourceIntTest {
         updatedInventario
             .fecha(UPDATED_FECHA)
             .cantidad(UPDATED_CANTIDAD)
-            .tipoDeMovimiento(UPDATED_TIPO_DE_MOVIMIENTO);
+            .tipoDeMovimiento(UPDATED_TIPO_DE_MOVIMIENTO)
+            .precio(UPDATED_PRECIO);
 
         restInventarioMockMvc.perform(put("/api/inventarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -266,6 +302,11 @@ public class InventarioResourceIntTest {
         assertThat(testInventario.getFecha()).isEqualTo(UPDATED_FECHA);
         assertThat(testInventario.getCantidad()).isEqualTo(UPDATED_CANTIDAD);
         assertThat(testInventario.getTipoDeMovimiento()).isEqualTo(UPDATED_TIPO_DE_MOVIMIENTO);
+        assertThat(testInventario.getPrecio()).isEqualTo(UPDATED_PRECIO);
+
+        // Validate the Inventario in Elasticsearch
+        Inventario inventarioEs = inventarioSearchRepository.findOne(testInventario.getId());
+        assertThat(inventarioEs).isEqualToIgnoringGivenFields(testInventario);
     }
 
     @Test
@@ -291,6 +332,7 @@ public class InventarioResourceIntTest {
     public void deleteInventario() throws Exception {
         // Initialize the database
         inventarioRepository.saveAndFlush(inventario);
+        inventarioSearchRepository.save(inventario);
         int databaseSizeBeforeDelete = inventarioRepository.findAll().size();
 
         // Get the inventario
@@ -298,9 +340,31 @@ public class InventarioResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean inventarioExistsInEs = inventarioSearchRepository.exists(inventario.getId());
+        assertThat(inventarioExistsInEs).isFalse();
+
         // Validate the database is empty
         List<Inventario> inventarioList = inventarioRepository.findAll();
         assertThat(inventarioList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchInventario() throws Exception {
+        // Initialize the database
+        inventarioRepository.saveAndFlush(inventario);
+        inventarioSearchRepository.save(inventario);
+
+        // Search the inventario
+        restInventarioMockMvc.perform(get("/api/_search/inventarios?query=id:" + inventario.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(inventario.getId().intValue())))
+            .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
+            .andExpect(jsonPath("$.[*].cantidad").value(hasItem(DEFAULT_CANTIDAD)))
+            .andExpect(jsonPath("$.[*].tipoDeMovimiento").value(hasItem(DEFAULT_TIPO_DE_MOVIMIENTO.toString())))
+            .andExpect(jsonPath("$.[*].precio").value(hasItem(DEFAULT_PRECIO.doubleValue())));
     }
 
     @Test

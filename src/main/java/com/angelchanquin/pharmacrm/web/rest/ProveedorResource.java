@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.Proveedor;
 
 import com.angelchanquin.pharmacrm.repository.ProveedorRepository;
+import com.angelchanquin.pharmacrm.repository.search.ProveedorSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,6 +19,10 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Proveedor.
@@ -32,8 +37,11 @@ public class ProveedorResource {
 
     private final ProveedorRepository proveedorRepository;
 
-    public ProveedorResource(ProveedorRepository proveedorRepository) {
+    private final ProveedorSearchRepository proveedorSearchRepository;
+
+    public ProveedorResource(ProveedorRepository proveedorRepository, ProveedorSearchRepository proveedorSearchRepository) {
         this.proveedorRepository = proveedorRepository;
+        this.proveedorSearchRepository = proveedorSearchRepository;
     }
 
     /**
@@ -51,6 +59,7 @@ public class ProveedorResource {
             throw new BadRequestAlertException("A new proveedor cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Proveedor result = proveedorRepository.save(proveedor);
+        proveedorSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/proveedors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,6 +82,7 @@ public class ProveedorResource {
             return createProveedor(proveedor);
         }
         Proveedor result = proveedorRepository.save(proveedor);
+        proveedorSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, proveedor.getId().toString()))
             .body(result);
@@ -115,6 +125,24 @@ public class ProveedorResource {
     public ResponseEntity<Void> deleteProveedor(@PathVariable Long id) {
         log.debug("REST request to delete Proveedor : {}", id);
         proveedorRepository.delete(id);
+        proveedorSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/proveedors?query=:query : search for the proveedor corresponding
+     * to the query.
+     *
+     * @param query the query of the proveedor search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/proveedors")
+    @Timed
+    public List<Proveedor> searchProveedors(@RequestParam String query) {
+        log.debug("REST request to search Proveedors for query {}", query);
+        return StreamSupport
+            .stream(proveedorSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
 }

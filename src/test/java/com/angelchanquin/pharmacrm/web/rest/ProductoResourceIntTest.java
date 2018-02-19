@@ -6,6 +6,7 @@ import com.angelchanquin.pharmacrm.domain.Producto;
 import com.angelchanquin.pharmacrm.domain.PresentacionDeProducto;
 import com.angelchanquin.pharmacrm.domain.Proveedor;
 import com.angelchanquin.pharmacrm.repository.ProductoRepository;
+import com.angelchanquin.pharmacrm.repository.search.ProductoSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -74,6 +75,9 @@ public class ProductoResourceIntTest {
     private ProductoRepository productoRepository;
 
     @Autowired
+    private ProductoSearchRepository productoSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -92,7 +96,7 @@ public class ProductoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductoResource productoResource = new ProductoResource(productoRepository);
+        final ProductoResource productoResource = new ProductoResource(productoRepository, productoSearchRepository);
         this.restProductoMockMvc = MockMvcBuilders.standaloneSetup(productoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -132,6 +136,7 @@ public class ProductoResourceIntTest {
 
     @Before
     public void initTest() {
+        productoSearchRepository.deleteAll();
         producto = createEntity(em);
     }
 
@@ -159,6 +164,10 @@ public class ProductoResourceIntTest {
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(DEFAULT_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(DEFAULT_ESTADO);
         assertThat(testProducto.getFechaDeExpiracion()).isEqualTo(DEFAULT_FECHA_DE_EXPIRACION);
+
+        // Validate the Producto in Elasticsearch
+        Producto productoEs = productoSearchRepository.findOne(testProducto.getId());
+        assertThat(productoEs).isEqualToIgnoringGivenFields(testProducto);
     }
 
     @Test
@@ -381,6 +390,7 @@ public class ProductoResourceIntTest {
     public void updateProducto() throws Exception {
         // Initialize the database
         productoRepository.saveAndFlush(producto);
+        productoSearchRepository.save(producto);
         int databaseSizeBeforeUpdate = productoRepository.findAll().size();
 
         // Update the producto
@@ -416,6 +426,10 @@ public class ProductoResourceIntTest {
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(UPDATED_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(UPDATED_ESTADO);
         assertThat(testProducto.getFechaDeExpiracion()).isEqualTo(UPDATED_FECHA_DE_EXPIRACION);
+
+        // Validate the Producto in Elasticsearch
+        Producto productoEs = productoSearchRepository.findOne(testProducto.getId());
+        assertThat(productoEs).isEqualToIgnoringGivenFields(testProducto);
     }
 
     @Test
@@ -441,6 +455,7 @@ public class ProductoResourceIntTest {
     public void deleteProducto() throws Exception {
         // Initialize the database
         productoRepository.saveAndFlush(producto);
+        productoSearchRepository.save(producto);
         int databaseSizeBeforeDelete = productoRepository.findAll().size();
 
         // Get the producto
@@ -448,9 +463,36 @@ public class ProductoResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean productoExistsInEs = productoSearchRepository.exists(producto.getId());
+        assertThat(productoExistsInEs).isFalse();
+
         // Validate the database is empty
         List<Producto> productoList = productoRepository.findAll();
         assertThat(productoList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchProducto() throws Exception {
+        // Initialize the database
+        productoRepository.saveAndFlush(producto);
+        productoSearchRepository.save(producto);
+
+        // Search the producto
+        restProductoMockMvc.perform(get("/api/_search/productos?query=id:" + producto.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(producto.getId().intValue())))
+            .andExpect(jsonPath("$.[*].sku").value(hasItem(DEFAULT_SKU.intValue())))
+            .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())))
+            .andExpect(jsonPath("$.[*].precioDeVenta").value(hasItem(DEFAULT_PRECIO_DE_VENTA.doubleValue())))
+            .andExpect(jsonPath("$.[*].precioDeVenta2").value(hasItem(DEFAULT_PRECIO_DE_VENTA_2.doubleValue())))
+            .andExpect(jsonPath("$.[*].precioDeVenta3").value(hasItem(DEFAULT_PRECIO_DE_VENTA_3.doubleValue())))
+            .andExpect(jsonPath("$.[*].precioDeCosto").value(hasItem(DEFAULT_PRECIO_DE_COSTO.doubleValue())))
+            .andExpect(jsonPath("$.[*].unidadesEnStock").value(hasItem(DEFAULT_UNIDADES_EN_STOCK)))
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
+            .andExpect(jsonPath("$.[*].fechaDeExpiracion").value(hasItem(DEFAULT_FECHA_DE_EXPIRACION.toString())));
     }
 
     @Test

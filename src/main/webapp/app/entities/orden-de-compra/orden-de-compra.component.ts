@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
@@ -11,25 +12,52 @@ import { Principal, ResponseWrapper } from '../../shared';
     templateUrl: './orden-de-compra.component.html'
 })
 export class OrdenDeCompraComponent implements OnInit, OnDestroy {
-    ordenDeCompras: OrdenDeCompra[];
+ordenDeCompras: OrdenDeCompra[];
     currentAccount: any;
     eventSubscriber: Subscription;
+    currentSearch: string;
 
     constructor(
         private ordenDeCompraService: OrdenDeCompraService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
+        private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
+        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
+            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
+        if (this.currentSearch) {
+            this.ordenDeCompraService.search({
+                query: this.currentSearch,
+                }).subscribe(
+                    (res: ResponseWrapper) => this.ordenDeCompras = res.json,
+                    (res: ResponseWrapper) => this.onError(res.json)
+                );
+            return;
+       }
         this.ordenDeCompraService.query().subscribe(
             (res: ResponseWrapper) => {
                 this.ordenDeCompras = res.json;
+                this.currentSearch = '';
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
+    }
+
+    search(query) {
+        if (!query) {
+            return this.clear();
+        }
+        this.currentSearch = query;
+        this.loadAll();
+    }
+
+    clear() {
+        this.currentSearch = '';
+        this.loadAll();
     }
     ngOnInit() {
         this.loadAll();

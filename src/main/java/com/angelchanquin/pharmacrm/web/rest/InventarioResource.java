@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.Inventario;
 
 import com.angelchanquin.pharmacrm.repository.InventarioRepository;
+import com.angelchanquin.pharmacrm.repository.search.InventarioSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,6 +19,10 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Inventario.
@@ -32,8 +37,11 @@ public class InventarioResource {
 
     private final InventarioRepository inventarioRepository;
 
-    public InventarioResource(InventarioRepository inventarioRepository) {
+    private final InventarioSearchRepository inventarioSearchRepository;
+
+    public InventarioResource(InventarioRepository inventarioRepository, InventarioSearchRepository inventarioSearchRepository) {
         this.inventarioRepository = inventarioRepository;
+        this.inventarioSearchRepository = inventarioSearchRepository;
     }
 
     /**
@@ -51,6 +59,7 @@ public class InventarioResource {
             throw new BadRequestAlertException("A new inventario cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Inventario result = inventarioRepository.save(inventario);
+        inventarioSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/inventarios/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -73,6 +82,7 @@ public class InventarioResource {
             return createInventario(inventario);
         }
         Inventario result = inventarioRepository.save(inventario);
+        inventarioSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, inventario.getId().toString()))
             .body(result);
@@ -115,6 +125,24 @@ public class InventarioResource {
     public ResponseEntity<Void> deleteInventario(@PathVariable Long id) {
         log.debug("REST request to delete Inventario : {}", id);
         inventarioRepository.delete(id);
+        inventarioSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/inventarios?query=:query : search for the inventario corresponding
+     * to the query.
+     *
+     * @param query the query of the inventario search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/inventarios")
+    @Timed
+    public List<Inventario> searchInventarios(@RequestParam String query) {
+        log.debug("REST request to search Inventarios for query {}", query);
+        return StreamSupport
+            .stream(inventarioSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
 }

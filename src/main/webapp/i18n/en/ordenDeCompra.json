@@ -4,7 +4,8 @@
             "home": {
                 "title": "Orden De Compras",
                 "createLabel": "Create a new Orden De Compra",
-                "createOrEditLabel": "Create or edit a Orden De Compra"
+                "createOrEditLabel": "Create or edit a Orden De Compra",
+                "search": "Search for Orden De Compra"
             },
             "created": "A new Orden De Compra is created with identifier {{ param }}",
             "updated": "A Orden De Compra is updated with identifier {{ param }}",
