@@ -36,9 +36,9 @@ public class OrdenDeCompra implements Serializable {
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
-    @Min(value = 0L)
+    @DecimalMin(value = "0")
     @Column(name = "total")
-    private Long total;
+    private Double total;
 
     @OneToMany(mappedBy = "ordenDeCompra")
     @JsonIgnore
@@ -80,16 +80,16 @@ public class OrdenDeCompra implements Serializable {
         this.fecha = fecha;
     }
 
-    public Long getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public OrdenDeCompra total(Long total) {
+    public OrdenDeCompra total(Double total) {
         this.total = total;
         return this;
     }
 
-    public void setTotal(Long total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 

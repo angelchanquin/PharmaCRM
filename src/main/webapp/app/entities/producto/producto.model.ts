@@ -17,6 +17,7 @@ export class Producto implements BaseEntity {
         public unidadesEnStock?: number,
         public estado?: EstadoDeProducto,
         public fechaDeExpiracion?: any,
+        public inventarios?: BaseEntity[],
         public ordens?: BaseEntity[],
         public presentacion?: BaseEntity,
         public proveedor?: BaseEntity,

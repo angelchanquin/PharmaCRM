@@ -51,7 +51,7 @@ public class OrdenDeCompraResource {
             throw new BadRequestAlertException("A new ordenDeCompra cannot already have an ID", ENTITY_NAME, "idexists");
         }
         if (ordenDeCompra.getTotal() == null) {
-            ordenDeCompra.setTotal(0L);
+            ordenDeCompra.setTotal(0D);
         }
         OrdenDeCompra result = ordenDeCompraRepository.save(ordenDeCompra);
         return ResponseEntity.created(new URI("/api/orden-de-compras/" + result.getId()))

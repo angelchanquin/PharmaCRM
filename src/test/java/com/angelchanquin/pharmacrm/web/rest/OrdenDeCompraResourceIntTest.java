@@ -46,8 +46,8 @@ public class OrdenDeCompraResourceIntTest {
     private static final LocalDate DEFAULT_FECHA = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_FECHA = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Long DEFAULT_TOTAL = 0L;
-    private static final Long UPDATED_TOTAL = 1L;
+    private static final Double DEFAULT_TOTAL = 0D;
+    private static final Double UPDATED_TOTAL = 1D;
 
     @Autowired
     private OrdenDeCompraRepository ordenDeCompraRepository;
@@ -186,7 +186,7 @@ public class OrdenDeCompraResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(ordenDeCompra.getId().intValue())))
             .andExpect(jsonPath("$.[*].numeroDeReferencia").value(hasItem(DEFAULT_NUMERO_DE_REFERENCIA.toString())))
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
-            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.intValue())));
+            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.doubleValue())));
     }
 
     @Test
@@ -202,7 +202,7 @@ public class OrdenDeCompraResourceIntTest {
             .andExpect(jsonPath("$.id").value(ordenDeCompra.getId().intValue()))
             .andExpect(jsonPath("$.numeroDeReferencia").value(DEFAULT_NUMERO_DE_REFERENCIA.toString()))
             .andExpect(jsonPath("$.fecha").value(DEFAULT_FECHA.toString()))
-            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL.intValue()));
+            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL.doubleValue()));
     }
 
     @Test

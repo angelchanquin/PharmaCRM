@@ -24,6 +24,7 @@
             "unidadesEnStock": "Unidades En Stock",
             "estado": "Estado",
             "fechaDeExpiracion": "Fecha De Expiracion",
+            "inventario": "Inventario",
             "orden": "Orden",
             "presentacion": "Presentacion",
             "proveedor": "Proveedor"

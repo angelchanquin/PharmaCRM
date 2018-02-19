@@ -3,6 +3,12 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
+            "relationshipName": "inventario",
+            "otherEntityName": "inventario",
+            "otherEntityRelationshipName": "producto"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipName": "orden",
             "otherEntityName": "detalleDeCompra",
             "otherEntityRelationshipName": "producto"

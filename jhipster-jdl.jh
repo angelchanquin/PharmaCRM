@@ -1,3 +1,4 @@
+
 entity Proveedor {
 	nombre String required,
 	contacto String required,
@@ -32,7 +33,7 @@ entity Producto {
 entity OrdenDeCompra {
 	numeroDeReferencia String required,
     fecha LocalDate required,
-    total Long min(0)
+    total Double min(0)
 }
 
 entity DetalleDeCompra {
@@ -41,17 +42,36 @@ entity DetalleDeCompra {
     subTotal Double required min(0)
 }
 
-relationship OneToMany {
-	PresentacionDeProducto{producto} to Producto{presentacion(nombre) required}
+enum TipoDeMovimiento {
+	INGRESO, EGRESO, CORRECCION
 }
-relationship OneToMany {
-	Proveedor{producto} to Producto {proveedor(nombre) required} 
+
+entity Inventario {
+	fecha LocalDate required,
+    cantidad Integer required,
+    tipoDeMovimiento TipoDeMovimiento required
 }
 
 relationship OneToMany {
-	OrdenDeCompra{detalle} to DetalleDeCompra{ordenDeCompra(id) required}
+	Producto{inventario} 
+    to Inventario{producto(nombre) required}
 }
 
 relationship OneToMany {
-	Producto{orden} to DetalleDeCompra{producto(nombre) required}
+	PresentacionDeProducto{producto} 
+    to Producto{presentacion(nombre) required}
+}
+relationship OneToMany {
+	Proveedor{producto} 
+    to Producto {proveedor(nombre) required} 
+}
+
+relationship OneToMany {
+	OrdenDeCompra{detalle} 
+    to DetalleDeCompra{ordenDeCompra(id) required}
+}
+
+relationship OneToMany {
+	Producto{orden} 
+    to DetalleDeCompra{producto(nombre) required}
 }

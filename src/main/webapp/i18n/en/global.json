@@ -12,6 +12,7 @@
                 "producto": "Producto",
                 "ordenDeCompra": "Orden De Compra",
                 "detalleDeCompra": "Detalle De Compra",
+                "inventario": "Inventario",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -75,6 +75,11 @@ public class Producto implements Serializable {
     @OneToMany(mappedBy = "producto")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Inventario> inventarios = new HashSet<>();
+
+    @OneToMany(mappedBy = "producto")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DetalleDeCompra> ordens = new HashSet<>();
 
     @ManyToOne(optional = false)
@@ -209,6 +214,31 @@ public class Producto implements Serializable {
 
     public void setFechaDeExpiracion(LocalDate fechaDeExpiracion) {
         this.fechaDeExpiracion = fechaDeExpiracion;
+    }
+
+    public Set<Inventario> getInventarios() {
+        return inventarios;
+    }
+
+    public Producto inventarios(Set<Inventario> inventarios) {
+        this.inventarios = inventarios;
+        return this;
+    }
+
+    public Producto addInventario(Inventario inventario) {
+        this.inventarios.add(inventario);
+        inventario.setProducto(this);
+        return this;
+    }
+
+    public Producto removeInventario(Inventario inventario) {
+        this.inventarios.remove(inventario);
+        inventario.setProducto(null);
+        return this;
+    }
+
+    public void setInventarios(Set<Inventario> inventarios) {
+        this.inventarios = inventarios;
     }
 
     public Set<DetalleDeCompra> getOrdens() {

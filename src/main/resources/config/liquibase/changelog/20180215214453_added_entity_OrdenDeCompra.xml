@@ -29,7 +29,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="total" type="bigint">
+            <column name="total" type="double">
                 <constraints nullable="true" />
             </column>
 

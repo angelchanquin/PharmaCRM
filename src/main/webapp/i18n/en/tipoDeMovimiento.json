@@ -1,0 +1,10 @@
+{
+    "pharmacrmApp": {
+        "TipoDeMovimiento" : {
+            "null": "",
+            "INGRESO": "INGRESO",
+            "EGRESO": "EGRESO",
+            "CORRECCION": "CORRECCION"
+        }
+    }
+}

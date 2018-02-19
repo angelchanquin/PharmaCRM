@@ -61,8 +61,8 @@ public class DetalleDeCompraResource {
 
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
         if (ordenDeCompra != null) {
-            Long previousTotal = ordenDeCompra.getTotal();
-            ordenDeCompra.setTotal((long) (previousTotal + detalleDeCompra.getSubTotal()));
+            Double previousTotal = ordenDeCompra.getTotal();
+            ordenDeCompra.setTotal(previousTotal + detalleDeCompra.getSubTotal());
             ordenDeCompraRepository.save(ordenDeCompra);
         } else {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
@@ -103,8 +103,8 @@ public class DetalleDeCompraResource {
         DetalleDeCompra oldDetalleDeCompra = detalleDeCompraRepository.findOne(detalleDeCompra.getId());
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
         if (ordenDeCompra != null) {
-            Long previousTotal = ordenDeCompra.getTotal();
-            ordenDeCompra.setTotal((long) (previousTotal - oldDetalleDeCompra.getSubTotal() + detalleDeCompra.getSubTotal()));
+            Double previousTotal = ordenDeCompra.getTotal();
+            ordenDeCompra.setTotal(previousTotal - oldDetalleDeCompra.getSubTotal() + detalleDeCompra.getSubTotal());
             ordenDeCompraRepository.save(ordenDeCompra);
         } else {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
@@ -162,8 +162,8 @@ public class DetalleDeCompraResource {
         DetalleDeCompra detalleDeCompra = detalleDeCompraRepository.findOne(id);
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
         if (ordenDeCompra != null) {
-            Long previousTotal = ordenDeCompra.getTotal();
-            ordenDeCompra.setTotal((long) (previousTotal - detalleDeCompra.getSubTotal()));
+            Double previousTotal = ordenDeCompra.getTotal();
+            ordenDeCompra.setTotal(previousTotal - detalleDeCompra.getSubTotal());
             ordenDeCompraRepository.save(ordenDeCompra);
         } else {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
