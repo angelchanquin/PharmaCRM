@@ -4,13 +4,14 @@
             "home": {
                 "title": "Detalle de Compra",
                 "createLabel": "Agregar Productos",
-                "createOrEditLabel": "Crear o Editar Producto"
+                "createOrEditLabel": "Agregar o Editar Producto",
+                "search": "Buscar Producto"
             },
-            "created": "Un nuevo producto ha sido creado con el identificador {{ param }}",
-            "updated": "Un producto ha sido actualizado con el identificador {{ param }}",
-            "deleted": "Un producto ha sido eliminado con el identificador {{ param }}",
+            "created": "Un nuevo Producto ha sido creado con el identificador {{ param }}",
+            "updated": "Un Producto ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Producto ha sido eliminado con el identificador {{ param }}",
             "delete": {
-                "question": "¿Seguro que quiere eliminar este producto {{ id }} del detalle?"
+                "question": "¿Seguro que quiere eliminar este Producto {{ id }} del detalle?"
             },
             "detail": {
                 "title": "Detalle de Compra"

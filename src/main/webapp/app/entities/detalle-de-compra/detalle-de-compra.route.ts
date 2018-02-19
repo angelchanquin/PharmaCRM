@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
 
 import { UserRouteAccessService } from '../../shared';
-import { DetalleDeCompraComponent } from './detalle-de-compra.component';
-import { DetalleDeCompraDetailComponent } from './detalle-de-compra-detail.component';
 import { DetalleDeCompraPopupComponent } from './detalle-de-compra-dialog.component';
 import { DetalleDeCompraDeletePopupComponent } from './detalle-de-compra-delete-dialog.component';
 

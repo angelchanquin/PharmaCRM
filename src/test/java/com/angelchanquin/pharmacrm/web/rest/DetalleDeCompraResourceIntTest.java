@@ -6,6 +6,7 @@ import com.angelchanquin.pharmacrm.domain.DetalleDeCompra;
 import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
 import com.angelchanquin.pharmacrm.domain.Producto;
 import com.angelchanquin.pharmacrm.repository.DetalleDeCompraRepository;
+import com.angelchanquin.pharmacrm.repository.search.DetalleDeCompraSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -53,6 +54,9 @@ public class DetalleDeCompraResourceIntTest {
     private DetalleDeCompraRepository detalleDeCompraRepository;
 
     @Autowired
+    private DetalleDeCompraSearchRepository detalleDeCompraSearchRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +75,7 @@ public class DetalleDeCompraResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DetalleDeCompraResource detalleDeCompraResource = new DetalleDeCompraResource(detalleDeCompraRepository, ordenDeCompraRepository, productoRepository);
+        final DetalleDeCompraResource detalleDeCompraResource = new DetalleDeCompraResource(detalleDeCompraRepository, detalleDeCompraSearchRepository);
         this.restDetalleDeCompraMockMvc = MockMvcBuilders.standaloneSetup(detalleDeCompraResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -105,6 +109,7 @@ public class DetalleDeCompraResourceIntTest {
 
     @Before
     public void initTest() {
+        detalleDeCompraSearchRepository.deleteAll();
         detalleDeCompra = createEntity(em);
     }
 
@@ -126,6 +131,10 @@ public class DetalleDeCompraResourceIntTest {
         assertThat(testDetalleDeCompra.getCantidad()).isEqualTo(DEFAULT_CANTIDAD);
         assertThat(testDetalleDeCompra.getPrecio()).isEqualTo(DEFAULT_PRECIO);
         assertThat(testDetalleDeCompra.getSubTotal()).isEqualTo(DEFAULT_SUB_TOTAL);
+
+        // Validate the DetalleDeCompra in Elasticsearch
+        DetalleDeCompra detalleDeCompraEs = detalleDeCompraSearchRepository.findOne(testDetalleDeCompra.getId());
+        assertThat(detalleDeCompraEs).isEqualToIgnoringGivenFields(testDetalleDeCompra);
     }
 
     @Test
@@ -246,6 +255,7 @@ public class DetalleDeCompraResourceIntTest {
     public void updateDetalleDeCompra() throws Exception {
         // Initialize the database
         detalleDeCompraRepository.saveAndFlush(detalleDeCompra);
+        detalleDeCompraSearchRepository.save(detalleDeCompra);
         int databaseSizeBeforeUpdate = detalleDeCompraRepository.findAll().size();
 
         // Update the detalleDeCompra
@@ -269,6 +279,10 @@ public class DetalleDeCompraResourceIntTest {
         assertThat(testDetalleDeCompra.getCantidad()).isEqualTo(UPDATED_CANTIDAD);
         assertThat(testDetalleDeCompra.getPrecio()).isEqualTo(UPDATED_PRECIO);
         assertThat(testDetalleDeCompra.getSubTotal()).isEqualTo(UPDATED_SUB_TOTAL);
+
+        // Validate the DetalleDeCompra in Elasticsearch
+        DetalleDeCompra detalleDeCompraEs = detalleDeCompraSearchRepository.findOne(testDetalleDeCompra.getId());
+        assertThat(detalleDeCompraEs).isEqualToIgnoringGivenFields(testDetalleDeCompra);
     }
 
     @Test
@@ -294,6 +308,7 @@ public class DetalleDeCompraResourceIntTest {
     public void deleteDetalleDeCompra() throws Exception {
         // Initialize the database
         detalleDeCompraRepository.saveAndFlush(detalleDeCompra);
+        detalleDeCompraSearchRepository.save(detalleDeCompra);
         int databaseSizeBeforeDelete = detalleDeCompraRepository.findAll().size();
 
         // Get the detalleDeCompra
@@ -301,9 +316,30 @@ public class DetalleDeCompraResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
+        // Validate Elasticsearch is empty
+        boolean detalleDeCompraExistsInEs = detalleDeCompraSearchRepository.exists(detalleDeCompra.getId());
+        assertThat(detalleDeCompraExistsInEs).isFalse();
+
         // Validate the database is empty
         List<DetalleDeCompra> detalleDeCompraList = detalleDeCompraRepository.findAll();
         assertThat(detalleDeCompraList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchDetalleDeCompra() throws Exception {
+        // Initialize the database
+        detalleDeCompraRepository.saveAndFlush(detalleDeCompra);
+        detalleDeCompraSearchRepository.save(detalleDeCompra);
+
+        // Search the detalleDeCompra
+        restDetalleDeCompraMockMvc.perform(get("/api/_search/detalle-de-compras?query=id:" + detalleDeCompra.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(detalleDeCompra.getId().intValue())))
+            .andExpect(jsonPath("$.[*].cantidad").value(hasItem(DEFAULT_CANTIDAD)))
+            .andExpect(jsonPath("$.[*].precio").value(hasItem(DEFAULT_PRECIO.doubleValue())))
+            .andExpect(jsonPath("$.[*].subTotal").value(hasItem(DEFAULT_SUB_TOTAL.doubleValue())));
     }
 
     @Test

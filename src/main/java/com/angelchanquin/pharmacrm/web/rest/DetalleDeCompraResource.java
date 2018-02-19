@@ -8,6 +8,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.DetalleDeCompra;
 
 import com.angelchanquin.pharmacrm.repository.DetalleDeCompraRepository;
+import com.angelchanquin.pharmacrm.repository.search.DetalleDeCompraSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -22,6 +23,10 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing DetalleDeCompra.
@@ -36,12 +41,13 @@ public class DetalleDeCompraResource {
 
     private final DetalleDeCompraRepository detalleDeCompraRepository;
     private final OrdenDeCompraRepository ordenDeCompraRepository;
-    private final ProductoRepository productoRepository;
 
-    public DetalleDeCompraResource(DetalleDeCompraRepository detalleDeCompraRepository, OrdenDeCompraRepository ordenDeCompraRepository, ProductoRepository productoRepository) {
+    private final DetalleDeCompraSearchRepository detalleDeCompraSearchRepository;
+
+    public DetalleDeCompraResource(DetalleDeCompraRepository detalleDeCompraRepository, DetalleDeCompraSearchRepository detalleDeCompraSearchRepository, OrdenDeCompraRepository ordenDeCompraRepository) {
         this.detalleDeCompraRepository = detalleDeCompraRepository;
+        this.detalleDeCompraSearchRepository = detalleDeCompraSearchRepository;
         this.ordenDeCompraRepository = ordenDeCompraRepository;
-        this.productoRepository = productoRepository;
     }
 
     /**
@@ -69,16 +75,7 @@ public class DetalleDeCompraResource {
         }
 
         DetalleDeCompra result = detalleDeCompraRepository.save(detalleDeCompra);
-
-//        Producto producto = productoRepository.findOne(detalleDeCompra.getProducto().getId());
-//        if (producto != null) {
-//            Integer existencia = producto.getUnidadesEnStock();
-//            producto.setUnidadesEnStock(existencia + detalleDeCompra.getCantidad());
-//            productoRepository.save(producto);
-//        }else {
-//            throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid producto", ENTITY_NAME, "productoDontexists");
-//        }
-
+        detalleDeCompraSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/detalle-de-compras/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -110,6 +107,7 @@ public class DetalleDeCompraResource {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
         }
         DetalleDeCompra result = detalleDeCompraRepository.save(detalleDeCompra);
+        detalleDeCompraSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, detalleDeCompra.getId().toString()))
             .body(result);
@@ -170,6 +168,24 @@ public class DetalleDeCompraResource {
         }
 
         detalleDeCompraRepository.delete(id);
+        detalleDeCompraSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * SEARCH  /_search/detalle-de-compras?query=:query : search for the detalleDeCompra corresponding
+     * to the query.
+     *
+     * @param query the query of the detalleDeCompra search
+     * @return the result of the search
+     */
+    @GetMapping("/_search/detalle-de-compras")
+    @Timed
+    public List<DetalleDeCompra> searchDetalleDeCompras(@RequestParam String query) {
+        log.debug("REST request to search DetalleDeCompras for query {}", query);
+        return StreamSupport
+            .stream(detalleDeCompraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
 }

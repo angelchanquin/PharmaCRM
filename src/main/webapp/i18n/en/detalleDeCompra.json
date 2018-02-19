@@ -4,7 +4,8 @@
             "home": {
                 "title": "Detalle De Compras",
                 "createLabel": "Create a new Detalle De Compra",
-                "createOrEditLabel": "Create or edit a Detalle De Compra"
+                "createOrEditLabel": "Create or edit a Detalle De Compra",
+                "search": "Search for Detalle De Compra"
             },
             "created": "A new Detalle De Compra is created with identifier {{ param }}",
             "updated": "A Detalle De Compra is updated with identifier {{ param }}",
