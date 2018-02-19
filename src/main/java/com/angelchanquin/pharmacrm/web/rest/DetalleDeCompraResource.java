@@ -1,9 +1,8 @@
 package com.angelchanquin.pharmacrm.web.rest;
 
 import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
-import com.angelchanquin.pharmacrm.domain.Producto;
 import com.angelchanquin.pharmacrm.repository.OrdenDeCompraRepository;
-import com.angelchanquin.pharmacrm.repository.ProductoRepository;
+import com.angelchanquin.pharmacrm.service.DetalleDeCompraService;
 import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.DetalleDeCompra;
 
@@ -40,14 +39,15 @@ public class DetalleDeCompraResource {
     private static final String ENTITY_NAME = "detalleDeCompra";
 
     private final DetalleDeCompraRepository detalleDeCompraRepository;
-    private final OrdenDeCompraRepository ordenDeCompraRepository;
 
     private final DetalleDeCompraSearchRepository detalleDeCompraSearchRepository;
 
-    public DetalleDeCompraResource(DetalleDeCompraRepository detalleDeCompraRepository, DetalleDeCompraSearchRepository detalleDeCompraSearchRepository, OrdenDeCompraRepository ordenDeCompraRepository) {
+    private final DetalleDeCompraService detalleDeCompraService;
+
+    public DetalleDeCompraResource(DetalleDeCompraRepository detalleDeCompraRepository, DetalleDeCompraSearchRepository detalleDeCompraSearchRepository, OrdenDeCompraRepository ordenDeCompraRepository, DetalleDeCompraService detalleDeCompraService) {
         this.detalleDeCompraRepository = detalleDeCompraRepository;
         this.detalleDeCompraSearchRepository = detalleDeCompraSearchRepository;
-        this.ordenDeCompraRepository = ordenDeCompraRepository;
+        this.detalleDeCompraService = detalleDeCompraService;
     }
 
     /**
@@ -65,17 +65,8 @@ public class DetalleDeCompraResource {
             throw new BadRequestAlertException("A new detalleDeCompra cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
-        if (ordenDeCompra != null) {
-            Double previousTotal = ordenDeCompra.getTotal();
-            ordenDeCompra.setTotal(previousTotal + detalleDeCompra.getSubTotal());
-            ordenDeCompraRepository.save(ordenDeCompra);
-        } else {
-            throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
-        }
+        DetalleDeCompra result = detalleDeCompraService.createDetalleDeCompra(detalleDeCompra);
 
-        DetalleDeCompra result = detalleDeCompraRepository.save(detalleDeCompra);
-        detalleDeCompraSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/detalle-de-compras/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -97,17 +88,9 @@ public class DetalleDeCompraResource {
         if (detalleDeCompra.getId() == null) {
             return createDetalleDeCompra(detalleDeCompra);
         }
-        DetalleDeCompra oldDetalleDeCompra = detalleDeCompraRepository.findOne(detalleDeCompra.getId());
-        OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
-        if (ordenDeCompra != null) {
-            Double previousTotal = ordenDeCompra.getTotal();
-            ordenDeCompra.setTotal(previousTotal - oldDetalleDeCompra.getSubTotal() + detalleDeCompra.getSubTotal());
-            ordenDeCompraRepository.save(ordenDeCompra);
-        } else {
-            throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
-        }
-        DetalleDeCompra result = detalleDeCompraRepository.save(detalleDeCompra);
-        detalleDeCompraSearchRepository.save(result);
+
+        DetalleDeCompra result = detalleDeCompraService.updateDetalleDeCompra(detalleDeCompra);
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, detalleDeCompra.getId().toString()))
             .body(result);
@@ -143,8 +126,7 @@ public class DetalleDeCompraResource {
     @Timed
     public List<DetalleDeCompra> getDetalleDeCompraByOrden(@PathVariable Long id) {
         log.debug("REST request to get DetalleDeCompra by ordenId : {}", id);
-        OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(id);
-        return detalleDeCompraRepository.findAllByOrdenDeCompra(ordenDeCompra);
+        return detalleDeCompraService.getDetalleDeCompraByOrdenId(id);
     }
 
     /**
@@ -157,18 +139,7 @@ public class DetalleDeCompraResource {
     @Timed
     public ResponseEntity<Void> deleteDetalleDeCompra(@PathVariable Long id) {
         log.debug("REST request to delete DetalleDeCompra : {}", id);
-        DetalleDeCompra detalleDeCompra = detalleDeCompraRepository.findOne(id);
-        OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
-        if (ordenDeCompra != null) {
-            Double previousTotal = ordenDeCompra.getTotal();
-            ordenDeCompra.setTotal(previousTotal - detalleDeCompra.getSubTotal());
-            ordenDeCompraRepository.save(ordenDeCompra);
-        } else {
-            throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
-        }
-
-        detalleDeCompraRepository.delete(id);
-        detalleDeCompraSearchRepository.delete(id);
+        detalleDeCompraService.deleteDetalleDeCompra(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
