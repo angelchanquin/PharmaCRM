@@ -71,6 +71,8 @@ export class OrdenDeCompraService {
         const entity: OrdenDeCompra = Object.assign(new OrdenDeCompra(), json);
         entity.fecha = this.dateUtils
             .convertLocalDateFromServer(json.fecha);
+        entity.fechaDeEntregaEsparada = this.dateUtils
+            .convertLocalDateFromServer(json.fechaDeEntregaEsparada);
         return entity;
     }
 
@@ -81,6 +83,8 @@ export class OrdenDeCompraService {
         const copy: OrdenDeCompra = Object.assign({}, ordenDeCompra);
         copy.fecha = this.dateUtils
             .convertLocalDateToServer(ordenDeCompra.fecha);
+        copy.fechaDeEntregaEsparada = this.dateUtils
+            .convertLocalDateToServer(ordenDeCompra.fechaDeEntregaEsparada);
         return copy;
     }
 }

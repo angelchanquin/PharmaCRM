@@ -1,7 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { OrdenDeCompra } from './orden-de-compra.model';
+import {EstadoDeOrden, EstadoRecibidoDeOrden, OrdenDeCompra} from './orden-de-compra.model';
 import { OrdenDeCompraService } from './orden-de-compra.service';
 
 @Injectable()
@@ -33,6 +33,13 @@ export class OrdenDeCompraPopupService {
                             day: ordenDeCompra.fecha.getDate()
                         };
                     }
+                    if (ordenDeCompra.fechaDeEntregaEsparada) {
+                        ordenDeCompra.fechaDeEntregaEsparada = {
+                            year: ordenDeCompra.fechaDeEntregaEsparada.getFullYear(),
+                            month: ordenDeCompra.fechaDeEntregaEsparada.getMonth() + 1,
+                            day: ordenDeCompra.fechaDeEntregaEsparada.getDate()
+                        };
+                    }
                     this.ngbModalRef = this.ordenDeCompraModalRef(component, ordenDeCompra);
                     resolve(this.ngbModalRef);
                 });
@@ -47,6 +54,13 @@ export class OrdenDeCompraPopupService {
                         month: today.getMonth() + 1,
                         day: today.getDate()
                     };
+                    ordenDeCompra.fechaDeEntregaEsparada = {
+                        year: today.getFullYear(),
+                        month: today.getMonth() + 1,
+                        day: today.getDate()
+                    };
+                    ordenDeCompra.estado = EstadoDeOrden.ACTIVA;
+                    ordenDeCompra.estadoRecibido = EstadoRecibidoDeOrden.NO_RECIBIDO;
                     this.ngbModalRef = this.ordenDeCompraModalRef(component, ordenDeCompra);
                     resolve(this.ngbModalRef);
                 }, 0);

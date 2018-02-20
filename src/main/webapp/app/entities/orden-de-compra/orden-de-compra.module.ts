@@ -11,8 +11,6 @@ import {
     OrdenDeCompraPopupComponent,
     OrdenDeCompraDeletePopupComponent,
     OrdenDeCompraDeleteDialogComponent,
-    OrdenDeCompraInventoryDialogComponent,
-    OrdenDeCompraInventoryPopupComponent,
     ordenDeCompraRoute,
     ordenDeCompraPopupRoute,
 } from './';
@@ -34,8 +32,6 @@ const ENTITY_STATES = [
         OrdenDeCompraDeleteDialogComponent,
         OrdenDeCompraPopupComponent,
         OrdenDeCompraDeletePopupComponent,
-        OrdenDeCompraInventoryDialogComponent,
-        OrdenDeCompraInventoryPopupComponent,
     ],
     entryComponents: [
         OrdenDeCompraComponent,
@@ -43,8 +39,6 @@ const ENTITY_STATES = [
         OrdenDeCompraPopupComponent,
         OrdenDeCompraDeleteDialogComponent,
         OrdenDeCompraDeletePopupComponent,
-        OrdenDeCompraInventoryDialogComponent,
-        OrdenDeCompraInventoryPopupComponent,
     ],
     providers: [
         OrdenDeCompraService,

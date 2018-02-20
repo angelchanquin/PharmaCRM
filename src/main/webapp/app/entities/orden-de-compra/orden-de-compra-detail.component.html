@@ -2,12 +2,6 @@
 <div *ngIf="ordenDeCompra">
     <h2>
         <span jhiTranslate="pharmacrmApp.ordenDeCompra.detail.title">Orden De Compra</span> {{ordenDeCompra.id}}
-        <button class="btn btn-primary float-right" [routerLink]="['/', { outlets: { popup: 'orden-de-compra/' + ordenDeCompra.id + '/inventory'} }]">
-            <span class="fa fa-sticky-note-o"></span>
-            <span  jhiTranslate="pharmacrmApp.ordenDeCompra.detail.enterInventory">
-            Enter Inventario
-            </span>
-        </button>
     </h2>
 
     <jhi-alert-error></jhi-alert-error>
@@ -16,14 +10,26 @@
         <thead>
         <tr>
             <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia">Numero De Referencia</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.proveedor">Proveedor</span></th>
             <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fecha">Fecha</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fechaDeEntregaEsparada">Fecha De Entrega Esparada</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.estado">Estado</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.estadoRecibido">Estado Recibido</span></th>
             <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.total">Total</span></th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>{{ordenDeCompra.numeroDeReferencia}}</td>
+            <td>
+                <div *ngIf="ordenDeCompra.proveedor">
+                    <a [routerLink]="['../../proveedor', ordenDeCompra.proveedor?.id ]" >{{ordenDeCompra.proveedor?.nombre}}</a>
+                </div>
+            </td>
             <td>{{ordenDeCompra.fecha | date:'mediumDate'}}</td>
+            <td>{{ordenDeCompra.fechaDeEntregaEsparada | date:'mediumDate'}}</td>
+            <td jhiTranslate="{{'pharmacrmApp.EstadoDeOrden.' + ordenDeCompra.estado}}">{{ordenDeCompra.estado}}</td>
+            <td jhiTranslate="{{'pharmacrmApp.EstadoRecibidoDeOrden.' + ordenDeCompra.estadoRecibido}}">{{ordenDeCompra.estadoRecibido}}</td>
             <td>{{ordenDeCompra.total}}</td>
         </tr>
         </tbody>
