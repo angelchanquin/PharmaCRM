@@ -9,7 +9,6 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -46,14 +45,12 @@ public class Producto implements Serializable {
     @Column(name = "precio_de_venta", nullable = false)
     private Double precioDeVenta;
 
-    @NotNull
     @DecimalMin(value = "0")
-    @Column(name = "precio_de_venta_2", nullable = false)
+    @Column(name = "precio_de_venta_2")
     private Double precioDeVenta2;
 
-    @NotNull
     @DecimalMin(value = "0")
-    @Column(name = "precio_de_venta_3", nullable = false)
+    @Column(name = "precio_de_venta_3")
     private Double precioDeVenta3;
 
     @NotNull
@@ -70,9 +67,6 @@ public class Producto implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private EstadoDeProducto estado;
-
-    @Column(name = "fecha_de_expiracion")
-    private LocalDate fechaDeExpiracion;
 
     @OneToMany(mappedBy = "producto")
     @JsonIgnore
@@ -205,19 +199,6 @@ public class Producto implements Serializable {
         this.estado = estado;
     }
 
-    public LocalDate getFechaDeExpiracion() {
-        return fechaDeExpiracion;
-    }
-
-    public Producto fechaDeExpiracion(LocalDate fechaDeExpiracion) {
-        this.fechaDeExpiracion = fechaDeExpiracion;
-        return this;
-    }
-
-    public void setFechaDeExpiracion(LocalDate fechaDeExpiracion) {
-        this.fechaDeExpiracion = fechaDeExpiracion;
-    }
-
     public Set<Inventario> getInventarios() {
         return inventarios;
     }
@@ -327,7 +308,6 @@ public class Producto implements Serializable {
             ", precioDeCosto=" + getPrecioDeCosto() +
             ", unidadesEnStock=" + getUnidadesEnStock() +
             ", estado='" + getEstado() + "'" +
-            ", fechaDeExpiracion='" + getFechaDeExpiracion() + "'" +
             "}";
     }
 }

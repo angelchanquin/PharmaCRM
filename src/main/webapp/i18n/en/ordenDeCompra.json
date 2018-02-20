@@ -14,7 +14,8 @@
                 "question": "Are you sure you want to delete Orden De Compra {{ id }}?"
             },
             "detail": {
-                "title": "Orden De Compra"
+                "title": "Orden De Compra",
+                "enterInventory": "Enter Inventario"
             },
             "numeroDeReferencia": "Numero De Referencia",
             "fecha": "Fecha",

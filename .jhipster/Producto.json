@@ -58,7 +58,6 @@
             "fieldName": "precioDeVenta2",
             "fieldType": "Double",
             "fieldValidateRules": [
-                "required",
                 "min"
             ],
             "fieldValidateRulesMin": 0
@@ -67,7 +66,6 @@
             "fieldName": "precioDeVenta3",
             "fieldType": "Double",
             "fieldValidateRules": [
-                "required",
                 "min"
             ],
             "fieldValidateRulesMin": 0
@@ -97,10 +95,6 @@
             "fieldValidateRules": [
                 "required"
             ]
-        },
-        {
-            "fieldName": "fechaDeExpiracion",
-            "fieldType": "LocalDate"
         }
     ],
     "changelogDate": "20180129021547",

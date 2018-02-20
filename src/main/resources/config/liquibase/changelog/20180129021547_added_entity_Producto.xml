@@ -34,11 +34,11 @@
             </column>
 
             <column name="precio_de_venta_2" type="double">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="precio_de_venta_3" type="double">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="precio_de_costo" type="double">
@@ -51,10 +51,6 @@
 
             <column name="estado" type="varchar(255)">
                 <constraints nullable="false" />
-            </column>
-
-            <column name="fecha_de_expiracion" type="date">
-                <constraints nullable="true" />
             </column>
 
             <column name="presentacion_id" type="bigint">
