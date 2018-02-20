@@ -26,13 +26,6 @@ export class ProductoPopupService {
 
             if (id) {
                 this.productoService.find(id).subscribe((producto) => {
-                    if (producto.fechaDeExpiracion) {
-                        producto.fechaDeExpiracion = {
-                            year: producto.fechaDeExpiracion.getFullYear(),
-                            month: producto.fechaDeExpiracion.getMonth() + 1,
-                            day: producto.fechaDeExpiracion.getDate()
-                        };
-                    }
                     this.ngbModalRef = this.productoModalRef(component, producto);
                     resolve(this.ngbModalRef);
                 });

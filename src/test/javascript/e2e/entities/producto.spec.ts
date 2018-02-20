@@ -48,8 +48,6 @@ describe('Producto e2e test', () => {
         productoDialogPage.setUnidadesEnStockInput('5');
         expect(productoDialogPage.getUnidadesEnStockInput()).toMatch('5');
         productoDialogPage.estadoSelectLastOption();
-        productoDialogPage.setFechaDeExpiracionInput('2000-12-31');
-        expect(productoDialogPage.getFechaDeExpiracionInput()).toMatch('2000-12-31');
         productoDialogPage.presentacionSelectLastOption();
         productoDialogPage.proveedorSelectLastOption();
         productoDialogPage.save();
@@ -86,7 +84,6 @@ export class ProductoDialogPage {
     precioDeCostoInput = element(by.css('input#field_precioDeCosto'));
     unidadesEnStockInput = element(by.css('input#field_unidadesEnStock'));
     estadoSelect = element(by.css('select#field_estado'));
-    fechaDeExpiracionInput = element(by.css('input#field_fechaDeExpiracion'));
     presentacionSelect = element(by.css('select#field_presentacion'));
     proveedorSelect = element(by.css('select#field_proveedor'));
 
@@ -161,14 +158,6 @@ export class ProductoDialogPage {
     estadoSelectLastOption = function() {
         this.estadoSelect.all(by.tagName('option')).last().click();
     }
-    setFechaDeExpiracionInput = function(fechaDeExpiracion) {
-        this.fechaDeExpiracionInput.sendKeys(fechaDeExpiracion);
-    }
-
-    getFechaDeExpiracionInput = function() {
-        return this.fechaDeExpiracionInput.getAttribute('value');
-    }
-
     presentacionSelectLastOption = function() {
         this.presentacionSelect.all(by.tagName('option')).last().click();
     }

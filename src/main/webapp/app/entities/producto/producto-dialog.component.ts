@@ -25,7 +25,6 @@ export class ProductoDialogComponent implements OnInit {
     presentaciondeproductos: PresentacionDeProducto[];
 
     proveedors: Proveedor[];
-    fechaDeExpiracionDp: any;
 
     constructor(
         public activeModal: NgbActiveModal,

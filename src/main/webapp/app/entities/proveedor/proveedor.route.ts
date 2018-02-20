@@ -11,7 +11,7 @@ export const proveedorRoute: Routes = [
         path: 'proveedor',
         component: ProveedorComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.proveedor.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const proveedorRoute: Routes = [
         path: 'proveedor/:id',
         component: ProveedorDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.proveedor.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const proveedorPopupRoute: Routes = [
         path: 'proveedor-new',
         component: ProveedorPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.proveedor.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const proveedorPopupRoute: Routes = [
         path: 'proveedor/:id/edit',
         component: ProveedorPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.proveedor.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const proveedorPopupRoute: Routes = [
         path: 'proveedor/:id/delete',
         component: ProveedorDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.proveedor.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -3,8 +3,6 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
-import { JhiDateUtils } from 'ng-jhipster';
-
 import { Producto } from './producto.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
@@ -14,7 +12,7 @@ export class ProductoService {
     private resourceUrl =  SERVER_API_URL + 'api/productos';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/productos';
 
-    constructor(private http: Http, private dateUtils: JhiDateUtils) { }
+    constructor(private http: Http) { }
 
     create(producto: Producto): Observable<Producto> {
         const copy = this.convert(producto);
@@ -69,8 +67,6 @@ export class ProductoService {
      */
     private convertItemFromServer(json: any): Producto {
         const entity: Producto = Object.assign(new Producto(), json);
-        entity.fechaDeExpiracion = this.dateUtils
-            .convertLocalDateFromServer(json.fechaDeExpiracion);
         return entity;
     }
 
@@ -79,8 +75,6 @@ export class ProductoService {
      */
     private convert(producto: Producto): Producto {
         const copy: Producto = Object.assign({}, producto);
-        copy.fechaDeExpiracion = this.dateUtils
-            .convertLocalDateToServer(producto.fechaDeExpiracion);
         return copy;
     }
 }

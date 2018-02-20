@@ -1,6 +1,14 @@
 
 <div *ngIf="ordenDeCompra">
-    <h2><span jhiTranslate="pharmacrmApp.ordenDeCompra.detail.title">Orden De Compra</span> {{ordenDeCompra.id}}</h2>
+    <h2>
+        <span jhiTranslate="pharmacrmApp.ordenDeCompra.detail.title">Orden De Compra</span> {{ordenDeCompra.id}}
+        <button class="btn btn-primary float-right" [routerLink]="['/', { outlets: { popup: 'orden-de-compra/' + ordenDeCompra.id + '/inventory'} }]">
+            <span class="fa fa-sticky-note-o"></span>
+            <span  jhiTranslate="pharmacrmApp.ordenDeCompra.detail.enterInventory">
+            Enter Inventario
+            </span>
+        </button>
+    </h2>
 
     <jhi-alert-error></jhi-alert-error>
 

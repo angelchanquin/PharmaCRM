@@ -6,11 +6,11 @@
             "home": "Inicio",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
-                "main": "Entidades",
-                "proveedor": "Proveedor",
-                "presentacionDeProducto": "Presentacion De Producto",
-                "producto": "Producto",
-                "ordenDeCompra": "Orden De Compra",
+                "main": "Farmacia",
+                "proveedor": "Proveedores",
+                "presentacionDeProducto": "Presentaciones de Producto",
+                "producto": "Productos",
+                "ordenDeCompra": "Ordenes de Compra",
                 "detalleDeCompra": "Detalle De Compra",
                 "inventario": "Inventario",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"

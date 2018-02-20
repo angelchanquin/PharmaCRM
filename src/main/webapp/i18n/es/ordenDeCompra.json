@@ -2,8 +2,8 @@
     "pharmacrmApp": {
         "ordenDeCompra" : {
             "home": {
-                "title": "Orden de Compras",
-                "createLabel": "Crear nuevo Orden de Compra",
+                "title": "Ordenes de Compra",
+                "createLabel": "Crear nueva Orden de Compra",
                 "createOrEditLabel": "Crear o editar Orden de Compra",
                 "search": "Buscar Orden de Compra"
             },
@@ -14,7 +14,8 @@
                 "question": "¿Seguro que quiere eliminar la Orden de Compra {{ id }}?"
             },
             "detail": {
-                "title": "Orden de Compra"
+                "title": "Orden de Compra",
+                "enterInventory": "Ingresar a Inventario"
             },
             "numeroDeReferencia": "Numero de Referencia",
             "fecha": "Fecha",

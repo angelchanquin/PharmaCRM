@@ -24,8 +24,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 import static com.angelchanquin.pharmacrm.web.rest.TestUtil.createFormattingConversionService;
@@ -67,9 +65,6 @@ public class ProductoResourceIntTest {
 
     private static final EstadoDeProducto DEFAULT_ESTADO = EstadoDeProducto.ACTIVO;
     private static final EstadoDeProducto UPDATED_ESTADO = EstadoDeProducto.INACTIVO;
-
-    private static final LocalDate DEFAULT_FECHA_DE_EXPIRACION = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_FECHA_DE_EXPIRACION = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private ProductoRepository productoRepository;
@@ -119,8 +114,7 @@ public class ProductoResourceIntTest {
             .precioDeVenta3(DEFAULT_PRECIO_DE_VENTA_3)
             .precioDeCosto(DEFAULT_PRECIO_DE_COSTO)
             .unidadesEnStock(DEFAULT_UNIDADES_EN_STOCK)
-            .estado(DEFAULT_ESTADO)
-            .fechaDeExpiracion(DEFAULT_FECHA_DE_EXPIRACION);
+            .estado(DEFAULT_ESTADO);
         // Add required entity
         PresentacionDeProducto presentacion = PresentacionDeProductoResourceIntTest.createEntity(em);
         em.persist(presentacion);
@@ -163,7 +157,6 @@ public class ProductoResourceIntTest {
         assertThat(testProducto.getPrecioDeCosto()).isEqualTo(DEFAULT_PRECIO_DE_COSTO);
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(DEFAULT_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(DEFAULT_ESTADO);
-        assertThat(testProducto.getFechaDeExpiracion()).isEqualTo(DEFAULT_FECHA_DE_EXPIRACION);
 
         // Validate the Producto in Elasticsearch
         Producto productoEs = productoSearchRepository.findOne(testProducto.getId());
@@ -231,42 +224,6 @@ public class ProductoResourceIntTest {
         int databaseSizeBeforeTest = productoRepository.findAll().size();
         // set the field null
         producto.setPrecioDeVenta(null);
-
-        // Create the Producto, which fails.
-
-        restProductoMockMvc.perform(post("/api/productos")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(producto)))
-            .andExpect(status().isBadRequest());
-
-        List<Producto> productoList = productoRepository.findAll();
-        assertThat(productoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkPrecioDeVenta2IsRequired() throws Exception {
-        int databaseSizeBeforeTest = productoRepository.findAll().size();
-        // set the field null
-        producto.setPrecioDeVenta2(null);
-
-        // Create the Producto, which fails.
-
-        restProductoMockMvc.perform(post("/api/productos")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(producto)))
-            .andExpect(status().isBadRequest());
-
-        List<Producto> productoList = productoRepository.findAll();
-        assertThat(productoList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkPrecioDeVenta3IsRequired() throws Exception {
-        int databaseSizeBeforeTest = productoRepository.findAll().size();
-        // set the field null
-        producto.setPrecioDeVenta3(null);
 
         // Create the Producto, which fails.
 
@@ -351,8 +308,7 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.[*].precioDeVenta3").value(hasItem(DEFAULT_PRECIO_DE_VENTA_3.doubleValue())))
             .andExpect(jsonPath("$.[*].precioDeCosto").value(hasItem(DEFAULT_PRECIO_DE_COSTO.doubleValue())))
             .andExpect(jsonPath("$.[*].unidadesEnStock").value(hasItem(DEFAULT_UNIDADES_EN_STOCK)))
-            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
-            .andExpect(jsonPath("$.[*].fechaDeExpiracion").value(hasItem(DEFAULT_FECHA_DE_EXPIRACION.toString())));
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())));
     }
 
     @Test
@@ -373,8 +329,7 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.precioDeVenta3").value(DEFAULT_PRECIO_DE_VENTA_3.doubleValue()))
             .andExpect(jsonPath("$.precioDeCosto").value(DEFAULT_PRECIO_DE_COSTO.doubleValue()))
             .andExpect(jsonPath("$.unidadesEnStock").value(DEFAULT_UNIDADES_EN_STOCK))
-            .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()))
-            .andExpect(jsonPath("$.fechaDeExpiracion").value(DEFAULT_FECHA_DE_EXPIRACION.toString()));
+            .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()));
     }
 
     @Test
@@ -405,8 +360,7 @@ public class ProductoResourceIntTest {
             .precioDeVenta3(UPDATED_PRECIO_DE_VENTA_3)
             .precioDeCosto(UPDATED_PRECIO_DE_COSTO)
             .unidadesEnStock(UPDATED_UNIDADES_EN_STOCK)
-            .estado(UPDATED_ESTADO)
-            .fechaDeExpiracion(UPDATED_FECHA_DE_EXPIRACION);
+            .estado(UPDATED_ESTADO);
 
         restProductoMockMvc.perform(put("/api/productos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -425,7 +379,6 @@ public class ProductoResourceIntTest {
         assertThat(testProducto.getPrecioDeCosto()).isEqualTo(UPDATED_PRECIO_DE_COSTO);
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(UPDATED_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(UPDATED_ESTADO);
-        assertThat(testProducto.getFechaDeExpiracion()).isEqualTo(UPDATED_FECHA_DE_EXPIRACION);
 
         // Validate the Producto in Elasticsearch
         Producto productoEs = productoSearchRepository.findOne(testProducto.getId());
@@ -491,8 +444,7 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.[*].precioDeVenta3").value(hasItem(DEFAULT_PRECIO_DE_VENTA_3.doubleValue())))
             .andExpect(jsonPath("$.[*].precioDeCosto").value(hasItem(DEFAULT_PRECIO_DE_COSTO.doubleValue())))
             .andExpect(jsonPath("$.[*].unidadesEnStock").value(hasItem(DEFAULT_UNIDADES_EN_STOCK)))
-            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
-            .andExpect(jsonPath("$.[*].fechaDeExpiracion").value(hasItem(DEFAULT_FECHA_DE_EXPIRACION.toString())));
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())));
     }
 
     @Test

@@ -2,7 +2,7 @@
     "pharmacrmApp": {
         "presentacionDeProducto" : {
             "home": {
-                "title": "Presentacion de Productos",
+                "title": "Presentaciones de Producto",
                 "createLabel": "Crear nueva Presentacion de Producto",
                 "createOrEditLabel": "Crear o editar Presentacion de Producto",
                 "search": "Buscar Presentacion de Producto"

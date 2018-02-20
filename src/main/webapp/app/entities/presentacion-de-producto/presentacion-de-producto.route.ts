@@ -11,7 +11,7 @@ export const presentacionDeProductoRoute: Routes = [
         path: 'presentacion-de-producto',
         component: PresentacionDeProductoComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.presentacionDeProducto.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -19,7 +19,7 @@ export const presentacionDeProductoRoute: Routes = [
         path: 'presentacion-de-producto/:id',
         component: PresentacionDeProductoDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.presentacionDeProducto.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -31,7 +31,7 @@ export const presentacionDeProductoPopupRoute: Routes = [
         path: 'presentacion-de-producto-new',
         component: PresentacionDeProductoPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.presentacionDeProducto.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -41,7 +41,7 @@ export const presentacionDeProductoPopupRoute: Routes = [
         path: 'presentacion-de-producto/:id/edit',
         component: PresentacionDeProductoPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.presentacionDeProducto.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -51,7 +51,7 @@ export const presentacionDeProductoPopupRoute: Routes = [
         path: 'presentacion-de-producto/:id/delete',
         component: PresentacionDeProductoDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'pharmacrmApp.presentacionDeProducto.home.title'
         },
         canActivate: [UserRouteAccessService],
