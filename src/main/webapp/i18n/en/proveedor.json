@@ -22,8 +22,7 @@
             "telefono": "Telefono",
             "celular": "Celular",
             "sitioWeb": "Sitio Web",
-            "direccionDeFacturacion": "Direccion De Facturacion",
-            "direccionDeEnvio": "Direccion De Envio",
+            "direccion": "Direccion",
             "producto": "Producto"
         }
     }

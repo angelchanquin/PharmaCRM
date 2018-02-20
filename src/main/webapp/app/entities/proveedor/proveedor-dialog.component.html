@@ -55,20 +55,9 @@
                 [(ngModel)]="proveedor.sitioWeb" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.direccionDeFacturacion" for="field_direccionDeFacturacion">Direccion De Facturacion</label>
-            <input type="text" class="form-control" name="direccionDeFacturacion" id="field_direccionDeFacturacion"
-                [(ngModel)]="proveedor.direccionDeFacturacion" required/>
-            <div [hidden]="!(editForm.controls.direccionDeFacturacion?.dirty && editForm.controls.direccionDeFacturacion?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.direccionDeFacturacion?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.direccionDeEnvio" for="field_direccionDeEnvio">Direccion De Envio</label>
-            <input type="text" class="form-control" name="direccionDeEnvio" id="field_direccionDeEnvio"
-                [(ngModel)]="proveedor.direccionDeEnvio" />
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.proveedor.direccion" for="field_direccion">Direccion</label>
+            <input type="text" class="form-control" name="direccion" id="field_direccion"
+                [(ngModel)]="proveedor.direccion" />
         </div>
 
     </div>

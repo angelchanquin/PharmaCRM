@@ -9,8 +9,7 @@ export class Proveedor implements BaseEntity {
         public telefono?: string,
         public celular?: string,
         public sitioWeb?: string,
-        public direccionDeFacturacion?: string,
-        public direccionDeEnvio?: string,
+        public direccion?: string,
         public productos?: BaseEntity[],
     ) {
     }

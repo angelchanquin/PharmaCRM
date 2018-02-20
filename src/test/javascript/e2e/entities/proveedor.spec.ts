@@ -45,10 +45,8 @@ describe('Proveedor e2e test', () => {
         expect(proveedorDialogPage.getCelularInput()).toMatch('celular');
         proveedorDialogPage.setSitioWebInput('sitioWeb');
         expect(proveedorDialogPage.getSitioWebInput()).toMatch('sitioWeb');
-        proveedorDialogPage.setDireccionDeFacturacionInput('direccionDeFacturacion');
-        expect(proveedorDialogPage.getDireccionDeFacturacionInput()).toMatch('direccionDeFacturacion');
-        proveedorDialogPage.setDireccionDeEnvioInput('direccionDeEnvio');
-        expect(proveedorDialogPage.getDireccionDeEnvioInput()).toMatch('direccionDeEnvio');
+        proveedorDialogPage.setDireccionInput('direccion');
+        expect(proveedorDialogPage.getDireccionInput()).toMatch('direccion');
         proveedorDialogPage.save();
         expect(proveedorDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -81,8 +79,7 @@ export class ProveedorDialogPage {
     telefonoInput = element(by.css('input#field_telefono'));
     celularInput = element(by.css('input#field_celular'));
     sitioWebInput = element(by.css('input#field_sitioWeb'));
-    direccionDeFacturacionInput = element(by.css('input#field_direccionDeFacturacion'));
-    direccionDeEnvioInput = element(by.css('input#field_direccionDeEnvio'));
+    direccionInput = element(by.css('input#field_direccion'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -136,20 +133,12 @@ export class ProveedorDialogPage {
         return this.sitioWebInput.getAttribute('value');
     }
 
-    setDireccionDeFacturacionInput = function(direccionDeFacturacion) {
-        this.direccionDeFacturacionInput.sendKeys(direccionDeFacturacion);
+    setDireccionInput = function(direccion) {
+        this.direccionInput.sendKeys(direccion);
     }
 
-    getDireccionDeFacturacionInput = function() {
-        return this.direccionDeFacturacionInput.getAttribute('value');
-    }
-
-    setDireccionDeEnvioInput = function(direccionDeEnvio) {
-        this.direccionDeEnvioInput.sendKeys(direccionDeEnvio);
-    }
-
-    getDireccionDeEnvioInput = function() {
-        return this.direccionDeEnvioInput.getAttribute('value');
+    getDireccionInput = function() {
+        return this.direccionInput.getAttribute('value');
     }
 
     save() {

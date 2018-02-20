@@ -40,14 +40,7 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "direccionDeFacturacion",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "direccionDeEnvio",
+            "fieldName": "direccion",
             "fieldType": "String"
         }
     ],
