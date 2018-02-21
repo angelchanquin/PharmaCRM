@@ -3,6 +3,15 @@
     <h2>
         <span jhiTranslate="pharmacrmApp.ordenDeCompra.detail.title">Orden De Compra</span> {{ordenDeCompra.id}}
     </h2>
+    <!--<div ngbDropdown style="margin-bottom: 20px">-->
+        <!--<button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Toggle dropdown</button>-->
+        <!--<div ngbDropdownMenu aria-labelledby="dropdownBasic1">-->
+            <!--<button class="dropdown-item">Action - 1</button>-->
+            <!--<button class="dropdown-item">Another Action</button>-->
+            <!--<button class="dropdown-item">Something else is here</button>-->
+        <!--</div>-->
+    <!--</div>-->
+
 
     <jhi-alert-error></jhi-alert-error>
 
@@ -64,7 +73,7 @@
             <tr *ngFor="let detalleDeCompra of detalleDeCompras ;trackBy: trackId">
                 <td>
                     <div *ngIf="detalleDeCompra.producto">
-                        <a [routerLink]="['../producto', detalleDeCompra.producto?.id ]" >{{detalleDeCompra.producto?.nombre}}</a>
+                        <a [routerLink]="['../producto', detalleDeCompra.producto?.id ]" >{{detalleDeCompra.producto?.nombre}} ({{detalleDeCompra.producto?.presentacion.nombre}})</a>
                     </div>
                 </td>
                 <td>{{detalleDeCompra.cantidad}}</td>

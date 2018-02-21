@@ -43,6 +43,13 @@ export class ProductoService {
             .map((res: Response) => this.convertResponse(res));
     }
 
+    queryByProveedor(proveedorId: number): Observable<ResponseWrapper> {
+        const url = this.resourceUrl + '/proveedor/' + proveedorId;
+        console.log('url', url);
+        return this.http.get(url)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
     delete(id: number): Observable<Response> {
         return this.http.delete(`${this.resourceUrl}/${id}`);
     }
@@ -54,6 +61,7 @@ export class ProductoService {
     }
 
     private convertResponse(res: Response): ResponseWrapper {
+        console.log('ProductosP', res);
         const jsonResponse = res.json();
         const result = [];
         for (let i = 0; i < jsonResponse.length; i++) {
