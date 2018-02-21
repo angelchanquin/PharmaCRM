@@ -57,11 +57,8 @@ public class ProveedorResourceIntTest {
     private static final String DEFAULT_SITIO_WEB = "AAAAAAAAAA";
     private static final String UPDATED_SITIO_WEB = "BBBBBBBBBB";
 
-    private static final String DEFAULT_DIRECCION_DE_FACTURACION = "AAAAAAAAAA";
-    private static final String UPDATED_DIRECCION_DE_FACTURACION = "BBBBBBBBBB";
-
-    private static final String DEFAULT_DIRECCION_DE_ENVIO = "AAAAAAAAAA";
-    private static final String UPDATED_DIRECCION_DE_ENVIO = "BBBBBBBBBB";
+    private static final String DEFAULT_DIRECCION = "AAAAAAAAAA";
+    private static final String UPDATED_DIRECCION = "BBBBBBBBBB";
 
     @Autowired
     private ProveedorRepository proveedorRepository;
@@ -110,8 +107,7 @@ public class ProveedorResourceIntTest {
             .telefono(DEFAULT_TELEFONO)
             .celular(DEFAULT_CELULAR)
             .sitioWeb(DEFAULT_SITIO_WEB)
-            .direccionDeFacturacion(DEFAULT_DIRECCION_DE_FACTURACION)
-            .direccionDeEnvio(DEFAULT_DIRECCION_DE_ENVIO);
+            .direccion(DEFAULT_DIRECCION);
         return proveedor;
     }
 
@@ -142,8 +138,7 @@ public class ProveedorResourceIntTest {
         assertThat(testProveedor.getTelefono()).isEqualTo(DEFAULT_TELEFONO);
         assertThat(testProveedor.getCelular()).isEqualTo(DEFAULT_CELULAR);
         assertThat(testProveedor.getSitioWeb()).isEqualTo(DEFAULT_SITIO_WEB);
-        assertThat(testProveedor.getDireccionDeFacturacion()).isEqualTo(DEFAULT_DIRECCION_DE_FACTURACION);
-        assertThat(testProveedor.getDireccionDeEnvio()).isEqualTo(DEFAULT_DIRECCION_DE_ENVIO);
+        assertThat(testProveedor.getDireccion()).isEqualTo(DEFAULT_DIRECCION);
 
         // Validate the Proveedor in Elasticsearch
         Proveedor proveedorEs = proveedorSearchRepository.findOne(testProveedor.getId());
@@ -207,24 +202,6 @@ public class ProveedorResourceIntTest {
 
     @Test
     @Transactional
-    public void checkDireccionDeFacturacionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = proveedorRepository.findAll().size();
-        // set the field null
-        proveedor.setDireccionDeFacturacion(null);
-
-        // Create the Proveedor, which fails.
-
-        restProveedorMockMvc.perform(post("/api/proveedors")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(proveedor)))
-            .andExpect(status().isBadRequest());
-
-        List<Proveedor> proveedorList = proveedorRepository.findAll();
-        assertThat(proveedorList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllProveedors() throws Exception {
         // Initialize the database
         proveedorRepository.saveAndFlush(proveedor);
@@ -240,8 +217,7 @@ public class ProveedorResourceIntTest {
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO.toString())))
             .andExpect(jsonPath("$.[*].celular").value(hasItem(DEFAULT_CELULAR.toString())))
             .andExpect(jsonPath("$.[*].sitioWeb").value(hasItem(DEFAULT_SITIO_WEB.toString())))
-            .andExpect(jsonPath("$.[*].direccionDeFacturacion").value(hasItem(DEFAULT_DIRECCION_DE_FACTURACION.toString())))
-            .andExpect(jsonPath("$.[*].direccionDeEnvio").value(hasItem(DEFAULT_DIRECCION_DE_ENVIO.toString())));
+            .andExpect(jsonPath("$.[*].direccion").value(hasItem(DEFAULT_DIRECCION.toString())));
     }
 
     @Test
@@ -261,8 +237,7 @@ public class ProveedorResourceIntTest {
             .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO.toString()))
             .andExpect(jsonPath("$.celular").value(DEFAULT_CELULAR.toString()))
             .andExpect(jsonPath("$.sitioWeb").value(DEFAULT_SITIO_WEB.toString()))
-            .andExpect(jsonPath("$.direccionDeFacturacion").value(DEFAULT_DIRECCION_DE_FACTURACION.toString()))
-            .andExpect(jsonPath("$.direccionDeEnvio").value(DEFAULT_DIRECCION_DE_ENVIO.toString()));
+            .andExpect(jsonPath("$.direccion").value(DEFAULT_DIRECCION.toString()));
     }
 
     @Test
@@ -292,8 +267,7 @@ public class ProveedorResourceIntTest {
             .telefono(UPDATED_TELEFONO)
             .celular(UPDATED_CELULAR)
             .sitioWeb(UPDATED_SITIO_WEB)
-            .direccionDeFacturacion(UPDATED_DIRECCION_DE_FACTURACION)
-            .direccionDeEnvio(UPDATED_DIRECCION_DE_ENVIO);
+            .direccion(UPDATED_DIRECCION);
 
         restProveedorMockMvc.perform(put("/api/proveedors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -310,8 +284,7 @@ public class ProveedorResourceIntTest {
         assertThat(testProveedor.getTelefono()).isEqualTo(UPDATED_TELEFONO);
         assertThat(testProveedor.getCelular()).isEqualTo(UPDATED_CELULAR);
         assertThat(testProveedor.getSitioWeb()).isEqualTo(UPDATED_SITIO_WEB);
-        assertThat(testProveedor.getDireccionDeFacturacion()).isEqualTo(UPDATED_DIRECCION_DE_FACTURACION);
-        assertThat(testProveedor.getDireccionDeEnvio()).isEqualTo(UPDATED_DIRECCION_DE_ENVIO);
+        assertThat(testProveedor.getDireccion()).isEqualTo(UPDATED_DIRECCION);
 
         // Validate the Proveedor in Elasticsearch
         Proveedor proveedorEs = proveedorSearchRepository.findOne(testProveedor.getId());
@@ -376,8 +349,7 @@ public class ProveedorResourceIntTest {
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO.toString())))
             .andExpect(jsonPath("$.[*].celular").value(hasItem(DEFAULT_CELULAR.toString())))
             .andExpect(jsonPath("$.[*].sitioWeb").value(hasItem(DEFAULT_SITIO_WEB.toString())))
-            .andExpect(jsonPath("$.[*].direccionDeFacturacion").value(hasItem(DEFAULT_DIRECCION_DE_FACTURACION.toString())))
-            .andExpect(jsonPath("$.[*].direccionDeEnvio").value(hasItem(DEFAULT_DIRECCION_DE_ENVIO.toString())));
+            .andExpect(jsonPath("$.[*].direccion").value(hasItem(DEFAULT_DIRECCION.toString())));
     }
 
     @Test

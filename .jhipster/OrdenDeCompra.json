@@ -6,6 +6,15 @@
             "relationshipName": "detalle",
             "otherEntityName": "detalleDeCompra",
             "otherEntityRelationshipName": "ordenDeCompra"
+        },
+        {
+            "relationshipName": "proveedor",
+            "otherEntityName": "proveedor",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "nombre"
         }
     ],
     "fields": [
@@ -30,12 +39,35 @@
                 "min"
             ],
             "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "fechaDeEntregaEsparada",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "estado",
+            "fieldType": "EstadoDeOrden",
+            "fieldValues": "ACTIVA, EMITIDA, CANCELADA, CERRADA",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "estadoRecibido",
+            "fieldType": "EstadoRecibidoDeOrden",
+            "fieldValues": "NO_RECIBIDO, PARCIAL, TOTAL",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180215214453",
-    "entityTableName": "orden_de_compra",
     "dto": "no",
-    "pagination": "no",
     "service": "no",
-    "jpaMetamodelFiltering": false
+    "entityTableName": "orden_de_compra",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
 }

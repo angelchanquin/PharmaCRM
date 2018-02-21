@@ -24,6 +24,19 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.proveedor" for="field_proveedor">Proveedor</label>
+            <select class="form-control" id="field_proveedor" name="proveedor" [(ngModel)]="ordenDeCompra.proveedor"  required>
+                <option *ngIf="!editForm.value.proveedor" [ngValue]="null" selected></option>
+                <option [ngValue]="proveedorOption.id === ordenDeCompra.proveedor?.id ? ordenDeCompra.proveedor : proveedorOption" *ngFor="let proveedorOption of proveedors; trackBy: trackProveedorById">{{proveedorOption.nombre}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.proveedor?.dirty && editForm.controls.proveedor?.invalid)">
+            <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.proveedor?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.fecha" for="field_fecha">Fecha</label>
             <div class="input-group">
                 <input id="field_fecha" type="text" class="form-control" name="fecha" ngbDatepicker  #fechaDp="ngbDatepicker" [(ngModel)]="ordenDeCompra.fecha"
@@ -36,6 +49,23 @@
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.fecha?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.fechaDeEntregaEsparada" for="field_fechaDeEntregaEsparada">Fecha De Entrega Esparada</label>
+            <div class="input-group">
+                <input id="field_fechaDeEntregaEsparada" type="text" class="form-control" name="fechaDeEntregaEsparada" ngbDatepicker  #fechaDeEntregaEsparadaDp="ngbDatepicker" [(ngModel)]="ordenDeCompra.fechaDeEntregaEsparada"
+                       required/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="fechaDeEntregaEsparadaDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.fechaDeEntregaEsparada?.dirty && editForm.controls.fechaDeEntregaEsparada?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.fechaDeEntregaEsparada?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
                 </small>
             </div>
         </div>

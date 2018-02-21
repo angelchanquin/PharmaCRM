@@ -45,11 +45,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="direccion_de_facturacion" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="direccion_de_envio" type="varchar(255)">
+            <column name="direccion" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 

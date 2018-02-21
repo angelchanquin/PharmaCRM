@@ -68,7 +68,7 @@ class OrdenDeCompraGatlingTest extends Simulation {
             .exec(http("Create new ordenDeCompra")
             .post("/api/orden-de-compras")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "numeroDeReferencia":"SAMPLE_TEXT", "fecha":"2020-01-01T00:00:00.000Z", "total":null}""")).asJSON
+            .body(StringBody("""{"id":null, "numeroDeReferencia":"SAMPLE_TEXT", "fecha":"2020-01-01T00:00:00.000Z", "total":null, "fechaDeEntregaEsparada":"2020-01-01T00:00:00.000Z", "estado":null, "estadoRecibido":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_ordenDeCompra_url"))).exitHereIfFailed
             .pause(10)

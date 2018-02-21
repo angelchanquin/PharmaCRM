@@ -29,15 +29,15 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.sku">Sku</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.nombre">Nombre</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.precioDeVenta">Precio De Venta</span></th>
-            <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="pharmacrmApp.producto.precioDeCosto">Precio De Costo</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.unidadesEnStock">Unidades En Stock</span></th>
-            <th></th>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="pharmacrmApp.producto.sku">Sku</span></th>
+                <th><span jhiTranslate="pharmacrmApp.producto.nombre">Nombre</span></th>
+                <th><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span></th>
+                <th><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span></th>
+                <th><span jhiTranslate="pharmacrmApp.producto.precioDeVenta">Precio De Venta</span></th>
+                <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="pharmacrmApp.producto.precioDeCosto">Precio De Costo</span></th>
+                <th><span jhiTranslate="pharmacrmApp.producto.unidadesEnStock">Unidades En Stock</span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -46,13 +46,13 @@
                 <td>{{producto.sku}}</td>
                 <td>{{producto.nombre}}</td>
                 <td>
-                    <div *ngIf="producto.proveedor">
-                        <a [routerLink]="['../proveedor', producto.proveedor?.id ]" >{{producto.proveedor?.nombre}}</a>
+                    <div *ngIf="producto.presentacion">
+                        {{producto.presentacion?.nombre}}
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="producto.presentacion">
-                        {{producto.presentacion?.nombre}}
+                    <div *ngIf="producto.proveedor">
+                        <a [routerLink]="['../proveedor', producto.proveedor?.id ]" >{{producto.proveedor?.nombre}}</a>
                     </div>
                 </td>
                 <td>{{producto.precioDeVenta}}</td>

@@ -49,12 +49,8 @@ public class Proveedor implements Serializable {
     @Column(name = "sitio_web")
     private String sitioWeb;
 
-    @NotNull
-    @Column(name = "direccion_de_facturacion", nullable = false)
-    private String direccionDeFacturacion;
-
-    @Column(name = "direccion_de_envio")
-    private String direccionDeEnvio;
+    @Column(name = "direccion")
+    private String direccion;
 
     @OneToMany(mappedBy = "proveedor")
     @JsonIgnore
@@ -148,30 +144,17 @@ public class Proveedor implements Serializable {
         this.sitioWeb = sitioWeb;
     }
 
-    public String getDireccionDeFacturacion() {
-        return direccionDeFacturacion;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public Proveedor direccionDeFacturacion(String direccionDeFacturacion) {
-        this.direccionDeFacturacion = direccionDeFacturacion;
+    public Proveedor direccion(String direccion) {
+        this.direccion = direccion;
         return this;
     }
 
-    public void setDireccionDeFacturacion(String direccionDeFacturacion) {
-        this.direccionDeFacturacion = direccionDeFacturacion;
-    }
-
-    public String getDireccionDeEnvio() {
-        return direccionDeEnvio;
-    }
-
-    public Proveedor direccionDeEnvio(String direccionDeEnvio) {
-        this.direccionDeEnvio = direccionDeEnvio;
-        return this;
-    }
-
-    public void setDireccionDeEnvio(String direccionDeEnvio) {
-        this.direccionDeEnvio = direccionDeEnvio;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     public Set<Producto> getProductos() {
@@ -230,8 +213,7 @@ public class Proveedor implements Serializable {
             ", telefono='" + getTelefono() + "'" +
             ", celular='" + getCelular() + "'" +
             ", sitioWeb='" + getSitioWeb() + "'" +
-            ", direccionDeFacturacion='" + getDireccionDeFacturacion() + "'" +
-            ", direccionDeEnvio='" + getDireccionDeEnvio() + "'" +
+            ", direccion='" + getDireccion() + "'" +
             "}";
     }
 }

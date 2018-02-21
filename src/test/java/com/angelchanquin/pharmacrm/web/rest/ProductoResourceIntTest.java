@@ -91,7 +91,7 @@ public class ProductoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductoResource productoResource = new ProductoResource(productoRepository, productoSearchRepository);
+        final ProductoResource productoResource = new ProductoResource(productoRepository, productoSearchRepository, productoService);
         this.restProductoMockMvc = MockMvcBuilders.standaloneSetup(productoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
