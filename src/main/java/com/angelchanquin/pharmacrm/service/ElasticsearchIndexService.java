@@ -61,6 +61,10 @@ public class ElasticsearchIndexService {
 
     private final ProveedorSearchRepository proveedorSearchRepository;
 
+    private final RecepcionDeCompraRepository recepcionDeCompraRepository;
+
+    private final RecepcionDeCompraSearchRepository recepcionDeCompraSearchRepository;
+
     private final UserRepository userRepository;
 
     private final UserSearchRepository userSearchRepository;
@@ -84,6 +88,8 @@ public class ElasticsearchIndexService {
         ProductoSearchRepository productoSearchRepository,
         ProveedorRepository proveedorRepository,
         ProveedorSearchRepository proveedorSearchRepository,
+        RecepcionDeCompraRepository recepcionDeCompraRepository,
+        RecepcionDeCompraSearchRepository recepcionDeCompraSearchRepository,
         ElasticsearchTemplate elasticsearchTemplate) {
         this.userRepository = userRepository;
         this.userSearchRepository = userSearchRepository;
@@ -99,6 +105,8 @@ public class ElasticsearchIndexService {
         this.productoSearchRepository = productoSearchRepository;
         this.proveedorRepository = proveedorRepository;
         this.proveedorSearchRepository = proveedorSearchRepository;
+        this.recepcionDeCompraRepository = recepcionDeCompraRepository;
+        this.recepcionDeCompraSearchRepository = recepcionDeCompraSearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
     }
 
@@ -113,6 +121,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(PresentacionDeProducto.class, presentacionDeProductoRepository, presentacionDeProductoSearchRepository);
                 reindexForClass(Producto.class, productoRepository, productoSearchRepository);
                 reindexForClass(Proveedor.class, proveedorRepository, proveedorSearchRepository);
+                reindexForClass(RecepcionDeCompra.class, recepcionDeCompraRepository, recepcionDeCompraSearchRepository);
                 reindexForClass(User.class, userRepository, userSearchRepository);
 
                 log.info("Elasticsearch: Successfully performed reindexing");
