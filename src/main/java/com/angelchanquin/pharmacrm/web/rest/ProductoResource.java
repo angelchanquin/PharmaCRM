@@ -1,5 +1,6 @@
 package com.angelchanquin.pharmacrm.web.rest;
 
+import com.angelchanquin.pharmacrm.service.ProductoService;
 import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.Producto;
 
@@ -39,9 +40,12 @@ public class ProductoResource {
 
     private final ProductoSearchRepository productoSearchRepository;
 
-    public ProductoResource(ProductoRepository productoRepository, ProductoSearchRepository productoSearchRepository) {
+    private final ProductoService productoService;
+
+    public ProductoResource(ProductoRepository productoRepository, ProductoSearchRepository productoSearchRepository, ProductoService productoService) {
         this.productoRepository = productoRepository;
         this.productoSearchRepository = productoSearchRepository;
+        this.productoService = productoService;
     }
 
     /**
@@ -98,7 +102,14 @@ public class ProductoResource {
     public List<Producto> getAllProductos() {
         log.debug("REST request to get all Productos");
         return productoRepository.findAll();
-        }
+    }
+
+    @GetMapping("/productos/proveedor/{id}")
+    @Timed
+    public List<Producto> getAllProductosByProveedor(@PathVariable Long id) {
+        log.debug("REST request to get all Productos by Proveedor");
+        return productoService.getAllProductosByProveedor(id);
+    }
 
     /**
      * GET  /productos/:id : get the "id" producto.

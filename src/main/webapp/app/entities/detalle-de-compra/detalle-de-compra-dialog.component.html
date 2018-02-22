@@ -27,7 +27,7 @@
             <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeCompra.producto" for="field_producto">Producto</label>
             <select class="form-control" id="field_producto" name="producto" [(ngModel)]="detalleDeCompra.producto"  (ngModelChange)="onProductChange($event)"  required>
                 <option *ngIf="!editForm.value.producto" [ngValue]="null" selected></option>
-                <option [ngValue]="productoOption.id === detalleDeCompra.producto?.id ? detalleDeCompra.producto : productoOption" *ngFor="let productoOption of productos; trackBy: trackProductoById">{{productoOption.proveedor.nombre}} - {{productoOption.nombre}} ({{productoOption.presentacion.nombre}})</option>
+                <option [ngValue]="productoOption.id === detalleDeCompra.producto?.id ? detalleDeCompra.producto : productoOption" *ngFor="let productoOption of productos; trackBy: trackProductoById">{{productoOption.nombre}} ({{productoOption.presentacion.nombre}})</option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.producto?.dirty && editForm.controls.producto?.invalid)">
