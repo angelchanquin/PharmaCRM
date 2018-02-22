@@ -33,6 +33,10 @@
             <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia">Numero De Referencia</span></th>
             <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fecha">Fecha</span></th>
             <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.total">Total</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fechaDeEntregaEsperada">Fecha De Entrega Esperada</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.estado">Estado</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.recibido">Recibido</span></th>
+            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.proveedor">Proveedor</span></th>
             <th></th>
             </tr>
             </thead>
@@ -42,6 +46,14 @@
                 <td>{{ordenDeCompra.numeroDeReferencia}}</td>
                 <td>{{ordenDeCompra.fecha | date:'mediumDate'}}</td>
                 <td>{{ordenDeCompra.total}}</td>
+                <td>{{ordenDeCompra.fechaDeEntregaEsperada | date:'mediumDate'}}</td>
+                <td jhiTranslate="{{'pharmacrmApp.EstadoDeOrdenDeCompra.' + ordenDeCompra.estado}}">{{ordenDeCompra.estado}}</td>
+                <td jhiTranslate="{{'pharmacrmApp.RecibidoOrdenDeCompra.' + ordenDeCompra.recibido}}">{{ordenDeCompra.recibido}}</td>
+                <td>
+                    <div *ngIf="ordenDeCompra.proveedor">
+                        <a [routerLink]="['../proveedor', ordenDeCompra.proveedor?.id ]" >{{ordenDeCompra.proveedor?.nombre}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

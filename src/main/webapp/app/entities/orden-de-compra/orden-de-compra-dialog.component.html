@@ -39,7 +39,80 @@
                 </small>
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.total" for="field_total">Total</label>
+            <input type="number" class="form-control" name="total" id="field_total"
+                [(ngModel)]="ordenDeCompra.total" min="0"/>
+            <div [hidden]="!(editForm.controls.total?.dirty && editForm.controls.total?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.total?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.total?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.fechaDeEntregaEsperada" for="field_fechaDeEntregaEsperada">Fecha De Entrega Esperada</label>
+            <div class="input-group">
+                <input id="field_fechaDeEntregaEsperada" type="text" class="form-control" name="fechaDeEntregaEsperada" ngbDatepicker  #fechaDeEntregaEsperadaDp="ngbDatepicker" [(ngModel)]="ordenDeCompra.fechaDeEntregaEsperada"
+                required/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="fechaDeEntregaEsperadaDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.fechaDeEntregaEsperada?.dirty && editForm.controls.fechaDeEntregaEsperada?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.fechaDeEntregaEsperada?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.estado" for="field_estado">Estado</label>
+            <select class="form-control" name="estado" [(ngModel)]="ordenDeCompra.estado" id="field_estado"  required>
+                <option value="ACTIVA">{{'pharmacrmApp.EstadoDeOrdenDeCompra.ACTIVA' | translate}}</option>
+                <option value="EMITIDA">{{'pharmacrmApp.EstadoDeOrdenDeCompra.EMITIDA' | translate}}</option>
+                <option value="CANCELADA">{{'pharmacrmApp.EstadoDeOrdenDeCompra.CANCELADA' | translate}}</option>
+                <option value="CERRADA">{{'pharmacrmApp.EstadoDeOrdenDeCompra.CERRADA' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.estado?.dirty && editForm.controls.estado?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.estado?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.recibido" for="field_recibido">Recibido</label>
+            <select class="form-control" name="recibido" [(ngModel)]="ordenDeCompra.recibido" id="field_recibido"  required>
+                <option value="NO_RECIBIDO">{{'pharmacrmApp.RecibidoOrdenDeCompra.NO_RECIBIDO' | translate}}</option>
+                <option value="PARCIAL">{{'pharmacrmApp.RecibidoOrdenDeCompra.PARCIAL' | translate}}</option>
+                <option value="TOTAL">{{'pharmacrmApp.RecibidoOrdenDeCompra.TOTAL' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.recibido?.dirty && editForm.controls.recibido?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.recibido?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.ordenDeCompra.proveedor" for="field_proveedor">Proveedor</label>
+            <select class="form-control" id="field_proveedor" name="proveedor" [(ngModel)]="ordenDeCompra.proveedor"  required>
+                <option *ngIf="!editForm.value.proveedor" [ngValue]="null" selected></option>
+                <option [ngValue]="proveedorOption.id === ordenDeCompra.proveedor?.id ? ordenDeCompra.proveedor : proveedorOption" *ngFor="let proveedorOption of proveedors; trackBy: trackProveedorById">{{proveedorOption.nombre}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.proveedor?.dirty && editForm.controls.proveedor?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.proveedor?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

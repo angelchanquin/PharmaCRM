@@ -4,11 +4,13 @@ import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { OrdenDeCompra } from './orden-de-compra.model';
 import { OrdenDeCompraPopupService } from './orden-de-compra-popup.service';
 import { OrdenDeCompraService } from './orden-de-compra.service';
+import { Proveedor, ProveedorService } from '../proveedor';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-orden-de-compra-dialog',
@@ -18,17 +20,24 @@ export class OrdenDeCompraDialogComponent implements OnInit {
 
     ordenDeCompra: OrdenDeCompra;
     isSaving: boolean;
+
+    proveedors: Proveedor[];
     fechaDp: any;
+    fechaDeEntregaEsperadaDp: any;
 
     constructor(
         public activeModal: NgbActiveModal,
+        private jhiAlertService: JhiAlertService,
         private ordenDeCompraService: OrdenDeCompraService,
+        private proveedorService: ProveedorService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.proveedorService.query()
+            .subscribe((res: ResponseWrapper) => { this.proveedors = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -59,6 +68,14 @@ export class OrdenDeCompraDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackProveedorById(index: number, item: Proveedor) {
+        return item.id;
     }
 }
 

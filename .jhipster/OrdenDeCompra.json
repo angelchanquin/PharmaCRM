@@ -6,6 +6,15 @@
             "relationshipName": "detalle",
             "otherEntityName": "detalleDeCompra",
             "otherEntityRelationshipName": "ordenDeCompra"
+        },
+        {
+            "relationshipName": "proveedor",
+            "otherEntityName": "proveedor",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "nombre"
         }
     ],
     "fields": [
@@ -30,6 +39,29 @@
                 "min"
             ],
             "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "fechaDeEntregaEsperada",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "estado",
+            "fieldType": "EstadoDeOrdenDeCompra",
+            "fieldValues": "ACTIVA, EMITIDA, CANCELADA, CERRADA",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "recibido",
+            "fieldType": "RecibidoOrdenDeCompra",
+            "fieldValues": "NO_RECIBIDO, PARCIAL, TOTAL",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180215214453",

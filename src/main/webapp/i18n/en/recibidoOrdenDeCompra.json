@@ -1,0 +1,10 @@
+{
+    "pharmacrmApp": {
+        "RecibidoOrdenDeCompra" : {
+            "null": "",
+            "NO_RECIBIDO": "NO_RECIBIDO",
+            "PARCIAL": "PARCIAL",
+            "TOTAL": "TOTAL"
+        }
+    }
+}

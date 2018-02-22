@@ -14,6 +14,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+import com.angelchanquin.pharmacrm.domain.enumeration.EstadoDeOrdenDeCompra;
+
+import com.angelchanquin.pharmacrm.domain.enumeration.RecibidoOrdenDeCompra;
+
 /**
  * A OrdenDeCompra.
  */
@@ -42,10 +46,28 @@ public class OrdenDeCompra implements Serializable {
     @Column(name = "total")
     private Double total;
 
+    @NotNull
+    @Column(name = "fecha_de_entrega_esperada", nullable = false)
+    private LocalDate fechaDeEntregaEsperada;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false)
+    private EstadoDeOrdenDeCompra estado;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recibido", nullable = false)
+    private RecibidoOrdenDeCompra recibido;
+
     @OneToMany(mappedBy = "ordenDeCompra")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DetalleDeCompra> detalles = new HashSet<>();
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private Proveedor proveedor;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -95,6 +117,45 @@ public class OrdenDeCompra implements Serializable {
         this.total = total;
     }
 
+    public LocalDate getFechaDeEntregaEsperada() {
+        return fechaDeEntregaEsperada;
+    }
+
+    public OrdenDeCompra fechaDeEntregaEsperada(LocalDate fechaDeEntregaEsperada) {
+        this.fechaDeEntregaEsperada = fechaDeEntregaEsperada;
+        return this;
+    }
+
+    public void setFechaDeEntregaEsperada(LocalDate fechaDeEntregaEsperada) {
+        this.fechaDeEntregaEsperada = fechaDeEntregaEsperada;
+    }
+
+    public EstadoDeOrdenDeCompra getEstado() {
+        return estado;
+    }
+
+    public OrdenDeCompra estado(EstadoDeOrdenDeCompra estado) {
+        this.estado = estado;
+        return this;
+    }
+
+    public void setEstado(EstadoDeOrdenDeCompra estado) {
+        this.estado = estado;
+    }
+
+    public RecibidoOrdenDeCompra getRecibido() {
+        return recibido;
+    }
+
+    public OrdenDeCompra recibido(RecibidoOrdenDeCompra recibido) {
+        this.recibido = recibido;
+        return this;
+    }
+
+    public void setRecibido(RecibidoOrdenDeCompra recibido) {
+        this.recibido = recibido;
+    }
+
     public Set<DetalleDeCompra> getDetalles() {
         return detalles;
     }
@@ -118,6 +179,19 @@ public class OrdenDeCompra implements Serializable {
 
     public void setDetalles(Set<DetalleDeCompra> detalleDeCompras) {
         this.detalles = detalleDeCompras;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public OrdenDeCompra proveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+        return this;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -148,6 +222,9 @@ public class OrdenDeCompra implements Serializable {
             ", numeroDeReferencia='" + getNumeroDeReferencia() + "'" +
             ", fecha='" + getFecha() + "'" +
             ", total=" + getTotal() +
+            ", fechaDeEntregaEsperada='" + getFechaDeEntregaEsperada() + "'" +
+            ", estado='" + getEstado() + "'" +
+            ", recibido='" + getRecibido() + "'" +
             "}";
     }
 }

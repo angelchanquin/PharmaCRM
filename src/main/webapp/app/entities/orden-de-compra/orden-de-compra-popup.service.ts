@@ -33,6 +33,13 @@ export class OrdenDeCompraPopupService {
                             day: ordenDeCompra.fecha.getDate()
                         };
                     }
+                    if (ordenDeCompra.fechaDeEntregaEsperada) {
+                        ordenDeCompra.fechaDeEntregaEsperada = {
+                            year: ordenDeCompra.fechaDeEntregaEsperada.getFullYear(),
+                            month: ordenDeCompra.fechaDeEntregaEsperada.getMonth() + 1,
+                            day: ordenDeCompra.fechaDeEntregaEsperada.getDate()
+                        };
+                    }
                     this.ngbModalRef = this.ordenDeCompraModalRef(component, ordenDeCompra);
                     resolve(this.ngbModalRef);
                 });

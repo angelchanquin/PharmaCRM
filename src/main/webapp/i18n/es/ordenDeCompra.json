@@ -20,7 +20,11 @@
             "numeroDeReferencia": "Numero de Referencia",
             "fecha": "Fecha",
             "total": "Total",
-            "detalle": "Detalle"
+            "fechaDeEntregaEsperada": "Fecha De Entrega Esperada",
+            "estado": "Estado",
+            "recibido": "Recibido",
+            "detalle": "Detalle",
+            "proveedor": "Proveedor"
         }
     }
 }
