@@ -6,6 +6,7 @@ import { PharmacrmProductoModule } from './producto/producto.module';
 import { PharmacrmOrdenDeCompraModule } from './orden-de-compra/orden-de-compra.module';
 import { PharmacrmDetalleDeCompraModule } from './detalle-de-compra/detalle-de-compra.module';
 import { PharmacrmInventarioModule } from './inventario/inventario.module';
+import { PharmacrmRecepcionDeCompraModule } from './recepcion-de-compra/recepcion-de-compra.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -16,6 +17,7 @@ import { PharmacrmInventarioModule } from './inventario/inventario.module';
         PharmacrmOrdenDeCompraModule,
         PharmacrmDetalleDeCompraModule,
         PharmacrmInventarioModule,
+        PharmacrmRecepcionDeCompraModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

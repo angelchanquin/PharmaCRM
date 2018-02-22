@@ -1,0 +1,41 @@
+
+<div *ngIf="recepcionDeCompra">
+    <h2><span jhiTranslate="pharmacrmApp.recepcionDeCompra.detail.title">Recepcion De Compra</span> {{recepcionDeCompra.id}}</h2>
+
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <div class="table-responsive" *ngIf="recepcionDeCompra">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="pharmacrmApp.recepcionDeCompra.ordenDeCompra">Orden De Compra</span></th>
+                <th><span jhiTranslate="pharmacrmApp.recepcionDeCompra.noDeRecibo">No De Recibo</span></th>
+                <th><span jhiTranslate="pharmacrmApp.recepcionDeCompra.fechaDeRecepcion">Fecha De Recepcion</span></th>
+                <th><span jhiTranslate="pharmacrmApp.recepcionDeCompra.tipo">Tipo</span></th>
+                <th><span jhiTranslate="pharmacrmApp.recepcionDeCompra.notas">Notas</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><a [routerLink]="['../recepcion-de-compra', recepcionDeCompra.id ]">{{recepcionDeCompra.id}}</a></td>
+                <td>
+                    <div *ngIf="recepcionDeCompra.ordenDeCompra">
+                        <a [routerLink]="['../orden-de-compra', recepcionDeCompra.ordenDeCompra?.id ]" >{{recepcionDeCompra.ordenDeCompra?.id}}</a>
+                    </div>
+                </td>
+                <td>{{recepcionDeCompra.noDeRecibo}}</td>
+                <td>{{recepcionDeCompra.fechaDeRecepcion | date:'mediumDate'}}</td>
+                <td jhiTranslate="{{'pharmacrmApp.TipoDeRecepcionDeCompra.' + recepcionDeCompra.tipo}}">{{recepcionDeCompra.tipo}}</td>
+                <td>{{recepcionDeCompra.notas}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+</div>

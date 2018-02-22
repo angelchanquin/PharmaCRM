@@ -1,0 +1,48 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "ordenDeCompra",
+            "otherEntityName": "ordenDeCompra",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "noDeRecibo",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "fechaDeRecepcion",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "tipo",
+            "fieldType": "TipoDeRecepcionDeCompra",
+            "fieldValues": "TOTAL, PARCIAL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "notas",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180221203927",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "recepcion_de_compra",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

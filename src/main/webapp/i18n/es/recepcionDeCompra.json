@@ -1,0 +1,26 @@
+{
+    "pharmacrmApp": {
+        "recepcionDeCompra" : {
+            "home": {
+                "title": "Recepcion De Compras",
+                "createLabel": "Crear nuevo Recepcion De Compra",
+                "createOrEditLabel": "Crear o editar Recepcion De Compra",
+                "search": "Search for Recepcion De Compra"
+            },
+            "created": "Un nuevo Recepcion De Compra ha sido creado con el identificador {{ param }}",
+            "updated": "Un Recepcion De Compra ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Recepcion De Compra ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Recepcion De Compra {{ id }}?"
+            },
+            "detail": {
+                "title": "Recepcion De Compra"
+            },
+            "noDeRecibo": "No De Recibo",
+            "fechaDeRecepcion": "Fecha De Recepcion",
+            "tipo": "Tipo",
+            "notas": "Notas",
+            "ordenDeCompra": "Orden De Compra"
+        }
+    }
+}

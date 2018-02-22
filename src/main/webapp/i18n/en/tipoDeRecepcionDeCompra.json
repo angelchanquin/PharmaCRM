@@ -1,0 +1,9 @@
+{
+    "pharmacrmApp": {
+        "TipoDeRecepcionDeCompra" : {
+            "null": "",
+            "TOTAL": "TOTAL",
+            "PARCIAL": "PARCIAL"
+        }
+    }
+}
