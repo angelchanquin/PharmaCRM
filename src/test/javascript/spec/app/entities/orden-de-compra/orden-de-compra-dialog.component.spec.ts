@@ -8,6 +8,7 @@ import { PharmacrmTestModule } from '../../../test.module';
 import { OrdenDeCompraDialogComponent } from '../../../../../../main/webapp/app/entities/orden-de-compra/orden-de-compra-dialog.component';
 import { OrdenDeCompraService } from '../../../../../../main/webapp/app/entities/orden-de-compra/orden-de-compra.service';
 import { OrdenDeCompra } from '../../../../../../main/webapp/app/entities/orden-de-compra/orden-de-compra.model';
+import { ProveedorService } from '../../../../../../main/webapp/app/entities/proveedor';
 
 describe('Component Tests', () => {
 
@@ -23,6 +24,7 @@ describe('Component Tests', () => {
                 imports: [PharmacrmTestModule],
                 declarations: [OrdenDeCompraDialogComponent],
                 providers: [
+                    ProveedorService,
                     OrdenDeCompraService
                 ]
             })

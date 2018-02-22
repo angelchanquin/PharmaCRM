@@ -7,6 +7,7 @@ import com.angelchanquin.pharmacrm.domain.PresentacionDeProducto;
 import com.angelchanquin.pharmacrm.domain.Proveedor;
 import com.angelchanquin.pharmacrm.repository.ProductoRepository;
 import com.angelchanquin.pharmacrm.repository.search.ProductoSearchRepository;
+import com.angelchanquin.pharmacrm.service.ProductoService;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -73,6 +74,9 @@ public class ProductoResourceIntTest {
     private ProductoSearchRepository productoSearchRepository;
 
     @Autowired
+    private ProductoService productoService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -91,7 +95,7 @@ public class ProductoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductoResource productoResource = new ProductoResource(productoRepository, productoSearchRepository);
+        final ProductoResource productoResource = new ProductoResource(productoRepository, productoSearchRepository, productoService);
         this.restProductoMockMvc = MockMvcBuilders.standaloneSetup(productoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

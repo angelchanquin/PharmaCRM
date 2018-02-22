@@ -20,7 +20,8 @@ import { ResponseWrapper } from '../../shared';
 export class DetalleDeCompraDialogComponent implements OnInit {
 
     detalleDeCompra: DetalleDeCompra;
-    ordenId: any;
+    ordenId: number;
+    proveedorId: number;
     isSaving: boolean;
 
     ordendecompras: OrdenDeCompra[];
@@ -40,9 +41,10 @@ export class DetalleDeCompraDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.ordenId = this.detalleDeCompra.ordenDeCompra.id;
+        this.proveedorId = this.detalleDeCompra.ordenDeCompra.proveedor.id;
         this.ordenDeCompraService.query()
             .subscribe((res: ResponseWrapper) => { this.ordendecompras = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.productoService.query()
+        this.productoService.queryByProveedor(this.proveedorId)
             .subscribe((res: ResponseWrapper) => { this.productos = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 

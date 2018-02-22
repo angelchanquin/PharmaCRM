@@ -1,0 +1,11 @@
+{
+    "pharmacrmApp": {
+        "EstadoDeOrdenDeCompra" : {
+            "null": "",
+            "ACTIVA": "ACTIVA",
+            "EMITIDA": "EMITIDA",
+            "CANCELADA": "CANCELADA",
+            "CERRADA": "CERRADA"
+        }
+    }
+}

@@ -29,18 +29,30 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia">Numero De Referencia</span></th>
-            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fecha">Fecha</span></th>
-            <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.total">Total</span></th>
-            <th></th>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia">Numero De Referencia</span></th>
+                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.proveedor">Proveedor</span></th>
+                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fecha">Fecha</span></th>
+                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fechaDeEntregaEsperada">Fecha De Entrega Esperada</span></th>
+                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.estado">Estado</span></th>
+                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.recibido">Recibido</span></th>
+                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.total">Total</span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let ordenDeCompra of ordenDeCompras ;trackBy: trackId">
                 <td><a [routerLink]="['../orden-de-compra', ordenDeCompra.id ]">{{ordenDeCompra.id}}</a></td>
                 <td>{{ordenDeCompra.numeroDeReferencia}}</td>
+                <td>
+                    <div *ngIf="ordenDeCompra.proveedor">
+                        <a [routerLink]="['../proveedor', ordenDeCompra.proveedor?.id ]" >{{ordenDeCompra.proveedor?.nombre}}</a>
+                    </div>
+                </td>
                 <td>{{ordenDeCompra.fecha | date:'mediumDate'}}</td>
+                <td>{{ordenDeCompra.fechaDeEntregaEsperada | date:'mediumDate'}}</td>
+                <td jhiTranslate="{{'pharmacrmApp.EstadoDeOrden.' + ordenDeCompra.estado}}">{{ordenDeCompra.estado}}</td>
+                <td jhiTranslate="{{'pharmacrmApp.EstadoRecibidoDeOrden.' + ordenDeCompra.recibido}}">{{ordenDeCompra.recibido}}</td>
                 <td>{{ordenDeCompra.total}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

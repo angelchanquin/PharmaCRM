@@ -3,6 +3,7 @@ package com.angelchanquin.pharmacrm.web.rest;
 import com.angelchanquin.pharmacrm.PharmacrmApp;
 
 import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
+import com.angelchanquin.pharmacrm.domain.Proveedor;
 import com.angelchanquin.pharmacrm.repository.OrdenDeCompraRepository;
 import com.angelchanquin.pharmacrm.repository.search.OrdenDeCompraSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
@@ -32,6 +33,8 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.angelchanquin.pharmacrm.domain.enumeration.EstadoDeOrdenDeCompra;
+import com.angelchanquin.pharmacrm.domain.enumeration.RecibidoOrdenDeCompra;
 /**
  * Test class for the OrdenDeCompraResource REST controller.
  *
@@ -49,6 +52,15 @@ public class OrdenDeCompraResourceIntTest {
 
     private static final Double DEFAULT_TOTAL = 0D;
     private static final Double UPDATED_TOTAL = 1D;
+
+    private static final LocalDate DEFAULT_FECHA_DE_ENTREGA_ESPERADA = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_FECHA_DE_ENTREGA_ESPERADA = LocalDate.now(ZoneId.systemDefault());
+
+    private static final EstadoDeOrdenDeCompra DEFAULT_ESTADO = EstadoDeOrdenDeCompra.ACTIVA;
+    private static final EstadoDeOrdenDeCompra UPDATED_ESTADO = EstadoDeOrdenDeCompra.EMITIDA;
+
+    private static final RecibidoOrdenDeCompra DEFAULT_RECIBIDO = RecibidoOrdenDeCompra.NO_RECIBIDO;
+    private static final RecibidoOrdenDeCompra UPDATED_RECIBIDO = RecibidoOrdenDeCompra.PARCIAL;
 
     @Autowired
     private OrdenDeCompraRepository ordenDeCompraRepository;
@@ -93,7 +105,15 @@ public class OrdenDeCompraResourceIntTest {
         OrdenDeCompra ordenDeCompra = new OrdenDeCompra()
             .numeroDeReferencia(DEFAULT_NUMERO_DE_REFERENCIA)
             .fecha(DEFAULT_FECHA)
-            .total(DEFAULT_TOTAL);
+            .total(DEFAULT_TOTAL)
+            .fechaDeEntregaEsperada(DEFAULT_FECHA_DE_ENTREGA_ESPERADA)
+            .estado(DEFAULT_ESTADO)
+            .recibido(DEFAULT_RECIBIDO);
+        // Add required entity
+        Proveedor proveedor = ProveedorResourceIntTest.createEntity(em);
+        em.persist(proveedor);
+        em.flush();
+        ordenDeCompra.setProveedor(proveedor);
         return ordenDeCompra;
     }
 
@@ -121,6 +141,9 @@ public class OrdenDeCompraResourceIntTest {
         assertThat(testOrdenDeCompra.getNumeroDeReferencia()).isEqualTo(DEFAULT_NUMERO_DE_REFERENCIA);
         assertThat(testOrdenDeCompra.getFecha()).isEqualTo(DEFAULT_FECHA);
         assertThat(testOrdenDeCompra.getTotal()).isEqualTo(DEFAULT_TOTAL);
+        assertThat(testOrdenDeCompra.getFechaDeEntregaEsperada()).isEqualTo(DEFAULT_FECHA_DE_ENTREGA_ESPERADA);
+        assertThat(testOrdenDeCompra.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testOrdenDeCompra.getRecibido()).isEqualTo(DEFAULT_RECIBIDO);
 
         // Validate the OrdenDeCompra in Elasticsearch
         OrdenDeCompra ordenDeCompraEs = ordenDeCompraSearchRepository.findOne(testOrdenDeCompra.getId());
@@ -184,6 +207,60 @@ public class OrdenDeCompraResourceIntTest {
 
     @Test
     @Transactional
+    public void checkFechaDeEntregaEsperadaIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ordenDeCompraRepository.findAll().size();
+        // set the field null
+        ordenDeCompra.setFechaDeEntregaEsperada(null);
+
+        // Create the OrdenDeCompra, which fails.
+
+        restOrdenDeCompraMockMvc.perform(post("/api/orden-de-compras")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ordenDeCompra)))
+            .andExpect(status().isBadRequest());
+
+        List<OrdenDeCompra> ordenDeCompraList = ordenDeCompraRepository.findAll();
+        assertThat(ordenDeCompraList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkEstadoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ordenDeCompraRepository.findAll().size();
+        // set the field null
+        ordenDeCompra.setEstado(null);
+
+        // Create the OrdenDeCompra, which fails.
+
+        restOrdenDeCompraMockMvc.perform(post("/api/orden-de-compras")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ordenDeCompra)))
+            .andExpect(status().isBadRequest());
+
+        List<OrdenDeCompra> ordenDeCompraList = ordenDeCompraRepository.findAll();
+        assertThat(ordenDeCompraList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkRecibidoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ordenDeCompraRepository.findAll().size();
+        // set the field null
+        ordenDeCompra.setRecibido(null);
+
+        // Create the OrdenDeCompra, which fails.
+
+        restOrdenDeCompraMockMvc.perform(post("/api/orden-de-compras")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(ordenDeCompra)))
+            .andExpect(status().isBadRequest());
+
+        List<OrdenDeCompra> ordenDeCompraList = ordenDeCompraRepository.findAll();
+        assertThat(ordenDeCompraList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllOrdenDeCompras() throws Exception {
         // Initialize the database
         ordenDeCompraRepository.saveAndFlush(ordenDeCompra);
@@ -195,7 +272,10 @@ public class OrdenDeCompraResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(ordenDeCompra.getId().intValue())))
             .andExpect(jsonPath("$.[*].numeroDeReferencia").value(hasItem(DEFAULT_NUMERO_DE_REFERENCIA.toString())))
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
-            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.doubleValue())));
+            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.doubleValue())))
+            .andExpect(jsonPath("$.[*].fechaDeEntregaEsperada").value(hasItem(DEFAULT_FECHA_DE_ENTREGA_ESPERADA.toString())))
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
+            .andExpect(jsonPath("$.[*].recibido").value(hasItem(DEFAULT_RECIBIDO.toString())));
     }
 
     @Test
@@ -211,7 +291,10 @@ public class OrdenDeCompraResourceIntTest {
             .andExpect(jsonPath("$.id").value(ordenDeCompra.getId().intValue()))
             .andExpect(jsonPath("$.numeroDeReferencia").value(DEFAULT_NUMERO_DE_REFERENCIA.toString()))
             .andExpect(jsonPath("$.fecha").value(DEFAULT_FECHA.toString()))
-            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL.doubleValue()));
+            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL.doubleValue()))
+            .andExpect(jsonPath("$.fechaDeEntregaEsperada").value(DEFAULT_FECHA_DE_ENTREGA_ESPERADA.toString()))
+            .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()))
+            .andExpect(jsonPath("$.recibido").value(DEFAULT_RECIBIDO.toString()));
     }
 
     @Test
@@ -237,7 +320,10 @@ public class OrdenDeCompraResourceIntTest {
         updatedOrdenDeCompra
             .numeroDeReferencia(UPDATED_NUMERO_DE_REFERENCIA)
             .fecha(UPDATED_FECHA)
-            .total(UPDATED_TOTAL);
+            .total(UPDATED_TOTAL)
+            .fechaDeEntregaEsperada(UPDATED_FECHA_DE_ENTREGA_ESPERADA)
+            .estado(UPDATED_ESTADO)
+            .recibido(UPDATED_RECIBIDO);
 
         restOrdenDeCompraMockMvc.perform(put("/api/orden-de-compras")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -251,6 +337,9 @@ public class OrdenDeCompraResourceIntTest {
         assertThat(testOrdenDeCompra.getNumeroDeReferencia()).isEqualTo(UPDATED_NUMERO_DE_REFERENCIA);
         assertThat(testOrdenDeCompra.getFecha()).isEqualTo(UPDATED_FECHA);
         assertThat(testOrdenDeCompra.getTotal()).isEqualTo(UPDATED_TOTAL);
+        assertThat(testOrdenDeCompra.getFechaDeEntregaEsperada()).isEqualTo(UPDATED_FECHA_DE_ENTREGA_ESPERADA);
+        assertThat(testOrdenDeCompra.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testOrdenDeCompra.getRecibido()).isEqualTo(UPDATED_RECIBIDO);
 
         // Validate the OrdenDeCompra in Elasticsearch
         OrdenDeCompra ordenDeCompraEs = ordenDeCompraSearchRepository.findOne(testOrdenDeCompra.getId());
@@ -311,7 +400,10 @@ public class OrdenDeCompraResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(ordenDeCompra.getId().intValue())))
             .andExpect(jsonPath("$.[*].numeroDeReferencia").value(hasItem(DEFAULT_NUMERO_DE_REFERENCIA.toString())))
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
-            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.doubleValue())));
+            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL.doubleValue())))
+            .andExpect(jsonPath("$.[*].fechaDeEntregaEsperada").value(hasItem(DEFAULT_FECHA_DE_ENTREGA_ESPERADA.toString())))
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
+            .andExpect(jsonPath("$.[*].recibido").value(hasItem(DEFAULT_RECIBIDO.toString())));
     }
 
     @Test
