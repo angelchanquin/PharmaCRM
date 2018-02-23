@@ -12,14 +12,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static org.hibernate.id.IdentifierGenerator.ENTITY_NAME;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
+/**
+ * Service Implementation for managing DetalleDeCompra.
+ */
 @Service
 @Transactional
 public class DetalleDeCompraService {
 
     private final Logger log = LoggerFactory.getLogger(DetalleDeCompraService.class);
+
+    private static final String ENTITY_NAME = "detalleDeCompra";
 
     private final OrdenDeCompraRepository ordenDeCompraRepository;
     private final DetalleDeCompraRepository detalleDeCompraRepository;
@@ -31,14 +38,69 @@ public class DetalleDeCompraService {
         this.detalleDeCompraSearchRepository = detalleDeCompraSearchRepository;
     }
 
-    public List<DetalleDeCompra> getDetalleDeCompraByOrdenId(Long id) {
-        OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(id);
-        if (ordenDeCompra == null) {
-            throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
-        }
-        return detalleDeCompraRepository.findAllByOrdenDeCompra(ordenDeCompra);
+
+    /**
+     * Save a detalleDeCompra.
+     *
+     * @param detalleDeCompra the entity to save
+     * @return the persisted entity
+     */
+    public DetalleDeCompra save(DetalleDeCompra detalleDeCompra) {
+        log.debug("Request to save DetalleDeCompra : {}", detalleDeCompra);
+        DetalleDeCompra result = detalleDeCompraRepository.save(detalleDeCompra);
+        detalleDeCompraSearchRepository.save(result);
+        return result;
     }
 
+    /**
+     * Get all the detalleDeCompras.
+     *
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<DetalleDeCompra> findAll() {
+        log.debug("Request to get all DetalleDeCompras");
+        return detalleDeCompraRepository.findAll();
+    }
+
+    /**
+     * Get one detalleDeCompra by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
+    public DetalleDeCompra findOne(Long id) {
+        log.debug("Request to get DetalleDeCompra : {}", id);
+        return detalleDeCompraRepository.findOne(id);
+    }
+
+    /**
+     * Delete the detalleDeCompra by id.
+     *
+     * @param id the id of the entity
+     */
+    public void delete(Long id) {
+        log.debug("Request to delete DetalleDeCompra : {}", id);
+        detalleDeCompraRepository.delete(id);
+        detalleDeCompraSearchRepository.delete(id);
+    }
+
+    /**
+     * Search for the detalleDeCompra corresponding to the query.
+     *
+     * @param query the query of the search
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<DetalleDeCompra> search(String query) {
+        log.debug("Request to search DetalleDeCompras for query {}", query);
+        return StreamSupport
+            .stream(detalleDeCompraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
+    }
+
+    @Transactional
     public DetalleDeCompra createDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
         if (ordenDeCompra != null) {
@@ -49,12 +111,10 @@ public class DetalleDeCompraService {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
         }
 
-        DetalleDeCompra result = detalleDeCompraRepository.save(detalleDeCompra);
-        detalleDeCompraSearchRepository.save(result);
-
-        return result;
+        return  this.save(detalleDeCompra);
     }
 
+    @Transactional
     public DetalleDeCompra updateDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
 
         DetalleDeCompra oldDetalleDeCompra = detalleDeCompraRepository.findOne(detalleDeCompra.getId());
@@ -67,12 +127,10 @@ public class DetalleDeCompraService {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
         }
 
-        DetalleDeCompra result = detalleDeCompraRepository.save(detalleDeCompra);
-        detalleDeCompraSearchRepository.save(result);
-
-        return result;
+        return this.save(detalleDeCompra);
     }
 
+    @Transactional
     public void deleteDetalleDeCompra(Long id) {
         DetalleDeCompra detalleDeCompra = detalleDeCompraRepository.findOne(id);
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
@@ -84,8 +142,15 @@ public class DetalleDeCompraService {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
         }
 
-        detalleDeCompraRepository.delete(id);
-        detalleDeCompraSearchRepository.delete(id);
+        this.delete(id);
+    }
+
+    public List<DetalleDeCompra> getDetalleDeCompraByOrdenId(Long id) {
+        OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(id);
+        if (ordenDeCompra == null) {
+            throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
+        }
+        return detalleDeCompraRepository.findAllByOrdenDeCompra(ordenDeCompra);
     }
 
 }

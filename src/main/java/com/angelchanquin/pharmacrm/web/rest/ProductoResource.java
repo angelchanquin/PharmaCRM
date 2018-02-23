@@ -36,15 +36,9 @@ public class ProductoResource {
 
     private static final String ENTITY_NAME = "producto";
 
-    private final ProductoRepository productoRepository;
-
-    private final ProductoSearchRepository productoSearchRepository;
-
     private final ProductoService productoService;
 
-    public ProductoResource(ProductoRepository productoRepository, ProductoSearchRepository productoSearchRepository, ProductoService productoService) {
-        this.productoRepository = productoRepository;
-        this.productoSearchRepository = productoSearchRepository;
+    public ProductoResource(ProductoService productoService) {
         this.productoService = productoService;
     }
 
@@ -62,8 +56,7 @@ public class ProductoResource {
         if (producto.getId() != null) {
             throw new BadRequestAlertException("A new producto cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Producto result = productoRepository.save(producto);
-        productoSearchRepository.save(result);
+        Producto result = productoService.save(producto);
         return ResponseEntity.created(new URI("/api/productos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -85,8 +78,7 @@ public class ProductoResource {
         if (producto.getId() == null) {
             return createProducto(producto);
         }
-        Producto result = productoRepository.save(producto);
-        productoSearchRepository.save(result);
+        Producto result = productoService.save(producto);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, producto.getId().toString()))
             .body(result);
@@ -101,7 +93,7 @@ public class ProductoResource {
     @Timed
     public List<Producto> getAllProductos() {
         log.debug("REST request to get all Productos");
-        return productoRepository.findAll();
+        return productoService.findAll();
     }
 
     @GetMapping("/productos/proveedor/{id}")
@@ -121,7 +113,7 @@ public class ProductoResource {
     @Timed
     public ResponseEntity<Producto> getProducto(@PathVariable Long id) {
         log.debug("REST request to get Producto : {}", id);
-        Producto producto = productoRepository.findOne(id);
+        Producto producto = productoService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(producto));
     }
 
@@ -135,8 +127,7 @@ public class ProductoResource {
     @Timed
     public ResponseEntity<Void> deleteProducto(@PathVariable Long id) {
         log.debug("REST request to delete Producto : {}", id);
-        productoRepository.delete(id);
-        productoSearchRepository.delete(id);
+        productoService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -151,9 +142,7 @@ public class ProductoResource {
     @Timed
     public List<Producto> searchProductos(@RequestParam String query) {
         log.debug("REST request to search Productos for query {}", query);
-        return StreamSupport
-            .stream(productoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        return productoService.search(query);
     }
 
 }

@@ -55,6 +55,9 @@ public class InventarioResourceIntTest {
     private static final Double DEFAULT_PRECIO = 0D;
     private static final Double UPDATED_PRECIO = 1D;
 
+    private static final String DEFAULT_DETALLES = "AAAAAAAAAA";
+    private static final String UPDATED_DETALLES = "BBBBBBBBBB";
+
     @Autowired
     private InventarioRepository inventarioRepository;
 
@@ -99,7 +102,8 @@ public class InventarioResourceIntTest {
             .fecha(DEFAULT_FECHA)
             .cantidad(DEFAULT_CANTIDAD)
             .tipoDeMovimiento(DEFAULT_TIPO_DE_MOVIMIENTO)
-            .precio(DEFAULT_PRECIO);
+            .precio(DEFAULT_PRECIO)
+            .detalles(DEFAULT_DETALLES);
         // Add required entity
         Producto producto = ProductoResourceIntTest.createEntity(em);
         em.persist(producto);
@@ -133,6 +137,7 @@ public class InventarioResourceIntTest {
         assertThat(testInventario.getCantidad()).isEqualTo(DEFAULT_CANTIDAD);
         assertThat(testInventario.getTipoDeMovimiento()).isEqualTo(DEFAULT_TIPO_DE_MOVIMIENTO);
         assertThat(testInventario.getPrecio()).isEqualTo(DEFAULT_PRECIO);
+        assertThat(testInventario.getDetalles()).isEqualTo(DEFAULT_DETALLES);
 
         // Validate the Inventario in Elasticsearch
         Inventario inventarioEs = inventarioSearchRepository.findOne(testInventario.getId());
@@ -244,7 +249,8 @@ public class InventarioResourceIntTest {
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
             .andExpect(jsonPath("$.[*].cantidad").value(hasItem(DEFAULT_CANTIDAD)))
             .andExpect(jsonPath("$.[*].tipoDeMovimiento").value(hasItem(DEFAULT_TIPO_DE_MOVIMIENTO.toString())))
-            .andExpect(jsonPath("$.[*].precio").value(hasItem(DEFAULT_PRECIO.doubleValue())));
+            .andExpect(jsonPath("$.[*].precio").value(hasItem(DEFAULT_PRECIO.doubleValue())))
+            .andExpect(jsonPath("$.[*].detalles").value(hasItem(DEFAULT_DETALLES.toString())));
     }
 
     @Test
@@ -261,7 +267,8 @@ public class InventarioResourceIntTest {
             .andExpect(jsonPath("$.fecha").value(DEFAULT_FECHA.toString()))
             .andExpect(jsonPath("$.cantidad").value(DEFAULT_CANTIDAD))
             .andExpect(jsonPath("$.tipoDeMovimiento").value(DEFAULT_TIPO_DE_MOVIMIENTO.toString()))
-            .andExpect(jsonPath("$.precio").value(DEFAULT_PRECIO.doubleValue()));
+            .andExpect(jsonPath("$.precio").value(DEFAULT_PRECIO.doubleValue()))
+            .andExpect(jsonPath("$.detalles").value(DEFAULT_DETALLES.toString()));
     }
 
     @Test
@@ -288,7 +295,8 @@ public class InventarioResourceIntTest {
             .fecha(UPDATED_FECHA)
             .cantidad(UPDATED_CANTIDAD)
             .tipoDeMovimiento(UPDATED_TIPO_DE_MOVIMIENTO)
-            .precio(UPDATED_PRECIO);
+            .precio(UPDATED_PRECIO)
+            .detalles(UPDATED_DETALLES);
 
         restInventarioMockMvc.perform(put("/api/inventarios")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -303,6 +311,7 @@ public class InventarioResourceIntTest {
         assertThat(testInventario.getCantidad()).isEqualTo(UPDATED_CANTIDAD);
         assertThat(testInventario.getTipoDeMovimiento()).isEqualTo(UPDATED_TIPO_DE_MOVIMIENTO);
         assertThat(testInventario.getPrecio()).isEqualTo(UPDATED_PRECIO);
+        assertThat(testInventario.getDetalles()).isEqualTo(UPDATED_DETALLES);
 
         // Validate the Inventario in Elasticsearch
         Inventario inventarioEs = inventarioSearchRepository.findOne(testInventario.getId());
@@ -364,7 +373,8 @@ public class InventarioResourceIntTest {
             .andExpect(jsonPath("$.[*].fecha").value(hasItem(DEFAULT_FECHA.toString())))
             .andExpect(jsonPath("$.[*].cantidad").value(hasItem(DEFAULT_CANTIDAD)))
             .andExpect(jsonPath("$.[*].tipoDeMovimiento").value(hasItem(DEFAULT_TIPO_DE_MOVIMIENTO.toString())))
-            .andExpect(jsonPath("$.[*].precio").value(hasItem(DEFAULT_PRECIO.doubleValue())));
+            .andExpect(jsonPath("$.[*].precio").value(hasItem(DEFAULT_PRECIO.doubleValue())))
+            .andExpect(jsonPath("$.[*].detalles").value(hasItem(DEFAULT_DETALLES.toString())));
     }
 
     @Test

@@ -4,27 +4,31 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="pharmacrmApp.inventario.producto">Producto</span></dt>
+        <dt><span jhiTranslate="pharmacrmApp.inventario.fecha">Fecha</span></dt>
         <dd>
-            <div *ngIf="inventario.producto">
-                <a [routerLink]="['/producto', inventario.producto?.id]">{{inventario.producto?.nombre}}</a>
-            </div>
+            <span>{{inventario.fecha | date:'mediumDate'}}</span>
         </dd>
         <dt><span jhiTranslate="pharmacrmApp.inventario.cantidad">Cantidad</span></dt>
         <dd>
             <span>{{inventario.cantidad}}</span>
         </dd>
+        <dt><span jhiTranslate="pharmacrmApp.inventario.tipoDeMovimiento">Tipo De Movimiento</span></dt>
+        <dd>
+            <span jhiTranslate="{{'pharmacrmApp.TipoDeMovimiento.' + inventario.tipoDeMovimiento}}">{{inventario.tipoDeMovimiento}}</span>
+        </dd>
         <dt><span jhiTranslate="pharmacrmApp.inventario.precio">Precio</span></dt>
         <dd>
             <span>{{inventario.precio}}</span>
         </dd>
-        <dt><span jhiTranslate="pharmacrmApp.inventario.fecha">Fecha</span></dt>
+        <dt><span jhiTranslate="pharmacrmApp.inventario.detalles">Detalles</span></dt>
         <dd>
-            <span>{{inventario.fecha | date:'mediumDate'}}</span>
+            <span>{{inventario.detalles}}</span>
         </dd>
-        <dt><span jhiTranslate="pharmacrmApp.inventario.tipoDeMovimiento">Tipo De Movimiento</span></dt>
+        <dt><span jhiTranslate="pharmacrmApp.inventario.producto">Producto</span></dt>
         <dd>
-            <span jhiTranslate="{{'pharmacrmApp.TipoDeMovimiento.' + inventario.tipoDeMovimiento}}">{{inventario.tipoDeMovimiento}}</span>
+            <div *ngIf="inventario.producto">
+                <a [routerLink]="['/producto', inventario.producto?.id]">{{inventario.producto?.nombre}}</a>
+            </div>
         </dd>
     </dl>
 

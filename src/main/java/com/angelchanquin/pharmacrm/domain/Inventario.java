@@ -47,6 +47,9 @@ public class Inventario extends AbstractAuditingEntity implements Serializable {
     @Column(name = "precio", nullable = false)
     private Double precio;
 
+    @Column(name = "detalles")
+    private String detalles;
+
     @ManyToOne(optional = false)
     @NotNull
     private Producto producto;
@@ -112,6 +115,19 @@ public class Inventario extends AbstractAuditingEntity implements Serializable {
         this.precio = precio;
     }
 
+    public String getDetalles() {
+        return detalles;
+    }
+
+    public Inventario detalles(String detalles) {
+        this.detalles = detalles;
+        return this;
+    }
+
+    public void setDetalles(String detalles) {
+        this.detalles = detalles;
+    }
+
     public Producto getProducto() {
         return producto;
     }
@@ -154,6 +170,7 @@ public class Inventario extends AbstractAuditingEntity implements Serializable {
             ", cantidad=" + getCantidad() +
             ", tipoDeMovimiento='" + getTipoDeMovimiento() + "'" +
             ", precio=" + getPrecio() +
+            ", detalles='" + getDetalles() + "'" +
             "}";
     }
 }
