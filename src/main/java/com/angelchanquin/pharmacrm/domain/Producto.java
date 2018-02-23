@@ -22,7 +22,7 @@ import com.angelchanquin.pharmacrm.domain.enumeration.EstadoDeProducto;
 @Table(name = "producto")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "producto")
-public class Producto implements Serializable {
+public class Producto extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

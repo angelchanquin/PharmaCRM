@@ -3199,6 +3199,16 @@ generator-jhipster-elasticsearch-reindexer@^1.1.0:
     shelljs "0.5.3"
     yeoman-generator ">=0.22.2"
 
+generator-jhipster-entity-audit@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/generator-jhipster-entity-audit/-/generator-jhipster-entity-audit-3.1.0.tgz#0d2f080fea36a79a5bd59a8a812648815ae1afbc"
+  dependencies:
+    chalk "2.3.0"
+    generator-jhipster ">=4.10"
+    glob "7.1.2"
+    semver "5.4.1"
+    yeoman-generator "2.0.1"
+
 generator-jhipster@4.13.3:
   version "4.13.3"
   resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-4.13.3.tgz#fce551e893b7e962e49e67a68f5c6419bbcfeb94"
@@ -3225,7 +3235,7 @@ generator-jhipster@4.13.3:
     yeoman-environment "2.0.5"
     yeoman-generator "2.0.1"
 
-generator-jhipster@>=2.27.0:
+generator-jhipster@>=2.27.0, generator-jhipster@>=4.10:
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/generator-jhipster/-/generator-jhipster-4.14.0.tgz#c38a99e1a3668274859fec2f551b011a2cae90f8"
   dependencies:
@@ -5553,6 +5563,10 @@ ncname@1.0.x:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+ng-diff-match-patch@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/ng-diff-match-patch/-/ng-diff-match-patch-2.0.6.tgz#91a01d44de11eb39475f3efbd249fd7ec2255260"
 
 ng-jhipster@0.3.6:
   version "0.3.6"

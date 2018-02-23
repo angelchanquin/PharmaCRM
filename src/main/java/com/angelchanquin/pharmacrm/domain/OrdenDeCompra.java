@@ -25,7 +25,7 @@ import com.angelchanquin.pharmacrm.domain.enumeration.RecibidoOrdenDeCompra;
 @Table(name = "orden_de_compra")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "ordendecompra")
-public class OrdenDeCompra implements Serializable {
+public class OrdenDeCompra extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
