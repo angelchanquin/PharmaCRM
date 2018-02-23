@@ -21,6 +21,7 @@
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
     "generator-jhipster-elasticsearch-reindexer": "^1.1.0",
+    "generator-jhipster-entity-audit": "^3.1.0",
     "global": "^4.3.2",
     "jquery": "3.2.1",
     "ng-jhipster": "0.3.6",
@@ -31,7 +32,8 @@
     "rxjs": "5.5.5",
     "swagger-ui": "2.2.10",
     "tether": "1.4.0",
-    "zone.js": "0.8.16"
+    "zone.js": "0.8.16",
+    "ng-diff-match-patch": "2.0.6"
   },
   "devDependencies": {
     "@angular/cli": "1.6.0",

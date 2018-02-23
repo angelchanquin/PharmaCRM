@@ -20,7 +20,7 @@ import com.angelchanquin.pharmacrm.domain.enumeration.TipoDeMovimiento;
 @Table(name = "inventario")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "inventario")
-public class Inventario implements Serializable {
+public class Inventario extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

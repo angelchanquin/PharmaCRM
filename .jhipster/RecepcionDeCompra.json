@@ -44,5 +44,6 @@
     "service": "serviceClass",
     "entityTableName": "recepcion_de_compra",
     "jpaMetamodelFiltering": false,
-    "pagination": "no"
+    "pagination": "no",
+    "enableEntityAudit": true
 }

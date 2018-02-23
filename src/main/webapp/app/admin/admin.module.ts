@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { PharmacrmSharedModule } from '../shared';
 import { PharmacrmElasticsearchReindexModule } from './elasticsearch-reindex/elasticsearch-reindex.module';
+import { EntityAuditModule } from './entity-audit/entity-audit.module';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
 import {
@@ -36,6 +37,7 @@ import {
         PharmacrmSharedModule,
         RouterModule.forChild(adminState),
         PharmacrmElasticsearchReindexModule,
+        EntityAuditModule,
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
     declarations: [
