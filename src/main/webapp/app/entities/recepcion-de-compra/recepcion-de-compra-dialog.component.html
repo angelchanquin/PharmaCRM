@@ -14,7 +14,7 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.recepcionDeCompra.ordenDeCompra" for="field_ordenDeCompra">Orden De Compra</label>
-            <select class="form-control" id="field_ordenDeCompra" name="ordenDeCompra" [(ngModel)]="recepcionDeCompra.ordenDeCompra"  required>
+            <select class="form-control" id="field_ordenDeCompra" name="ordenDeCompra" [(ngModel)]="recepcionDeCompra.ordenDeCompra" (ngModelChange)="onOrdenChange($event)" required>
                 <option *ngIf="!editForm.value.ordenDeCompra" [ngValue]="null" selected></option>
                 <option [ngValue]="ordenDeCompraOption.id === recepcionDeCompra.ordenDeCompra?.id ? recepcionDeCompra.ordenDeCompra : ordenDeCompraOption" *ngFor="let ordenDeCompraOption of ordendecompras; trackBy: trackOrdenDeCompraById">{{ordenDeCompraOption.id}}</option>
             </select>
@@ -52,26 +52,47 @@
                 </small>
             </div>
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="pharmacrmApp.recepcionDeCompra.tipo" for="field_tipo">Tipo</label>
-            <select class="form-control" name="tipo" [(ngModel)]="recepcionDeCompra.tipo" id="field_tipo"  required>
-                <option value="TOTAL">{{'pharmacrmApp.TipoDeRecepcionDeCompra.TOTAL' | translate}}</option>
-                <option value="PARCIAL">{{'pharmacrmApp.TipoDeRecepcionDeCompra.PARCIAL' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.tipo?.dirty && editForm.controls.tipo?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.tipo?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" jhiTranslate="pharmacrmApp.recepcionDeCompra.tipo" for="field_tipo">Tipo</label>-->
+            <!--<select class="form-control" name="tipo" [(ngModel)]="recepcionDeCompra.tipo" id="field_tipo"  required>-->
+                <!--<option value="TOTAL">{{'pharmacrmApp.TipoDeRecepcionDeCompra.TOTAL' | translate}}</option>-->
+                <!--<option value="PARCIAL">{{'pharmacrmApp.TipoDeRecepcionDeCompra.PARCIAL' | translate}}</option>-->
+            <!--</select>-->
+            <!--<div [hidden]="!(editForm.controls.tipo?.dirty && editForm.controls.tipo?.invalid)">-->
+                <!--<small class="form-text text-danger"-->
+                   <!--[hidden]="!editForm.controls.tipo?.errors?.required" jhiTranslate="entity.validation.required">-->
+                   <!--This field is required.-->
+                <!--</small>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.recepcionDeCompra.notas" for="field_notas">Notas</label>
             <input type="text" class="form-control" name="notas" id="field_notas"
                 [(ngModel)]="recepcionDeCompra.notas" />
         </div>
 
-
+        <div class="table-responsive" *ngIf="detalleDeCompras">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.producto">Producto</span></th>
+                    <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.cantidad">Cantidad</span></th>
+                    <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.subTotal">Sub Total</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let detalleDeCompra of detalleDeCompras ;trackBy: trackId">
+                    <td>
+                        <div *ngIf="detalleDeCompra.producto">
+                            <a [routerLink]="['../producto', detalleDeCompra.producto?.id ]" >{{detalleDeCompra.producto?.proveedor.nombre}} - {{detalleDeCompra.producto?.nombre}} ({{detalleDeCompra.producto?.presentacion.nombre}})</a>
+                        </div>
+                    </td>
+                    <td>{{detalleDeCompra.cantidad}}</td>
+                    <td>{{detalleDeCompra.subTotal}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

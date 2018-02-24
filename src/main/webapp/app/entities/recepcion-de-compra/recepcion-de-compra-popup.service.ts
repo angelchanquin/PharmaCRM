@@ -1,7 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { RecepcionDeCompra } from './recepcion-de-compra.model';
+import { RecepcionDeCompra, TipoDeRecepcionDeCompra } from './recepcion-de-compra.model';
 import { RecepcionDeCompraService } from './recepcion-de-compra.service';
 
 @Injectable()
@@ -39,7 +39,15 @@ export class RecepcionDeCompraPopupService {
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.recepcionDeCompraModalRef(component, new RecepcionDeCompra());
+                    const recepcionDeCompra = new RecepcionDeCompra();
+                    const today = new Date();
+                    recepcionDeCompra.fechaDeRecepcion = {
+                        year: today.getFullYear(),
+                        month: today.getMonth() + 1,
+                        day: today.getDate()
+                    };
+                    recepcionDeCompra.tipo = TipoDeRecepcionDeCompra.TOTAL;
+                    this.ngbModalRef = this.recepcionDeCompraModalRef(component, recepcionDeCompra);
                     resolve(this.ngbModalRef);
                 }, 0);
             }

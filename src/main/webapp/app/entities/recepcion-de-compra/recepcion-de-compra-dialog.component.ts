@@ -11,6 +11,7 @@ import { RecepcionDeCompraPopupService } from './recepcion-de-compra-popup.servi
 import { RecepcionDeCompraService } from './recepcion-de-compra.service';
 import { OrdenDeCompra, OrdenDeCompraService } from '../orden-de-compra';
 import { ResponseWrapper } from '../../shared';
+import {DetalleDeCompra, DetalleDeCompraService} from '../detalle-de-compra';
 
 @Component({
     selector: 'jhi-recepcion-de-compra-dialog',
@@ -23,12 +24,14 @@ export class RecepcionDeCompraDialogComponent implements OnInit {
 
     ordendecompras: OrdenDeCompra[];
     fechaDeRecepcionDp: any;
+    detalleDeCompras: DetalleDeCompra[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private recepcionDeCompraService: RecepcionDeCompraService,
         private ordenDeCompraService: OrdenDeCompraService,
+        private detalleDeCompraService: DetalleDeCompraService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -75,6 +78,12 @@ export class RecepcionDeCompraDialogComponent implements OnInit {
 
     trackOrdenDeCompraById(index: number, item: OrdenDeCompra) {
         return item.id;
+    }
+
+    onOrdenChange(ordenDeCompra) {
+        this.detalleDeCompraService.findByOrderId(ordenDeCompra.id).subscribe( (res: ResponseWrapper) => {
+            this.detalleDeCompras = res.json;
+        } );
     }
 }
 
