@@ -8,13 +8,19 @@
         <dd>
             <span>{{inventario.fecha | date:'mediumDate'}}</span>
         </dd>
-        <dt><span jhiTranslate="pharmacrmApp.inventario.cantidad">Cantidad</span></dt>
-        <dd>
-            <span>{{inventario.cantidad}}</span>
-        </dd>
         <dt><span jhiTranslate="pharmacrmApp.inventario.tipoDeMovimiento">Tipo De Movimiento</span></dt>
         <dd>
             <span jhiTranslate="{{'pharmacrmApp.TipoDeMovimiento.' + inventario.tipoDeMovimiento}}">{{inventario.tipoDeMovimiento}}</span>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.inventario.producto">Producto</span></dt>
+        <dd>
+            <div *ngIf="inventario.producto">
+                <a [routerLink]="['/producto', inventario.producto?.id]">{{inventario.producto?.proveedor.nombre}} - {{inventario.producto?.nombre}} ({{inventario.producto?.presentacion.nombre}})</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.inventario.cantidad">Cantidad</span></dt>
+        <dd>
+            <span>{{inventario.cantidad}}</span>
         </dd>
         <dt><span jhiTranslate="pharmacrmApp.inventario.precio">Precio</span></dt>
         <dd>
@@ -24,12 +30,7 @@
         <dd>
             <span>{{inventario.detalles}}</span>
         </dd>
-        <dt><span jhiTranslate="pharmacrmApp.inventario.producto">Producto</span></dt>
-        <dd>
-            <div *ngIf="inventario.producto">
-                <a [routerLink]="['/producto', inventario.producto?.id]">{{inventario.producto?.nombre}}</a>
-            </div>
-        </dd>
+
     </dl>
 
     <button type="submit"

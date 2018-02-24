@@ -1,7 +1,10 @@
 package com.angelchanquin.pharmacrm.service;
 
+import com.angelchanquin.pharmacrm.domain.Inventario;
 import com.angelchanquin.pharmacrm.domain.Producto;
 import com.angelchanquin.pharmacrm.domain.Proveedor;
+import com.angelchanquin.pharmacrm.domain.enumeration.TipoDeMovimiento;
+import com.angelchanquin.pharmacrm.repository.InventarioRepository;
 import com.angelchanquin.pharmacrm.repository.ProductoRepository;
 import com.angelchanquin.pharmacrm.repository.ProveedorRepository;
 import com.angelchanquin.pharmacrm.repository.search.ProductoSearchRepository;
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -31,11 +35,13 @@ public class ProductoService {
     private final ProductoRepository productoRepository;
     private final ProductoSearchRepository productoSearchRepository;
     private final ProveedorRepository proveedorRepository;
+    private final InventarioRepository inventarioRepository;
 
-    public ProductoService(ProductoRepository productoRepository, ProductoSearchRepository productoSearchRepository, ProveedorRepository proveedorRepository) {
+    public ProductoService(ProductoRepository productoRepository, ProductoSearchRepository productoSearchRepository, ProveedorRepository proveedorRepository, InventarioRepository inventarioRepository) {
         this.productoRepository = productoRepository;
         this.productoSearchRepository = productoSearchRepository;
         this.proveedorRepository = proveedorRepository;
+        this.inventarioRepository = inventarioRepository;
     }
 
     /**
@@ -44,6 +50,7 @@ public class ProductoService {
      * @param producto the entity to save
      * @return the persisted entity
      */
+    @Transactional
     public Producto save(Producto producto) {
         log.debug("Request to save Producto : {}", producto);
         Producto result = productoRepository.save(producto);
@@ -107,5 +114,38 @@ public class ProductoService {
         }
 
         return productoRepository.getAllByProveedor(proveedor);
+    }
+
+    @Transactional
+    public Producto createProductoAndInsertInventory(Producto producto) {
+        Producto result = this.save(producto);
+        if (result != null) {
+            Inventario newInventario = new Inventario();
+            newInventario.setFecha(LocalDate.now());
+            newInventario.setProducto(producto);
+            newInventario.setCantidad(producto.getUnidadesEnStock());
+            newInventario.setPrecio(producto.getPrecioDeCosto());
+            newInventario.setTipoDeMovimiento(TipoDeMovimiento.INGRESO);
+            newInventario.setDetalles("Ingreso de existencia inicial");
+            inventarioRepository.save(newInventario);
+        }
+        return result;
+    }
+
+    @Transactional
+    public Producto updateProductoAndInsertInventory(Producto producto) {
+        Producto previeousProducto = productoRepository.findOne(producto.getId());
+        if (!previeousProducto.getUnidadesEnStock().equals(producto.getUnidadesEnStock())) {
+            Inventario newInventario = new Inventario();
+            newInventario.setFecha(LocalDate.now());
+            newInventario.setProducto(producto);
+            newInventario.setCantidad(producto.getUnidadesEnStock());
+            newInventario.setPrecio(producto.getPrecioDeCosto());
+            newInventario.setTipoDeMovimiento(TipoDeMovimiento.CORRECCION);
+            newInventario.setDetalles("Correccion de existencia");
+            inventarioRepository.save(newInventario);
+        }
+        Producto result = this.save(producto);
+        return result;
     }
 }

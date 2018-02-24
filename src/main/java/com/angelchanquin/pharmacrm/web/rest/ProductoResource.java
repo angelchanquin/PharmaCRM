@@ -56,7 +56,7 @@ public class ProductoResource {
         if (producto.getId() != null) {
             throw new BadRequestAlertException("A new producto cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Producto result = productoService.save(producto);
+        Producto result = productoService.createProductoAndInsertInventory(producto);
         return ResponseEntity.created(new URI("/api/productos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -78,7 +78,7 @@ public class ProductoResource {
         if (producto.getId() == null) {
             return createProducto(producto);
         }
-        Producto result = productoService.save(producto);
+        Producto result = productoService.updateProductoAndInsertInventory(producto);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, producto.getId().toString()))
             .body(result);
