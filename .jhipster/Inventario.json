@@ -40,13 +40,17 @@
                 "min"
             ],
             "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "detalles",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180219023252",
-    "entityTableName": "inventario",
     "dto": "no",
-    "pagination": "no",
     "service": "no",
+    "entityTableName": "inventario",
     "jpaMetamodelFiltering": false,
+    "pagination": "no",
     "enableEntityAudit": true
 }

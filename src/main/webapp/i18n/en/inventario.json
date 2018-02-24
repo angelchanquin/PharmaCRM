@@ -20,6 +20,7 @@
             "cantidad": "Cantidad",
             "tipoDeMovimiento": "Tipo De Movimiento",
             "precio": "Precio",
+            "detalles": "Detalles",
             "producto": "Producto"
         }
     }

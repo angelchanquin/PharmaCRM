@@ -1,15 +1,10 @@
 package com.angelchanquin.pharmacrm.web.rest;
 
-import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
-import com.angelchanquin.pharmacrm.repository.OrdenDeCompraRepository;
-import com.angelchanquin.pharmacrm.service.DetalleDeCompraService;
-import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.DetalleDeCompra;
-
-import com.angelchanquin.pharmacrm.repository.DetalleDeCompraRepository;
-import com.angelchanquin.pharmacrm.repository.search.DetalleDeCompraSearchRepository;
+import com.angelchanquin.pharmacrm.service.DetalleDeCompraService;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing DetalleDeCompra.
@@ -38,15 +28,9 @@ public class DetalleDeCompraResource {
 
     private static final String ENTITY_NAME = "detalleDeCompra";
 
-    private final DetalleDeCompraRepository detalleDeCompraRepository;
-
-    private final DetalleDeCompraSearchRepository detalleDeCompraSearchRepository;
-
     private final DetalleDeCompraService detalleDeCompraService;
 
-    public DetalleDeCompraResource(DetalleDeCompraRepository detalleDeCompraRepository, DetalleDeCompraSearchRepository detalleDeCompraSearchRepository, OrdenDeCompraRepository ordenDeCompraRepository, DetalleDeCompraService detalleDeCompraService) {
-        this.detalleDeCompraRepository = detalleDeCompraRepository;
-        this.detalleDeCompraSearchRepository = detalleDeCompraSearchRepository;
+    public DetalleDeCompraResource(DetalleDeCompraService detalleDeCompraService) {
         this.detalleDeCompraService = detalleDeCompraService;
     }
 
@@ -105,7 +89,7 @@ public class DetalleDeCompraResource {
     @Timed
     public List<DetalleDeCompra> getAllDetalleDeCompras() {
         log.debug("REST request to get all DetalleDeCompras");
-        return detalleDeCompraRepository.findAll();
+        return detalleDeCompraService.findAll();
         }
 
     /**
@@ -118,7 +102,7 @@ public class DetalleDeCompraResource {
     @Timed
     public ResponseEntity<DetalleDeCompra> getDetalleDeCompra(@PathVariable Long id) {
         log.debug("REST request to get DetalleDeCompra : {}", id);
-        DetalleDeCompra detalleDeCompra = detalleDeCompraRepository.findOne(id);
+        DetalleDeCompra detalleDeCompra = detalleDeCompraService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(detalleDeCompra));
     }
 
@@ -154,9 +138,7 @@ public class DetalleDeCompraResource {
     @Timed
     public List<DetalleDeCompra> searchDetalleDeCompras(@RequestParam String query) {
         log.debug("REST request to search DetalleDeCompras for query {}", query);
-        return StreamSupport
-            .stream(detalleDeCompraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        return detalleDeCompraService.search(query);
     }
 
 }

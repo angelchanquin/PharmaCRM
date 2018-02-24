@@ -48,15 +48,15 @@
                         </a>
                     </li>
                     <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
-                        <a class="dropdown-item" routerLink="orden-de-compra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.ordenDeCompra">Orden De Compra</span>
-                        </a>
-                    </li>
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="inventario" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.inventario">Inventario</span>
+                        </a>
+                    </li>
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+                        <a class="dropdown-item" routerLink="orden-de-compra" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.ordenDeCompra">Orden De Compra</span>
                         </a>
                     </li>
                     <li>

@@ -39,14 +39,7 @@ export class InventarioPopupService {
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    const inventario = new Inventario();
-                    const today = new Date();
-                    inventario.fecha = {
-                        year: today.getFullYear(),
-                        month: today.getMonth() + 1,
-                        day: today.getDate()
-                    };
-                    this.ngbModalRef = this.inventarioModalRef(component, inventario);
+                    this.ngbModalRef = this.inventarioModalRef(component, new Inventario());
                     resolve(this.ngbModalRef);
                 }, 0);
             }
