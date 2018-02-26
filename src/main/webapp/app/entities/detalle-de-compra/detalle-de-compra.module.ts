@@ -14,6 +14,7 @@ import {
     detalleDeCompraRoute,
     detalleDeCompraPopupRoute,
 } from './';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 const ENTITY_STATES = [
     ...detalleDeCompraRoute,
@@ -23,6 +24,7 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         PharmacrmSharedModule,
+        NgSelectModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [

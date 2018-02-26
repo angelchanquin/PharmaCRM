@@ -91,7 +91,11 @@ export class DetalleDeCompraDialogComponent implements OnInit {
     }
 
     onProductChange(producto) {
-        this.detalleDeCompra.precio = producto.precioDeCosto;
+        if (producto) {
+            this.detalleDeCompra.precio = producto.precioDeCosto;
+        } else {
+            this.detalleDeCompra.precio = 0;
+        }
         if (this.detalleDeCompra.cantidad) {
             this.detalleDeCompra.subTotal = this.detalleDeCompra.cantidad * this.detalleDeCompra.precio;
         }
