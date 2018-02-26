@@ -25,10 +25,25 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeCompra.producto" for="field_producto">Producto</label>
-            <select class="form-control" id="field_producto" name="producto" [(ngModel)]="detalleDeCompra.producto"  (ngModelChange)="onProductChange($event)"  required>
-                <option *ngIf="!editForm.value.producto" [ngValue]="null" selected></option>
-                <option [ngValue]="productoOption.id === detalleDeCompra.producto?.id ? detalleDeCompra.producto : productoOption" *ngFor="let productoOption of productos; trackBy: trackProductoById">{{productoOption.nombre}} ({{productoOption.presentacion.nombre}})</option>
-            </select>
+
+            <ng-select [items]="productos"
+                       bindLabel="nombre"
+                       placeholder="Selecciona un Producto"
+                       notFoundText="No se encontraron Productos"
+                       [(ngModel)]="detalleDeCompra.producto" [ngModelOptions]="{standalone: true}" (ngModelChange)="onProductChange($event)"
+                       id="field_producto">
+                <ng-template ng-label-tmp let-item="item">
+                    {{item.nombre}} ({{item.presentacion.nombre}})
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    {{item.nombre}} ({{item.presentacion.nombre}})
+                </ng-template>
+            </ng-select>
+
+            <!--<select class="form-control" id="field_producto" name="producto" [(ngModel)]="detalleDeCompra.producto"  (ngModelChange)="onProductChange($event)"  required>-->
+                <!--<option *ngIf="!editForm.value.producto" [ngValue]="null" selected></option>-->
+                <!--<option [ngValue]="productoOption.id === detalleDeCompra.producto?.id ? detalleDeCompra.producto : productoOption" *ngFor="let productoOption of productos; trackBy: trackProductoById">{{productoOption.nombre}} ({{productoOption.presentacion.nombre}})</option>-->
+            <!--</select>-->
         </div>
         <div [hidden]="!(editForm.controls.producto?.dirty && editForm.controls.producto?.invalid)">
             <small class="form-text text-danger"

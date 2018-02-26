@@ -143,6 +143,10 @@
   version "1.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-beta.7.tgz#58bc81f610028f40526529ce40483a95028163b0"
 
+"@ng-select/ng-select@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-0.21.0.tgz#4aec32cec5ac6bb9f4f9b8746e15320115480843"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"

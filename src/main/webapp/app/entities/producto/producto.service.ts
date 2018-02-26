@@ -44,9 +44,7 @@ export class ProductoService {
     }
 
     queryByProveedor(proveedorId: number): Observable<ResponseWrapper> {
-        const url = this.resourceUrl + '/proveedor/' + proveedorId;
-        console.log('url', url);
-        return this.http.get(url)
+        return this.http.get(this.resourceUrl + '/proveedor/' + proveedorId)
             .map((res: Response) => this.convertResponse(res));
     }
 
