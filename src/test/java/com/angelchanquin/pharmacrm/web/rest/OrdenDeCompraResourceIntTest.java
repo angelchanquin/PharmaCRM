@@ -5,6 +5,7 @@ import com.angelchanquin.pharmacrm.PharmacrmApp;
 import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
 import com.angelchanquin.pharmacrm.domain.Proveedor;
 import com.angelchanquin.pharmacrm.repository.OrdenDeCompraRepository;
+import com.angelchanquin.pharmacrm.service.OrdenDeCompraService;
 import com.angelchanquin.pharmacrm.repository.search.OrdenDeCompraSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
@@ -66,6 +67,9 @@ public class OrdenDeCompraResourceIntTest {
     private OrdenDeCompraRepository ordenDeCompraRepository;
 
     @Autowired
+    private OrdenDeCompraService ordenDeCompraService;
+
+    @Autowired
     private OrdenDeCompraSearchRepository ordenDeCompraSearchRepository;
 
     @Autowired
@@ -87,7 +91,7 @@ public class OrdenDeCompraResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final OrdenDeCompraResource ordenDeCompraResource = new OrdenDeCompraResource(ordenDeCompraRepository, ordenDeCompraSearchRepository);
+        final OrdenDeCompraResource ordenDeCompraResource = new OrdenDeCompraResource(ordenDeCompraService);
         this.restOrdenDeCompraMockMvc = MockMvcBuilders.standaloneSetup(ordenDeCompraResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -309,8 +313,8 @@ public class OrdenDeCompraResourceIntTest {
     @Transactional
     public void updateOrdenDeCompra() throws Exception {
         // Initialize the database
-        ordenDeCompraRepository.saveAndFlush(ordenDeCompra);
-        ordenDeCompraSearchRepository.save(ordenDeCompra);
+        ordenDeCompraService.save(ordenDeCompra);
+
         int databaseSizeBeforeUpdate = ordenDeCompraRepository.findAll().size();
 
         // Update the ordenDeCompra
@@ -368,8 +372,8 @@ public class OrdenDeCompraResourceIntTest {
     @Transactional
     public void deleteOrdenDeCompra() throws Exception {
         // Initialize the database
-        ordenDeCompraRepository.saveAndFlush(ordenDeCompra);
-        ordenDeCompraSearchRepository.save(ordenDeCompra);
+        ordenDeCompraService.save(ordenDeCompra);
+
         int databaseSizeBeforeDelete = ordenDeCompraRepository.findAll().size();
 
         // Get the ordenDeCompra
@@ -390,8 +394,7 @@ public class OrdenDeCompraResourceIntTest {
     @Transactional
     public void searchOrdenDeCompra() throws Exception {
         // Initialize the database
-        ordenDeCompraRepository.saveAndFlush(ordenDeCompra);
-        ordenDeCompraSearchRepository.save(ordenDeCompra);
+        ordenDeCompraService.save(ordenDeCompra);
 
         // Search the ordenDeCompra
         restOrdenDeCompraMockMvc.perform(get("/api/_search/orden-de-compras?query=id:" + ordenDeCompra.getId()))

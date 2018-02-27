@@ -28,16 +28,16 @@
     <div class="table-responsive" *ngIf="ordenDeCompras">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia">Numero De Referencia</span></th>
-                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.proveedor">Proveedor</span></th>
-                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fecha">Fecha</span></th>
-                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.fechaDeEntregaEsperada">Fecha De Entrega Esperada</span></th>
-                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.estado">Estado</span></th>
-                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.recibido">Recibido</span></th>
-                <th><span jhiTranslate="pharmacrmApp.ordenDeCompra.total">Total</span></th>
-                <th></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="numeroDeReferencia"><span jhiTranslate="pharmacrmApp.ordenDeCompra.numeroDeReferencia">Numero De Referencia</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="proveedor.nombre"><span jhiTranslate="pharmacrmApp.ordenDeCompra.proveedor">Proveedor</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="fecha"><span jhiTranslate="pharmacrmApp.ordenDeCompra.fecha">Fecha</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="fechaDeEntregaEsperada"><span jhiTranslate="pharmacrmApp.ordenDeCompra.fechaDeEntregaEsperada">Fecha De Entrega Esperada</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="estado"><span jhiTranslate="pharmacrmApp.ordenDeCompra.estado">Estado</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="recibido"><span jhiTranslate="pharmacrmApp.ordenDeCompra.recibido">Recibido</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="total"><span jhiTranslate="pharmacrmApp.ordenDeCompra.total">Total</span> <span class="fa fa-sort"></span></th>
+            <th></th>
             </tr>
             </thead>
             <tbody>
@@ -83,5 +83,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="ordenDeCompras && ordenDeCompras.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
     </div>
 </div>
