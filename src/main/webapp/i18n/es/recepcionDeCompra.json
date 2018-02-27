@@ -20,6 +20,7 @@
             "fechaDeRecepcion": "Fecha De Recepcion",
             "tipo": "Tipo",
             "notas": "Notas",
+            "detalleDeRecepcionDeCompra": "Detalle De Recepcion De Compra",
             "ordenDeCompra": "Orden De Compra"
         }
     }

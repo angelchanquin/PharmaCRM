@@ -11,6 +11,7 @@ export class Proveedor implements BaseEntity {
         public sitioWeb?: string,
         public direccion?: string,
         public productos?: BaseEntity[],
+        public ordenDeCompras?: BaseEntity[],
     ) {
     }
 }

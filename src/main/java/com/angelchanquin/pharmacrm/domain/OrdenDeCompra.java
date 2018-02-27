@@ -63,7 +63,12 @@ public class OrdenDeCompra extends AbstractAuditingEntity implements Serializabl
     @OneToMany(mappedBy = "ordenDeCompra")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<DetalleDeCompra> detalles = new HashSet<>();
+    private Set<DetalleDeCompra> detalleDeCompras = new HashSet<>();
+
+    @OneToMany(mappedBy = "ordenDeCompra")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<RecepcionDeCompra> recepcionDeCompras = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
@@ -156,29 +161,54 @@ public class OrdenDeCompra extends AbstractAuditingEntity implements Serializabl
         this.recibido = recibido;
     }
 
-    public Set<DetalleDeCompra> getDetalles() {
-        return detalles;
+    public Set<DetalleDeCompra> getDetalleDeCompras() {
+        return detalleDeCompras;
     }
 
-    public OrdenDeCompra detalles(Set<DetalleDeCompra> detalleDeCompras) {
-        this.detalles = detalleDeCompras;
+    public OrdenDeCompra detalleDeCompras(Set<DetalleDeCompra> detalleDeCompras) {
+        this.detalleDeCompras = detalleDeCompras;
         return this;
     }
 
-    public OrdenDeCompra addDetalle(DetalleDeCompra detalleDeCompra) {
-        this.detalles.add(detalleDeCompra);
+    public OrdenDeCompra addDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
+        this.detalleDeCompras.add(detalleDeCompra);
         detalleDeCompra.setOrdenDeCompra(this);
         return this;
     }
 
-    public OrdenDeCompra removeDetalle(DetalleDeCompra detalleDeCompra) {
-        this.detalles.remove(detalleDeCompra);
+    public OrdenDeCompra removeDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
+        this.detalleDeCompras.remove(detalleDeCompra);
         detalleDeCompra.setOrdenDeCompra(null);
         return this;
     }
 
-    public void setDetalles(Set<DetalleDeCompra> detalleDeCompras) {
-        this.detalles = detalleDeCompras;
+    public void setDetalleDeCompras(Set<DetalleDeCompra> detalleDeCompras) {
+        this.detalleDeCompras = detalleDeCompras;
+    }
+
+    public Set<RecepcionDeCompra> getRecepcionDeCompras() {
+        return recepcionDeCompras;
+    }
+
+    public OrdenDeCompra recepcionDeCompras(Set<RecepcionDeCompra> recepcionDeCompras) {
+        this.recepcionDeCompras = recepcionDeCompras;
+        return this;
+    }
+
+    public OrdenDeCompra addRecepcionDeCompra(RecepcionDeCompra recepcionDeCompra) {
+        this.recepcionDeCompras.add(recepcionDeCompra);
+        recepcionDeCompra.setOrdenDeCompra(this);
+        return this;
+    }
+
+    public OrdenDeCompra removeRecepcionDeCompra(RecepcionDeCompra recepcionDeCompra) {
+        this.recepcionDeCompras.remove(recepcionDeCompra);
+        recepcionDeCompra.setOrdenDeCompra(null);
+        return this;
+    }
+
+    public void setRecepcionDeCompras(Set<RecepcionDeCompra> recepcionDeCompras) {
+        this.recepcionDeCompras = recepcionDeCompras;
     }
 
     public Proveedor getProveedor() {

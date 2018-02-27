@@ -2,12 +2,16 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "detalleDeRecepcionDeCompra",
+            "otherEntityName": "detalleDeRecepcionDeCompra",
+            "otherEntityRelationshipName": "recepcionDeCompra"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "ordenDeCompra",
             "otherEntityName": "ordenDeCompra",
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": [
-                "required"
-            ],
             "otherEntityField": "id"
         }
     ],
@@ -29,7 +33,7 @@
         {
             "fieldName": "tipo",
             "fieldType": "TipoDeRecepcionDeCompra",
-            "fieldValues": "TOTAL, PARCIAL",
+            "fieldValues": "TOTAL,PARCIAL",
             "fieldValidateRules": [
                 "required"
             ]
@@ -40,10 +44,11 @@
         }
     ],
     "changelogDate": "20180221203927",
-    "dto": "no",
-    "service": "serviceClass",
     "entityTableName": "recepcion_de_compra",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
-    "pagination": "no",
+    "searchEngine": "elasticsearch",
     "enableEntityAudit": true
 }

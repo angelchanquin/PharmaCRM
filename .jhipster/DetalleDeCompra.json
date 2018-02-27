@@ -46,8 +46,9 @@
     "changelogDate": "20180215214454",
     "entityTableName": "detalle_de_compra",
     "dto": "no",
-    "pagination": "no",
-    "service": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
+    "searchEngine": "elasticsearch",
     "enableEntityAudit": true
 }

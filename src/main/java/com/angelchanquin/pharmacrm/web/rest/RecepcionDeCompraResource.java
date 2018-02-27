@@ -5,9 +5,14 @@ import com.angelchanquin.pharmacrm.domain.RecepcionDeCompra;
 import com.angelchanquin.pharmacrm.service.RecepcionDeCompraService;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
+import com.angelchanquin.pharmacrm.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,14 +88,17 @@ public class RecepcionDeCompraResource {
     /**
      * GET  /recepcion-de-compras : get all the recepcionDeCompras.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of recepcionDeCompras in body
      */
     @GetMapping("/recepcion-de-compras")
     @Timed
-    public List<RecepcionDeCompra> getAllRecepcionDeCompras() {
-        log.debug("REST request to get all RecepcionDeCompras");
-        return recepcionDeCompraService.findAll();
-        }
+    public ResponseEntity<List<RecepcionDeCompra>> getAllRecepcionDeCompras(Pageable pageable) {
+        log.debug("REST request to get a page of RecepcionDeCompras");
+        Page<RecepcionDeCompra> page = recepcionDeCompraService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/recepcion-de-compras");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /recepcion-de-compras/:id : get the "id" recepcionDeCompra.
@@ -125,13 +133,16 @@ public class RecepcionDeCompraResource {
      * to the query.
      *
      * @param query the query of the recepcionDeCompra search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/recepcion-de-compras")
     @Timed
-    public List<RecepcionDeCompra> searchRecepcionDeCompras(@RequestParam String query) {
-        log.debug("REST request to search RecepcionDeCompras for query {}", query);
-        return recepcionDeCompraService.search(query);
+    public ResponseEntity<List<RecepcionDeCompra>> searchRecepcionDeCompras(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of RecepcionDeCompras for query {}", query);
+        Page<RecepcionDeCompra> page = recepcionDeCompraService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/recepcion-de-compras");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

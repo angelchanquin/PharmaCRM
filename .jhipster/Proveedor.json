@@ -6,6 +6,12 @@
             "relationshipName": "producto",
             "otherEntityName": "producto",
             "otherEntityRelationshipName": "proveedor"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "ordenDeCompra",
+            "otherEntityName": "ordenDeCompra",
+            "otherEntityRelationshipName": "proveedor"
         }
     ],
     "fields": [
@@ -47,8 +53,9 @@
     "changelogDate": "20180129021545",
     "entityTableName": "proveedor",
     "dto": "no",
-    "pagination": "no",
-    "service": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
+    "searchEngine": "elasticsearch",
     "enableEntityAudit": true
 }

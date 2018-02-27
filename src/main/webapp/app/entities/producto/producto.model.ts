@@ -1,4 +1,6 @@
 import { BaseEntity } from './../../shared';
+import {Proveedor} from '../proveedor';
+import {PresentacionDeProducto} from '../presentacion-de-producto';
 
 export const enum EstadoDeProducto {
     'ACTIVO',
@@ -17,10 +19,11 @@ export class Producto implements BaseEntity {
         public unidadesEnStock?: number,
         public estado?: EstadoDeProducto,
         public minimoEnExistencia?: number,
+        public detalleDeCompras?: BaseEntity[],
         public inventarios?: BaseEntity[],
-        public ordens?: BaseEntity[],
-        public presentacion?: BaseEntity,
-        public proveedor?: BaseEntity,
+        public detalleDeRecepcionDeCompras?: BaseEntity[],
+        public proveedor?: Proveedor,
+        public presentacion?: PresentacionDeProducto,
     ) {
     }
 }

@@ -23,7 +23,8 @@
             "fechaDeEntregaEsperada": "Fecha De Entrega Esperada",
             "estado": "Estado",
             "recibido": "Recibido",
-            "detalle": "Detalle",
+            "detalleDeCompra": "Detalle De Compra",
+            "recepcionDeCompra": "Recepcion De Compra",
             "proveedor": "Proveedor"
         }
     }

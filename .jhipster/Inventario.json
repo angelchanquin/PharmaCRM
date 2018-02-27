@@ -47,10 +47,11 @@
         }
     ],
     "changelogDate": "20180219023252",
-    "dto": "no",
-    "service": "no",
     "entityTableName": "inventario",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
-    "pagination": "no",
+    "searchEngine": "elasticsearch",
     "enableEntityAudit": true
 }

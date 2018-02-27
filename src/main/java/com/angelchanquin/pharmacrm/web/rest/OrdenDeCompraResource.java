@@ -1,28 +1,26 @@
 package com.angelchanquin.pharmacrm.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
-
-import com.angelchanquin.pharmacrm.repository.OrdenDeCompraRepository;
-import com.angelchanquin.pharmacrm.repository.search.OrdenDeCompraSearchRepository;
+import com.angelchanquin.pharmacrm.service.OrdenDeCompraService;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
+import com.angelchanquin.pharmacrm.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing OrdenDeCompra.
@@ -35,13 +33,10 @@ public class OrdenDeCompraResource {
 
     private static final String ENTITY_NAME = "ordenDeCompra";
 
-    private final OrdenDeCompraRepository ordenDeCompraRepository;
+    private final OrdenDeCompraService ordenDeCompraService;
 
-    private final OrdenDeCompraSearchRepository ordenDeCompraSearchRepository;
-
-    public OrdenDeCompraResource(OrdenDeCompraRepository ordenDeCompraRepository, OrdenDeCompraSearchRepository ordenDeCompraSearchRepository) {
-        this.ordenDeCompraRepository = ordenDeCompraRepository;
-        this.ordenDeCompraSearchRepository = ordenDeCompraSearchRepository;
+    public OrdenDeCompraResource(OrdenDeCompraService ordenDeCompraService) {
+        this.ordenDeCompraService = ordenDeCompraService;
     }
 
     /**
@@ -61,8 +56,7 @@ public class OrdenDeCompraResource {
         if (ordenDeCompra.getTotal() == null) {
             ordenDeCompra.setTotal(0D);
         }
-        OrdenDeCompra result = ordenDeCompraRepository.save(ordenDeCompra);
-        ordenDeCompraSearchRepository.save(result);
+        OrdenDeCompra result = ordenDeCompraService.save(ordenDeCompra);
         return ResponseEntity.created(new URI("/api/orden-de-compras/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -84,8 +78,7 @@ public class OrdenDeCompraResource {
         if (ordenDeCompra.getId() == null) {
             return createOrdenDeCompra(ordenDeCompra);
         }
-        OrdenDeCompra result = ordenDeCompraRepository.save(ordenDeCompra);
-        ordenDeCompraSearchRepository.save(result);
+        OrdenDeCompra result = ordenDeCompraService.save(ordenDeCompra);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ordenDeCompra.getId().toString()))
             .body(result);
@@ -94,14 +87,17 @@ public class OrdenDeCompraResource {
     /**
      * GET  /orden-de-compras : get all the ordenDeCompras.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of ordenDeCompras in body
      */
     @GetMapping("/orden-de-compras")
     @Timed
-    public List<OrdenDeCompra> getAllOrdenDeCompras() {
-        log.debug("REST request to get all OrdenDeCompras");
-        return ordenDeCompraRepository.findAll();
-        }
+    public ResponseEntity<List<OrdenDeCompra>> getAllOrdenDeCompras(Pageable pageable) {
+        log.debug("REST request to get a page of OrdenDeCompras");
+        Page<OrdenDeCompra> page = ordenDeCompraService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/orden-de-compras");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /orden-de-compras/:id : get the "id" ordenDeCompra.
@@ -113,7 +109,7 @@ public class OrdenDeCompraResource {
     @Timed
     public ResponseEntity<OrdenDeCompra> getOrdenDeCompra(@PathVariable Long id) {
         log.debug("REST request to get OrdenDeCompra : {}", id);
-        OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(id);
+        OrdenDeCompra ordenDeCompra = ordenDeCompraService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ordenDeCompra));
     }
 
@@ -127,8 +123,7 @@ public class OrdenDeCompraResource {
     @Timed
     public ResponseEntity<Void> deleteOrdenDeCompra(@PathVariable Long id) {
         log.debug("REST request to delete OrdenDeCompra : {}", id);
-        ordenDeCompraRepository.delete(id);
-        ordenDeCompraSearchRepository.delete(id);
+        ordenDeCompraService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -137,15 +132,16 @@ public class OrdenDeCompraResource {
      * to the query.
      *
      * @param query the query of the ordenDeCompra search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/orden-de-compras")
     @Timed
-    public List<OrdenDeCompra> searchOrdenDeCompras(@RequestParam String query) {
-        log.debug("REST request to search OrdenDeCompras for query {}", query);
-        return StreamSupport
-            .stream(ordenDeCompraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<OrdenDeCompra>> searchOrdenDeCompras(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of OrdenDeCompras for query {}", query);
+        Page<OrdenDeCompra> page = ordenDeCompraService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/orden-de-compras");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

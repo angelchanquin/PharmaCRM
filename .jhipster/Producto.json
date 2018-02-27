@@ -3,28 +3,34 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
+            "relationshipName": "detalleDeCompra",
+            "otherEntityName": "detalleDeCompra",
+            "otherEntityRelationshipName": "producto"
+        },
+        {
+            "relationshipType": "one-to-many",
             "relationshipName": "inventario",
             "otherEntityName": "inventario",
             "otherEntityRelationshipName": "producto"
         },
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "orden",
-            "otherEntityName": "detalleDeCompra",
+            "relationshipName": "detalleDeRecepcionDeCompra",
+            "otherEntityName": "detalleDeRecepcionDeCompra",
             "otherEntityRelationshipName": "producto"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": "required",
-            "relationshipName": "presentacion",
-            "otherEntityName": "presentacionDeProducto",
-            "otherEntityField": "nombre"
         },
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
             "relationshipName": "proveedor",
             "otherEntityName": "proveedor",
+            "otherEntityField": "nombre"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "presentacion",
+            "otherEntityName": "presentacionDeProducto",
             "otherEntityField": "nombre"
         }
     ],
@@ -58,6 +64,7 @@
             "fieldName": "precioDeVenta2",
             "fieldType": "Double",
             "fieldValidateRules": [
+                "required",
                 "min"
             ],
             "fieldValidateRulesMin": 0
@@ -66,6 +73,7 @@
             "fieldName": "precioDeVenta3",
             "fieldType": "Double",
             "fieldValidateRules": [
+                "required",
                 "min"
             ],
             "fieldValidateRulesMin": 0
@@ -103,14 +111,15 @@
                 "required",
                 "min"
             ],
-            "fieldValidateRulesMin": "0"
+            "fieldValidateRulesMin": 0
         }
     ],
     "changelogDate": "20180129021547",
     "entityTableName": "producto",
     "dto": "no",
-    "pagination": "no",
-    "service": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
+    "searchEngine": "elasticsearch",
     "enableEntityAudit": true
 }

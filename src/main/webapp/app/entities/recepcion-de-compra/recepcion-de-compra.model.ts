@@ -2,7 +2,7 @@ import { BaseEntity } from './../../shared';
 
 export const enum TipoDeRecepcionDeCompra {
     'TOTAL',
-    ' PARCIAL'
+    'PARCIAL'
 }
 
 export class RecepcionDeCompra implements BaseEntity {
@@ -12,6 +12,7 @@ export class RecepcionDeCompra implements BaseEntity {
         public fechaDeRecepcion?: any,
         public tipo?: TipoDeRecepcionDeCompra,
         public notas?: string,
+        public detalleDeRecepcionDeCompras?: BaseEntity[],
         public ordenDeCompra?: BaseEntity,
     ) {
     }

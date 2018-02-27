@@ -9,8 +9,8 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Producto } from './producto.model';
 import { ProductoPopupService } from './producto-popup.service';
 import { ProductoService } from './producto.service';
-import { PresentacionDeProducto, PresentacionDeProductoService } from '../presentacion-de-producto';
 import { Proveedor, ProveedorService } from '../proveedor';
+import { PresentacionDeProducto, PresentacionDeProductoService } from '../presentacion-de-producto';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -22,26 +22,26 @@ export class ProductoDialogComponent implements OnInit {
     producto: Producto;
     isSaving: boolean;
 
-    presentaciondeproductos: PresentacionDeProducto[];
-
     proveedors: Proveedor[];
+
+    presentaciondeproductos: PresentacionDeProducto[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private productoService: ProductoService,
-        private presentacionDeProductoService: PresentacionDeProductoService,
         private proveedorService: ProveedorService,
+        private presentacionDeProductoService: PresentacionDeProductoService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.presentacionDeProductoService.query()
-            .subscribe((res: ResponseWrapper) => { this.presentaciondeproductos = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.proveedorService.query()
             .subscribe((res: ResponseWrapper) => { this.proveedors = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.presentacionDeProductoService.query()
+            .subscribe((res: ResponseWrapper) => { this.presentaciondeproductos = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -78,11 +78,11 @@ export class ProductoDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackPresentacionDeProductoById(index: number, item: PresentacionDeProducto) {
+    trackProveedorById(index: number, item: Proveedor) {
         return item.id;
     }
 
-    trackProveedorById(index: number, item: Proveedor) {
+    trackPresentacionDeProductoById(index: number, item: PresentacionDeProducto) {
         return item.id;
     }
 }

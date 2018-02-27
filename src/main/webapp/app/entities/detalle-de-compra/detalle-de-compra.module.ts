@@ -13,6 +13,7 @@ import {
     DetalleDeCompraDeleteDialogComponent,
     detalleDeCompraRoute,
     detalleDeCompraPopupRoute,
+    DetalleDeCompraResolvePagingParams,
 } from './';
 import {NgSelectModule} from '@ng-select/ng-select';
 
@@ -45,6 +46,7 @@ const ENTITY_STATES = [
     providers: [
         DetalleDeCompraService,
         DetalleDeCompraPopupService,
+        DetalleDeCompraResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

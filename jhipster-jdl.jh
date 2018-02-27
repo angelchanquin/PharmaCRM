@@ -6,8 +6,7 @@ entity Proveedor {
     telefono String,
     celular String, 
     sitioWeb String,
-    direccionDeFacturacion String required,
-    direccionDeEnvio String
+    direccion String
 }
 
 enum EstadoDeProducto {
@@ -27,19 +26,49 @@ entity Producto {
     precioDeCosto Double required min(0),
     unidadesEnStock Integer required min(0),
 	estado EstadoDeProducto required,
-    fechaDeExpiracion LocalDate
+    minimoEnExistencia Integer required min(0)
+}
+
+enum EstadoDeOrdenDeCompra {
+	ACTIVA, EMITIDA, CANCELADA, CERRADA
+}
+
+enum RecibidoOrdenDeCompra {
+	NO_RECIBIDO, PARCIAL, TOTAL
 }
 
 entity OrdenDeCompra {
 	numeroDeReferencia String required,
     fecha LocalDate required,
-    total Double min(0)
+    total Double min(0),
+    fechaDeEntregaEsperada LocalDate required,
+    estado EstadoDeOrdenDeCompra required,
+    recibido RecibidoOrdenDeCompra required
 }
 
 entity DetalleDeCompra { 
 	cantidad Integer required,
     precio Double required min(0),
     subTotal Double required min(0)
+}
+
+enum TipoDeRecepcionDeCompra {
+	TOTAL, PARCIAL
+}
+
+entity RecepcionDeCompra {
+	noDeRecibo String required,
+    fechaDeRecepcion LocalDate required,
+    tipo TipoDeRecepcionDeCompra required,
+    notas String
+}
+
+entity DetalleDeRecepcionDeCompra {
+	cantidadOrdenada Integer required min(0),
+    cantidadRecibida Integer required min(0),
+    precio Double required min(0),
+    noDeLote String required,
+    fechaDeVencimiento LocalDate required
 }
 
 enum TipoDeMovimiento {
@@ -50,7 +79,36 @@ entity Inventario {
 	fecha LocalDate required,
     cantidad Integer required,
     tipoDeMovimiento TipoDeMovimiento required,
-    precio Double required min(0)
+    precio Double required min(0),
+    detalles String
+}
+
+
+
+
+relationship OneToMany {
+	Proveedor{producto} 
+    to Producto {proveedor(nombre) required} 
+}
+
+relationship OneToMany {
+	PresentacionDeProducto{producto} 
+    to Producto{presentacion(nombre) required}
+}
+
+relationship OneToMany {
+	OrdenDeCompra{detalleDeCompra} 
+    to DetalleDeCompra{ordenDeCompra(id) required}
+}
+
+relationship OneToMany {
+	Producto{detalleDeCompra} 
+    to DetalleDeCompra{producto(nombre) required}
+}
+
+relationship OneToMany {
+	Proveedor{ordenDeCompra}
+    to OrdenDeCompra{proveedor(nombre) required}
 }
 
 relationship OneToMany {
@@ -59,20 +117,20 @@ relationship OneToMany {
 }
 
 relationship OneToMany {
-	PresentacionDeProducto{producto} 
-    to Producto{presentacion(nombre) required}
-}
-relationship OneToMany {
-	Proveedor{producto} 
-    to Producto {proveedor(nombre) required} 
+	OrdenDeCompra{recepcionDeCompra}
+    to RecepcionDeCompra{ordenDeCompra(id) required}
 }
 
 relationship OneToMany {
-	OrdenDeCompra{detalle} 
-    to DetalleDeCompra{ordenDeCompra(id) required}
+	Producto{detalleDeRecepcionDeCompra}
+	to DetalleDeRecepcionDeCompra{producto(nombre) required}
 }
 
 relationship OneToMany {
-	Producto{orden} 
-    to DetalleDeCompra{producto(nombre) required}
+	RecepcionDeCompra{detalleDeRecepcionDeCompra}
+    to DetalleDeRecepcionDeCompra{recepcionDeCompra(id) required}
 }
+
+service all with serviceClass except PresentacionDeProducto
+paginate all with pagination
+search all with elasticsearch

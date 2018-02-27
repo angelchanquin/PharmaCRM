@@ -1,5 +1,6 @@
 package com.angelchanquin.pharmacrm.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,6 +10,8 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import com.angelchanquin.pharmacrm.domain.enumeration.TipoDeRecepcionDeCompra;
@@ -44,6 +47,11 @@ public class RecepcionDeCompra extends AbstractAuditingEntity implements Seriali
 
     @Column(name = "notas")
     private String notas;
+
+    @OneToMany(mappedBy = "recepcionDeCompra")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<DetalleDeRecepcionDeCompra> detalleDeRecepcionDeCompras = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
@@ -108,6 +116,31 @@ public class RecepcionDeCompra extends AbstractAuditingEntity implements Seriali
 
     public void setNotas(String notas) {
         this.notas = notas;
+    }
+
+    public Set<DetalleDeRecepcionDeCompra> getDetalleDeRecepcionDeCompras() {
+        return detalleDeRecepcionDeCompras;
+    }
+
+    public RecepcionDeCompra detalleDeRecepcionDeCompras(Set<DetalleDeRecepcionDeCompra> detalleDeRecepcionDeCompras) {
+        this.detalleDeRecepcionDeCompras = detalleDeRecepcionDeCompras;
+        return this;
+    }
+
+    public RecepcionDeCompra addDetalleDeRecepcionDeCompra(DetalleDeRecepcionDeCompra detalleDeRecepcionDeCompra) {
+        this.detalleDeRecepcionDeCompras.add(detalleDeRecepcionDeCompra);
+        detalleDeRecepcionDeCompra.setRecepcionDeCompra(this);
+        return this;
+    }
+
+    public RecepcionDeCompra removeDetalleDeRecepcionDeCompra(DetalleDeRecepcionDeCompra detalleDeRecepcionDeCompra) {
+        this.detalleDeRecepcionDeCompras.remove(detalleDeRecepcionDeCompra);
+        detalleDeRecepcionDeCompra.setRecepcionDeCompra(null);
+        return this;
+    }
+
+    public void setDetalleDeRecepcionDeCompras(Set<DetalleDeRecepcionDeCompra> detalleDeRecepcionDeCompras) {
+        this.detalleDeRecepcionDeCompras = detalleDeRecepcionDeCompras;
     }
 
     public OrdenDeCompra getOrdenDeCompra() {

@@ -12,6 +12,18 @@
         <dd>
             <span>{{producto.nombre}}</span>
         </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span></dt>
+        <dd>
+            <div *ngIf="producto.proveedor">
+                <a [routerLink]="['/proveedor', producto.proveedor?.id]">{{producto.proveedor?.nombre}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span></dt>
+        <dd>
+            <div *ngIf="producto.presentacion">
+                {{producto.presentacion?.nombre}}
+            </div>
+        </dd>
         <dt><span jhiTranslate="pharmacrmApp.producto.precioDeVenta">Precio De Venta</span></dt>
         <dd>
             <span>{{producto.precioDeVenta}}</span>
@@ -32,21 +44,13 @@
         <dd>
             <span>{{producto.unidadesEnStock}}</span>
         </dd>
+        <dt><span jhiTranslate="pharmacrmApp.producto.minimoEnExistencia">Minimo En Existencia</span></dt>
+        <dd>
+            <span>{{producto.minimoEnExistencia}}</span>
+        </dd>
         <dt><span jhiTranslate="pharmacrmApp.producto.estado">Estado</span></dt>
         <dd>
             <span jhiTranslate="{{'pharmacrmApp.EstadoDeProducto.' + producto.estado}}">{{producto.estado}}</span>
-        </dd>
-        <dt><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span></dt>
-        <dd>
-            <div *ngIf="producto.presentacion">
-                {{producto.presentacion?.nombre}}
-            </div>
-        </dd>
-        <dt><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span></dt>
-        <dd>
-            <div *ngIf="producto.proveedor">
-                <a [routerLink]="['/proveedor', producto.proveedor?.id]">{{producto.proveedor?.nombre}}</a>
-            </div>
         </dd>
     </dl>
 

@@ -25,10 +25,11 @@
             "unidadesEnStock": "Unidades En Stock",
             "estado": "Estado",
             "minimoEnExistencia": "Minimo En Existencia",
+            "detalleDeCompra": "Detalle De Compra",
             "inventario": "Inventario",
-            "orden": "Orden",
-            "presentacion": "Presentacion",
-            "proveedor": "Proveedor"
+            "detalleDeRecepcionDeCompra": "Detalle De Recepcion De Compra",
+            "proveedor": "Proveedor",
+            "presentacion": "Presentacion"
         }
     }
 }

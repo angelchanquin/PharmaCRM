@@ -13,6 +13,7 @@ import {
     ProveedorDeleteDialogComponent,
     proveedorRoute,
     proveedorPopupRoute,
+    ProveedorResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         ProveedorService,
         ProveedorPopupService,
+        ProveedorResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

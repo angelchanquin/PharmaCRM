@@ -14,6 +14,7 @@
                 "detalleDeCompra": "Detalle De Compra",
                 "inventario": "Inventario",
                 "recepcionDeCompra": "Recepcion De Compra",
+                "detalleDeRecepcionDeCompra": "Detalle De Recepcion De Compra",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

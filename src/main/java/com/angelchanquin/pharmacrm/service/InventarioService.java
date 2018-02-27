@@ -1,17 +1,15 @@
 package com.angelchanquin.pharmacrm.service;
 
 import com.angelchanquin.pharmacrm.domain.Inventario;
-import com.angelchanquin.pharmacrm.domain.Inventario;
 import com.angelchanquin.pharmacrm.repository.InventarioRepository;
 import com.angelchanquin.pharmacrm.repository.search.InventarioSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -49,12 +47,13 @@ public class InventarioService {
     /**
      * Get all the inventarios.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<Inventario> findAll() {
+    public Page<Inventario> findAll(Pageable pageable) {
         log.debug("Request to get all Inventarios");
-        return inventarioRepository.findAll();
+        return inventarioRepository.findAll(pageable);
     }
 
     /**
@@ -84,13 +83,13 @@ public class InventarioService {
      * Search for the inventario corresponding to the query.
      *
      * @param query the query of the search
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<Inventario> search(String query) {
-        log.debug("Request to search Inventarios for query {}", query);
-        return StreamSupport
-            .stream(inventarioSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public Page<Inventario> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Inventarios for query {}", query);
+        Page<Inventario> result = inventarioSearchRepository.search(queryStringQuery(query), pageable);
+        return result;
     }
 }

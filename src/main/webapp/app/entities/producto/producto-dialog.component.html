@@ -90,7 +90,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.precioDeVenta2" for="field_precioDeVenta2">Precio De Venta 2</label>
             <input type="number" class="form-control" name="precioDeVenta2" id="field_precioDeVenta2"
-                [(ngModel)]="producto.precioDeVenta2" min="0"/>
+                [(ngModel)]="producto.precioDeVenta2" required min="0"/>
             <div [hidden]="!(editForm.controls.precioDeVenta2?.dirty && editForm.controls.precioDeVenta2?.invalid)">
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.precioDeVenta2?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
@@ -105,7 +105,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="pharmacrmApp.producto.precioDeVenta3" for="field_precioDeVenta3">Precio De Venta 3</label>
             <input type="number" class="form-control" name="precioDeVenta3" id="field_precioDeVenta3"
-                [(ngModel)]="producto.precioDeVenta3" min="0"/>
+                [(ngModel)]="producto.precioDeVenta3" required min="0"/>
             <div [hidden]="!(editForm.controls.precioDeVenta3?.dirty && editForm.controls.precioDeVenta3?.invalid)">
                 <small class="form-text text-danger"
                     [hidden]="!editForm.controls.precioDeVenta3?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">

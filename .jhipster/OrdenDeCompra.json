@@ -3,17 +3,21 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "detalle",
+            "relationshipName": "detalleDeCompra",
             "otherEntityName": "detalleDeCompra",
             "otherEntityRelationshipName": "ordenDeCompra"
         },
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "recepcionDeCompra",
+            "otherEntityName": "recepcionDeCompra",
+            "otherEntityRelationshipName": "ordenDeCompra"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "proveedor",
             "otherEntityName": "proveedor",
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": [
-                "required"
-            ],
             "otherEntityField": "nombre"
         }
     ],
@@ -50,7 +54,7 @@
         {
             "fieldName": "estado",
             "fieldType": "EstadoDeOrdenDeCompra",
-            "fieldValues": "ACTIVA, EMITIDA, CANCELADA, CERRADA",
+            "fieldValues": "ACTIVA,EMITIDA,CANCELADA,CERRADA",
             "fieldValidateRules": [
                 "required"
             ]
@@ -58,7 +62,7 @@
         {
             "fieldName": "recibido",
             "fieldType": "RecibidoOrdenDeCompra",
-            "fieldValues": "NO_RECIBIDO, PARCIAL, TOTAL",
+            "fieldValues": "NO_RECIBIDO,PARCIAL,TOTAL",
             "fieldValidateRules": [
                 "required"
             ]
@@ -67,8 +71,9 @@
     "changelogDate": "20180215214453",
     "entityTableName": "orden_de_compra",
     "dto": "no",
-    "pagination": "no",
-    "service": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
     "jpaMetamodelFiltering": false,
+    "searchEngine": "elasticsearch",
     "enableEntityAudit": true
 }

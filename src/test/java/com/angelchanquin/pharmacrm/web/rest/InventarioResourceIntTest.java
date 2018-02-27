@@ -5,6 +5,7 @@ import com.angelchanquin.pharmacrm.PharmacrmApp;
 import com.angelchanquin.pharmacrm.domain.Inventario;
 import com.angelchanquin.pharmacrm.domain.Producto;
 import com.angelchanquin.pharmacrm.repository.InventarioRepository;
+import com.angelchanquin.pharmacrm.service.InventarioService;
 import com.angelchanquin.pharmacrm.repository.search.InventarioSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
@@ -62,6 +63,9 @@ public class InventarioResourceIntTest {
     private InventarioRepository inventarioRepository;
 
     @Autowired
+    private InventarioService inventarioService;
+
+    @Autowired
     private InventarioSearchRepository inventarioSearchRepository;
 
     @Autowired
@@ -83,7 +87,7 @@ public class InventarioResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final InventarioResource inventarioResource = new InventarioResource(inventarioRepository, inventarioSearchRepository);
+        final InventarioResource inventarioResource = new InventarioResource(inventarioService);
         this.restInventarioMockMvc = MockMvcBuilders.standaloneSetup(inventarioResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -283,8 +287,8 @@ public class InventarioResourceIntTest {
     @Transactional
     public void updateInventario() throws Exception {
         // Initialize the database
-        inventarioRepository.saveAndFlush(inventario);
-        inventarioSearchRepository.save(inventario);
+        inventarioService.save(inventario);
+
         int databaseSizeBeforeUpdate = inventarioRepository.findAll().size();
 
         // Update the inventario
@@ -340,8 +344,8 @@ public class InventarioResourceIntTest {
     @Transactional
     public void deleteInventario() throws Exception {
         // Initialize the database
-        inventarioRepository.saveAndFlush(inventario);
-        inventarioSearchRepository.save(inventario);
+        inventarioService.save(inventario);
+
         int databaseSizeBeforeDelete = inventarioRepository.findAll().size();
 
         // Get the inventario
@@ -362,8 +366,7 @@ public class InventarioResourceIntTest {
     @Transactional
     public void searchInventario() throws Exception {
         // Initialize the database
-        inventarioRepository.saveAndFlush(inventario);
-        inventarioSearchRepository.save(inventario);
+        inventarioService.save(inventario);
 
         // Search the inventario
         restInventarioMockMvc.perform(get("/api/_search/inventarios?query=id:" + inventario.getId()))
