@@ -13,6 +13,7 @@ import {
     RecepcionDeCompraDeleteDialogComponent,
     recepcionDeCompraRoute,
     recepcionDeCompraPopupRoute,
+    RecepcionDeCompraResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         RecepcionDeCompraService,
         RecepcionDeCompraPopupService,
+        RecepcionDeCompraResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
