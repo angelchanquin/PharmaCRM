@@ -28,15 +28,15 @@
     <div class="table-responsive" *ngIf="inventarios">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="pharmacrmApp.inventario.fecha">Fecha</span></th>
-                <th><span jhiTranslate="pharmacrmApp.inventario.tipoDeMovimiento">Tipo De Movimiento</span></th>
-                <th><span jhiTranslate="pharmacrmApp.inventario.producto">Producto</span></th>
-                <th><span jhiTranslate="pharmacrmApp.inventario.cantidad">Cantidad</span></th>
-                <th><span jhiTranslate="pharmacrmApp.inventario.precio">Precio</span></th>
-                <th><span jhiTranslate="pharmacrmApp.inventario.detalles">Detalles</span></th>
-                <th></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="fecha"><span jhiTranslate="pharmacrmApp.inventario.fecha">Fecha</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="tipoDeMovimiento"><span jhiTranslate="pharmacrmApp.inventario.tipoDeMovimiento">Tipo De Movimiento</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="producto.nombre"><span jhiTranslate="pharmacrmApp.inventario.producto">Producto</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="cantidad"><span jhiTranslate="pharmacrmApp.inventario.cantidad">Cantidad</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="precio"><span jhiTranslate="pharmacrmApp.inventario.precio">Precio</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="detalles"><span jhiTranslate="pharmacrmApp.inventario.detalles">Detalles</span> <span class="fa fa-sort"></span></th>
+            <th></th>
             </tr>
             </thead>
             <tbody>
@@ -81,5 +81,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="inventarios && inventarios.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
     </div>
 </div>
