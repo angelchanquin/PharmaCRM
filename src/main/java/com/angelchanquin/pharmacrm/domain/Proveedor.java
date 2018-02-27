@@ -57,6 +57,11 @@ public class Proveedor extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Producto> productos = new HashSet<>();
 
+    @OneToMany(mappedBy = "proveedor")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<OrdenDeCompra> ordenDeCompras = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -180,6 +185,31 @@ public class Proveedor extends AbstractAuditingEntity implements Serializable {
 
     public void setProductos(Set<Producto> productos) {
         this.productos = productos;
+    }
+
+    public Set<OrdenDeCompra> getOrdenDeCompras() {
+        return ordenDeCompras;
+    }
+
+    public Proveedor ordenDeCompras(Set<OrdenDeCompra> ordenDeCompras) {
+        this.ordenDeCompras = ordenDeCompras;
+        return this;
+    }
+
+    public Proveedor addOrdenDeCompra(OrdenDeCompra ordenDeCompra) {
+        this.ordenDeCompras.add(ordenDeCompra);
+        ordenDeCompra.setProveedor(this);
+        return this;
+    }
+
+    public Proveedor removeOrdenDeCompra(OrdenDeCompra ordenDeCompra) {
+        this.ordenDeCompras.remove(ordenDeCompra);
+        ordenDeCompra.setProveedor(null);
+        return this;
+    }
+
+    public void setOrdenDeCompras(Set<OrdenDeCompra> ordenDeCompras) {
+        this.ordenDeCompras = ordenDeCompras;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

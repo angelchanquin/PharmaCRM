@@ -2,14 +2,17 @@ package com.angelchanquin.pharmacrm.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.Proveedor;
-
-import com.angelchanquin.pharmacrm.repository.ProveedorRepository;
-import com.angelchanquin.pharmacrm.repository.search.ProveedorSearchRepository;
+import com.angelchanquin.pharmacrm.service.ProveedorService;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
+import com.angelchanquin.pharmacrm.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +22,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -35,13 +37,10 @@ public class ProveedorResource {
 
     private static final String ENTITY_NAME = "proveedor";
 
-    private final ProveedorRepository proveedorRepository;
+    private final ProveedorService proveedorService;
 
-    private final ProveedorSearchRepository proveedorSearchRepository;
-
-    public ProveedorResource(ProveedorRepository proveedorRepository, ProveedorSearchRepository proveedorSearchRepository) {
-        this.proveedorRepository = proveedorRepository;
-        this.proveedorSearchRepository = proveedorSearchRepository;
+    public ProveedorResource(ProveedorService proveedorService) {
+        this.proveedorService = proveedorService;
     }
 
     /**
@@ -58,8 +57,7 @@ public class ProveedorResource {
         if (proveedor.getId() != null) {
             throw new BadRequestAlertException("A new proveedor cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Proveedor result = proveedorRepository.save(proveedor);
-        proveedorSearchRepository.save(result);
+        Proveedor result = proveedorService.save(proveedor);
         return ResponseEntity.created(new URI("/api/proveedors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,8 +79,7 @@ public class ProveedorResource {
         if (proveedor.getId() == null) {
             return createProveedor(proveedor);
         }
-        Proveedor result = proveedorRepository.save(proveedor);
-        proveedorSearchRepository.save(result);
+        Proveedor result = proveedorService.save(proveedor);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, proveedor.getId().toString()))
             .body(result);
@@ -91,14 +88,17 @@ public class ProveedorResource {
     /**
      * GET  /proveedors : get all the proveedors.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of proveedors in body
      */
     @GetMapping("/proveedors")
     @Timed
-    public List<Proveedor> getAllProveedors() {
-        log.debug("REST request to get all Proveedors");
-        return proveedorRepository.findAll();
-        }
+    public ResponseEntity<List<Proveedor>> getAllProveedors(Pageable pageable) {
+        log.debug("REST request to get a page of Proveedors");
+        Page<Proveedor> page = proveedorService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/proveedors");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /proveedors/:id : get the "id" proveedor.
@@ -110,7 +110,7 @@ public class ProveedorResource {
     @Timed
     public ResponseEntity<Proveedor> getProveedor(@PathVariable Long id) {
         log.debug("REST request to get Proveedor : {}", id);
-        Proveedor proveedor = proveedorRepository.findOne(id);
+        Proveedor proveedor = proveedorService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(proveedor));
     }
 
@@ -124,8 +124,7 @@ public class ProveedorResource {
     @Timed
     public ResponseEntity<Void> deleteProveedor(@PathVariable Long id) {
         log.debug("REST request to delete Proveedor : {}", id);
-        proveedorRepository.delete(id);
-        proveedorSearchRepository.delete(id);
+        proveedorService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -134,15 +133,16 @@ public class ProveedorResource {
      * to the query.
      *
      * @param query the query of the proveedor search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/proveedors")
     @Timed
-    public List<Proveedor> searchProveedors(@RequestParam String query) {
-        log.debug("REST request to search Proveedors for query {}", query);
-        return StreamSupport
-            .stream(proveedorSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Proveedor>> searchProveedors(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Proveedors for query {}", query);
+        Page<Proveedor> page = proveedorService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/proveedors");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

@@ -4,6 +4,7 @@ import com.angelchanquin.pharmacrm.PharmacrmApp;
 
 import com.angelchanquin.pharmacrm.domain.Proveedor;
 import com.angelchanquin.pharmacrm.repository.ProveedorRepository;
+import com.angelchanquin.pharmacrm.service.ProveedorService;
 import com.angelchanquin.pharmacrm.repository.search.ProveedorSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
@@ -64,6 +65,9 @@ public class ProveedorResourceIntTest {
     private ProveedorRepository proveedorRepository;
 
     @Autowired
+    private ProveedorService proveedorService;
+
+    @Autowired
     private ProveedorSearchRepository proveedorSearchRepository;
 
     @Autowired
@@ -85,7 +89,7 @@ public class ProveedorResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProveedorResource proveedorResource = new ProveedorResource(proveedorRepository, proveedorSearchRepository);
+        final ProveedorResource proveedorResource = new ProveedorResource(proveedorService);
         this.restProveedorMockMvc = MockMvcBuilders.standaloneSetup(proveedorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -252,8 +256,8 @@ public class ProveedorResourceIntTest {
     @Transactional
     public void updateProveedor() throws Exception {
         // Initialize the database
-        proveedorRepository.saveAndFlush(proveedor);
-        proveedorSearchRepository.save(proveedor);
+        proveedorService.save(proveedor);
+
         int databaseSizeBeforeUpdate = proveedorRepository.findAll().size();
 
         // Update the proveedor
@@ -313,8 +317,8 @@ public class ProveedorResourceIntTest {
     @Transactional
     public void deleteProveedor() throws Exception {
         // Initialize the database
-        proveedorRepository.saveAndFlush(proveedor);
-        proveedorSearchRepository.save(proveedor);
+        proveedorService.save(proveedor);
+
         int databaseSizeBeforeDelete = proveedorRepository.findAll().size();
 
         // Get the proveedor
@@ -335,8 +339,7 @@ public class ProveedorResourceIntTest {
     @Transactional
     public void searchProveedor() throws Exception {
         // Initialize the database
-        proveedorRepository.saveAndFlush(proveedor);
-        proveedorSearchRepository.save(proveedor);
+        proveedorService.save(proveedor);
 
         // Search the proveedor
         restProveedorMockMvc.perform(get("/api/_search/proveedors?query=id:" + proveedor.getId()))

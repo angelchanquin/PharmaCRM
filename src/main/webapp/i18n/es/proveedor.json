@@ -23,7 +23,8 @@
             "celular": "Celular",
             "sitioWeb": "Sitio Web",
             "direccion": "Direccion",
-            "producto": "Producto"
+            "producto": "Producto",
+            "ordenDeCompra": "Orden De Compra"
         }
     }
 }
