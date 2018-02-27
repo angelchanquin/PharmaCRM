@@ -6,6 +6,7 @@ import com.angelchanquin.pharmacrm.domain.DetalleDeCompra;
 import com.angelchanquin.pharmacrm.domain.OrdenDeCompra;
 import com.angelchanquin.pharmacrm.domain.Producto;
 import com.angelchanquin.pharmacrm.repository.DetalleDeCompraRepository;
+import com.angelchanquin.pharmacrm.service.DetalleDeCompraService;
 import com.angelchanquin.pharmacrm.repository.search.DetalleDeCompraSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
@@ -54,6 +55,9 @@ public class DetalleDeCompraResourceIntTest {
     private DetalleDeCompraRepository detalleDeCompraRepository;
 
     @Autowired
+    private DetalleDeCompraService detalleDeCompraService;
+
+    @Autowired
     private DetalleDeCompraSearchRepository detalleDeCompraSearchRepository;
 
     @Autowired
@@ -75,7 +79,7 @@ public class DetalleDeCompraResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DetalleDeCompraResource detalleDeCompraResource = new DetalleDeCompraResource(detalleDeCompraRepository, detalleDeCompraSearchRepository);
+        final DetalleDeCompraResource detalleDeCompraResource = new DetalleDeCompraResource(detalleDeCompraService);
         this.restDetalleDeCompraMockMvc = MockMvcBuilders.standaloneSetup(detalleDeCompraResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -254,8 +258,8 @@ public class DetalleDeCompraResourceIntTest {
     @Transactional
     public void updateDetalleDeCompra() throws Exception {
         // Initialize the database
-        detalleDeCompraRepository.saveAndFlush(detalleDeCompra);
-        detalleDeCompraSearchRepository.save(detalleDeCompra);
+        detalleDeCompraService.save(detalleDeCompra);
+
         int databaseSizeBeforeUpdate = detalleDeCompraRepository.findAll().size();
 
         // Update the detalleDeCompra
@@ -307,8 +311,8 @@ public class DetalleDeCompraResourceIntTest {
     @Transactional
     public void deleteDetalleDeCompra() throws Exception {
         // Initialize the database
-        detalleDeCompraRepository.saveAndFlush(detalleDeCompra);
-        detalleDeCompraSearchRepository.save(detalleDeCompra);
+        detalleDeCompraService.save(detalleDeCompra);
+
         int databaseSizeBeforeDelete = detalleDeCompraRepository.findAll().size();
 
         // Get the detalleDeCompra
@@ -329,8 +333,7 @@ public class DetalleDeCompraResourceIntTest {
     @Transactional
     public void searchDetalleDeCompra() throws Exception {
         // Initialize the database
-        detalleDeCompraRepository.saveAndFlush(detalleDeCompra);
-        detalleDeCompraSearchRepository.save(detalleDeCompra);
+        detalleDeCompraService.save(detalleDeCompra);
 
         // Search the detalleDeCompra
         restDetalleDeCompraMockMvc.perform(get("/api/_search/detalle-de-compras?query=id:" + detalleDeCompra.getId()))

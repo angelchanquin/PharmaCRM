@@ -8,12 +8,12 @@ import com.angelchanquin.pharmacrm.repository.search.DetalleDeCompraSearchReposi
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -38,7 +38,6 @@ public class DetalleDeCompraService {
         this.detalleDeCompraSearchRepository = detalleDeCompraSearchRepository;
     }
 
-
     /**
      * Save a detalleDeCompra.
      *
@@ -55,12 +54,13 @@ public class DetalleDeCompraService {
     /**
      * Get all the detalleDeCompras.
      *
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<DetalleDeCompra> findAll() {
+    public Page<DetalleDeCompra> findAll(Pageable pageable) {
         log.debug("Request to get all DetalleDeCompras");
-        return detalleDeCompraRepository.findAll();
+        return detalleDeCompraRepository.findAll(pageable);
     }
 
     /**
@@ -90,14 +90,14 @@ public class DetalleDeCompraService {
      * Search for the detalleDeCompra corresponding to the query.
      *
      * @param query the query of the search
+     * @param pageable the pagination information
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<DetalleDeCompra> search(String query) {
-        log.debug("Request to search DetalleDeCompras for query {}", query);
-        return StreamSupport
-            .stream(detalleDeCompraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public Page<DetalleDeCompra> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of DetalleDeCompras for query {}", query);
+        Page<DetalleDeCompra> result = detalleDeCompraSearchRepository.search(queryStringQuery(query), pageable);
+        return result;
     }
 
     @Transactional

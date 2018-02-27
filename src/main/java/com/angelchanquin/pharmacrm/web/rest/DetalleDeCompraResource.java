@@ -1,21 +1,30 @@
 package com.angelchanquin.pharmacrm.web.rest;
 
+import com.codahale.metrics.annotation.Timed;
 import com.angelchanquin.pharmacrm.domain.DetalleDeCompra;
 import com.angelchanquin.pharmacrm.service.DetalleDeCompraService;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
-import com.codahale.metrics.annotation.Timed;
+import com.angelchanquin.pharmacrm.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing DetalleDeCompra.
@@ -83,14 +92,17 @@ public class DetalleDeCompraResource {
     /**
      * GET  /detalle-de-compras : get all the detalleDeCompras.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of detalleDeCompras in body
      */
     @GetMapping("/detalle-de-compras")
     @Timed
-    public List<DetalleDeCompra> getAllDetalleDeCompras() {
-        log.debug("REST request to get all DetalleDeCompras");
-        return detalleDeCompraService.findAll();
-        }
+    public ResponseEntity<List<DetalleDeCompra>> getAllDetalleDeCompras(Pageable pageable) {
+        log.debug("REST request to get a page of DetalleDeCompras");
+        Page<DetalleDeCompra> page = detalleDeCompraService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/detalle-de-compras");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /detalle-de-compras/:id : get the "id" detalleDeCompra.
@@ -132,13 +144,16 @@ public class DetalleDeCompraResource {
      * to the query.
      *
      * @param query the query of the detalleDeCompra search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/detalle-de-compras")
     @Timed
-    public List<DetalleDeCompra> searchDetalleDeCompras(@RequestParam String query) {
-        log.debug("REST request to search DetalleDeCompras for query {}", query);
-        return detalleDeCompraService.search(query);
+    public ResponseEntity<List<DetalleDeCompra>> searchDetalleDeCompras(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of DetalleDeCompras for query {}", query);
+        Page<DetalleDeCompra> page = detalleDeCompraService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/detalle-de-compras");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }
