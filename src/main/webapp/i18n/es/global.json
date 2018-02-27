@@ -36,7 +36,6 @@
                 "audits": "Auditorías",
                 "apidocs": "API",
                 "database": "Base de datos",
-                "elasticsearch-reindex": "Reindexar Elasticsearch",
                 "entity-audit": "Entity Audit",
                 "elasticsearch-reindex": "Reindex Elasticsearch",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"

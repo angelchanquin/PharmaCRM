@@ -68,6 +68,11 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
     @Column(name = "estado", nullable = false)
     private EstadoDeProducto estado;
 
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "minimo_en_existencia", nullable = false)
+    private Integer minimoEnExistencia;
+
     @OneToMany(mappedBy = "producto")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -199,6 +204,19 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
         this.estado = estado;
     }
 
+    public Integer getMinimoEnExistencia() {
+        return minimoEnExistencia;
+    }
+
+    public Producto minimoEnExistencia(Integer minimoEnExistencia) {
+        this.minimoEnExistencia = minimoEnExistencia;
+        return this;
+    }
+
+    public void setMinimoEnExistencia(Integer minimoEnExistencia) {
+        this.minimoEnExistencia = minimoEnExistencia;
+    }
+
     public Set<Inventario> getInventarios() {
         return inventarios;
     }
@@ -308,6 +326,7 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
             ", precioDeCosto=" + getPrecioDeCosto() +
             ", unidadesEnStock=" + getUnidadesEnStock() +
             ", estado='" + getEstado() + "'" +
+            ", minimoEnExistencia=" + getMinimoEnExistencia() +
             "}";
     }
 }
