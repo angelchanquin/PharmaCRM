@@ -46,7 +46,7 @@
     <hr>
     <h2>
         <span jhiTranslate="pharmacrmApp.detalleDeCompra.home.title">Detalle De Compras</span>
-        <button class="btn btn-primary float-right jh-create-entity create-detalle-de-compra" [routerLink]="['/', { outlets: { popup: 'detalle-de-compra-new/' + ordenDeCompra.id } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-detalle-de-compra" [routerLink]="['/', { outlets: { popup: 'detalle-de-compra-new/' + ordenDeCompra.id } }]" *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span class="fa fa-plus"></span>
             <span  jhiTranslate="pharmacrmApp.detalleDeCompra.home.createLabel">
             Create new Detalle De Compra
@@ -85,7 +85,7 @@
                                 [routerLink]="['/', { outlets: { popup: 'detalle-de-compra/'+ detalleDeCompra.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
+                                class="btn btn-primary btn-sm" *jhiHasAnyAuthority="'ROLE_ADMIN'">
                             <span class="fa fa-pencil"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
@@ -93,7 +93,7 @@
                                 [routerLink]="['/', { outlets: { popup: 'detalle-de-compra/'+ detalleDeCompra.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
+                                class="btn btn-danger btn-sm" *jhiHasAnyAuthority="'ROLE_ADMIN'">
                             <span class="fa fa-remove"></span>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>

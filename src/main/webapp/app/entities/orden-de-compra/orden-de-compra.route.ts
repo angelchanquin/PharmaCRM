@@ -32,7 +32,7 @@ export const ordenDeCompraRoute: Routes = [
             'pagingParams': OrdenDeCompraResolvePagingParams
         },
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'pharmacrmApp.ordenDeCompra.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -40,7 +40,7 @@ export const ordenDeCompraRoute: Routes = [
         path: 'orden-de-compra/:id',
         component: OrdenDeCompraDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'pharmacrmApp.ordenDeCompra.home.title'
         },
         canActivate: [UserRouteAccessService]
