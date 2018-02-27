@@ -28,13 +28,13 @@
     <div class="table-responsive" *ngIf="detalleDeCompras">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.cantidad">Cantidad</span></th>
-            <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.precio">Precio</span></th>
-            <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.subTotal">Sub Total</span></th>
-            <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.ordenDeCompra">Orden De Compra</span></th>
-            <th><span jhiTranslate="pharmacrmApp.detalleDeCompra.producto">Producto</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="cantidad"><span jhiTranslate="pharmacrmApp.detalleDeCompra.cantidad">Cantidad</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="precio"><span jhiTranslate="pharmacrmApp.detalleDeCompra.precio">Precio</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="subTotal"><span jhiTranslate="pharmacrmApp.detalleDeCompra.subTotal">Sub Total</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="ordenDeCompra.id"><span jhiTranslate="pharmacrmApp.detalleDeCompra.ordenDeCompra">Orden De Compra</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="producto.nombre"><span jhiTranslate="pharmacrmApp.detalleDeCompra.producto">Producto</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -83,5 +83,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="detalleDeCompras && detalleDeCompras.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
     </div>
 </div>
