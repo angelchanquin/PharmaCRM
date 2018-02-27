@@ -45,12 +45,14 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
     @Column(name = "precio_de_venta", nullable = false)
     private Double precioDeVenta;
 
+    @NotNull
     @DecimalMin(value = "0")
-    @Column(name = "precio_de_venta_2")
+    @Column(name = "precio_de_venta_2", nullable = false)
     private Double precioDeVenta2;
 
+    @NotNull
     @DecimalMin(value = "0")
-    @Column(name = "precio_de_venta_3")
+    @Column(name = "precio_de_venta_3", nullable = false)
     private Double precioDeVenta3;
 
     @NotNull
@@ -76,20 +78,25 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "producto")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<DetalleDeCompra> detalleDeCompras = new HashSet<>();
+
+    @OneToMany(mappedBy = "producto")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Inventario> inventarios = new HashSet<>();
 
     @OneToMany(mappedBy = "producto")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<DetalleDeCompra> ordens = new HashSet<>();
-
-    @ManyToOne(optional = false)
-    @NotNull
-    private PresentacionDeProducto presentacion;
+    private Set<DetalleDeRecepcionDeCompra> detalleDeRecepcionDeCompras = new HashSet<>();
 
     @ManyToOne(optional = false)
     @NotNull
     private Proveedor proveedor;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private PresentacionDeProducto presentacion;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -217,6 +224,31 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
         this.minimoEnExistencia = minimoEnExistencia;
     }
 
+    public Set<DetalleDeCompra> getDetalleDeCompras() {
+        return detalleDeCompras;
+    }
+
+    public Producto detalleDeCompras(Set<DetalleDeCompra> detalleDeCompras) {
+        this.detalleDeCompras = detalleDeCompras;
+        return this;
+    }
+
+    public Producto addDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
+        this.detalleDeCompras.add(detalleDeCompra);
+        detalleDeCompra.setProducto(this);
+        return this;
+    }
+
+    public Producto removeDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
+        this.detalleDeCompras.remove(detalleDeCompra);
+        detalleDeCompra.setProducto(null);
+        return this;
+    }
+
+    public void setDetalleDeCompras(Set<DetalleDeCompra> detalleDeCompras) {
+        this.detalleDeCompras = detalleDeCompras;
+    }
+
     public Set<Inventario> getInventarios() {
         return inventarios;
     }
@@ -242,42 +274,29 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
         this.inventarios = inventarios;
     }
 
-    public Set<DetalleDeCompra> getOrdens() {
-        return ordens;
+    public Set<DetalleDeRecepcionDeCompra> getDetalleDeRecepcionDeCompras() {
+        return detalleDeRecepcionDeCompras;
     }
 
-    public Producto ordens(Set<DetalleDeCompra> detalleDeCompras) {
-        this.ordens = detalleDeCompras;
+    public Producto detalleDeRecepcionDeCompras(Set<DetalleDeRecepcionDeCompra> detalleDeRecepcionDeCompras) {
+        this.detalleDeRecepcionDeCompras = detalleDeRecepcionDeCompras;
         return this;
     }
 
-    public Producto addOrden(DetalleDeCompra detalleDeCompra) {
-        this.ordens.add(detalleDeCompra);
-        detalleDeCompra.setProducto(this);
+    public Producto addDetalleDeRecepcionDeCompra(DetalleDeRecepcionDeCompra detalleDeRecepcionDeCompra) {
+        this.detalleDeRecepcionDeCompras.add(detalleDeRecepcionDeCompra);
+        detalleDeRecepcionDeCompra.setProducto(this);
         return this;
     }
 
-    public Producto removeOrden(DetalleDeCompra detalleDeCompra) {
-        this.ordens.remove(detalleDeCompra);
-        detalleDeCompra.setProducto(null);
+    public Producto removeDetalleDeRecepcionDeCompra(DetalleDeRecepcionDeCompra detalleDeRecepcionDeCompra) {
+        this.detalleDeRecepcionDeCompras.remove(detalleDeRecepcionDeCompra);
+        detalleDeRecepcionDeCompra.setProducto(null);
         return this;
     }
 
-    public void setOrdens(Set<DetalleDeCompra> detalleDeCompras) {
-        this.ordens = detalleDeCompras;
-    }
-
-    public PresentacionDeProducto getPresentacion() {
-        return presentacion;
-    }
-
-    public Producto presentacion(PresentacionDeProducto presentacionDeProducto) {
-        this.presentacion = presentacionDeProducto;
-        return this;
-    }
-
-    public void setPresentacion(PresentacionDeProducto presentacionDeProducto) {
-        this.presentacion = presentacionDeProducto;
+    public void setDetalleDeRecepcionDeCompras(Set<DetalleDeRecepcionDeCompra> detalleDeRecepcionDeCompras) {
+        this.detalleDeRecepcionDeCompras = detalleDeRecepcionDeCompras;
     }
 
     public Proveedor getProveedor() {
@@ -291,6 +310,19 @@ public class Producto extends AbstractAuditingEntity implements Serializable {
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public PresentacionDeProducto getPresentacion() {
+        return presentacion;
+    }
+
+    public Producto presentacion(PresentacionDeProducto presentacionDeProducto) {
+        this.presentacion = presentacionDeProducto;
+        return this;
+    }
+
+    public void setPresentacion(PresentacionDeProducto presentacionDeProducto) {
+        this.presentacion = presentacionDeProducto;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

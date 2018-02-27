@@ -50,8 +50,8 @@ describe('Producto e2e test', () => {
         productoDialogPage.estadoSelectLastOption();
         productoDialogPage.setMinimoEnExistenciaInput('5');
         expect(productoDialogPage.getMinimoEnExistenciaInput()).toMatch('5');
-        productoDialogPage.presentacionSelectLastOption();
         productoDialogPage.proveedorSelectLastOption();
+        productoDialogPage.presentacionSelectLastOption();
         productoDialogPage.save();
         expect(productoDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });*/
@@ -87,8 +87,8 @@ export class ProductoDialogPage {
     unidadesEnStockInput = element(by.css('input#field_unidadesEnStock'));
     estadoSelect = element(by.css('select#field_estado'));
     minimoEnExistenciaInput = element(by.css('input#field_minimoEnExistencia'));
-    presentacionSelect = element(by.css('select#field_presentacion'));
     proveedorSelect = element(by.css('select#field_proveedor'));
+    presentacionSelect = element(by.css('select#field_presentacion'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -169,22 +169,6 @@ export class ProductoDialogPage {
         return this.minimoEnExistenciaInput.getAttribute('value');
     }
 
-    presentacionSelectLastOption = function() {
-        this.presentacionSelect.all(by.tagName('option')).last().click();
-    }
-
-    presentacionSelectOption = function(option) {
-        this.presentacionSelect.sendKeys(option);
-    }
-
-    getPresentacionSelect = function() {
-        return this.presentacionSelect;
-    }
-
-    getPresentacionSelectedOption = function() {
-        return this.presentacionSelect.element(by.css('option:checked')).getText();
-    }
-
     proveedorSelectLastOption = function() {
         this.proveedorSelect.all(by.tagName('option')).last().click();
     }
@@ -199,6 +183,22 @@ export class ProductoDialogPage {
 
     getProveedorSelectedOption = function() {
         return this.proveedorSelect.element(by.css('option:checked')).getText();
+    }
+
+    presentacionSelectLastOption = function() {
+        this.presentacionSelect.all(by.tagName('option')).last().click();
+    }
+
+    presentacionSelectOption = function(option) {
+        this.presentacionSelect.sendKeys(option);
+    }
+
+    getPresentacionSelect = function() {
+        return this.presentacionSelect;
+    }
+
+    getPresentacionSelectedOption = function() {
+        return this.presentacionSelect.element(by.css('option:checked')).getText();
     }
 
     save() {

@@ -1,4 +1,5 @@
 <div>
+<div>
     <h2>
         <span jhiTranslate="pharmacrmApp.producto.home.title">Productos</span>
         <button class="btn btn-primary float-right jh-create-entity create-producto" [routerLink]="['/', { outlets: { popup: ['producto-new'] } }]" *jhiHasAnyAuthority="'ROLE_ADMIN'">
@@ -28,15 +29,16 @@
     <div class="table-responsive" *ngIf="productos">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.sku">Sku</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.nombre">Nombre</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.precioDeVenta">Precio De Venta</span></th>
-            <th *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="pharmacrmApp.producto.precioDeCosto">Precio De Costo</span></th>
-            <th><span jhiTranslate="pharmacrmApp.producto.unidadesEnStock">Unidades En Stock</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="sku"><span jhiTranslate="pharmacrmApp.producto.sku">Sku</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="nombre"><span jhiTranslate="pharmacrmApp.producto.nombre">Nombre</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="proveedor.nombre"><span jhiTranslate="pharmacrmApp.producto.proveedor">Proveedor</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="presentacion.nombre"><span jhiTranslate="pharmacrmApp.producto.presentacion">Presentacion</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="precioDeVenta"><span jhiTranslate="pharmacrmApp.producto.precioDeVenta">Precio De Venta</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="precioDeCosto" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="pharmacrmApp.producto.precioDeCosto">Precio De Costo</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="unidadesEnStock"><span jhiTranslate="pharmacrmApp.producto.unidadesEnStock">Unidades En Stock</span> <span class="fa fa-sort"></span></th>
+                <th jhiSortBy="minimoEnExistencia"><span jhiTranslate="pharmacrmApp.producto.minimoEnExistencia">Minimo En Existencia</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
@@ -58,6 +60,7 @@
                 <td>{{producto.precioDeVenta}}</td>
                 <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{producto.precioDeCosto}}</td>
                 <td>{{producto.unidadesEnStock}}</td>
+                <td>{{producto.minimoEnExistencia}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -87,5 +90,13 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div *ngIf="productos && productos.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
     </div>
 </div>

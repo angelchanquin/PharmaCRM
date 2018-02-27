@@ -3,11 +3,11 @@ package com.angelchanquin.pharmacrm.web.rest;
 import com.angelchanquin.pharmacrm.PharmacrmApp;
 
 import com.angelchanquin.pharmacrm.domain.Producto;
-import com.angelchanquin.pharmacrm.domain.PresentacionDeProducto;
 import com.angelchanquin.pharmacrm.domain.Proveedor;
+import com.angelchanquin.pharmacrm.domain.PresentacionDeProducto;
 import com.angelchanquin.pharmacrm.repository.ProductoRepository;
-import com.angelchanquin.pharmacrm.repository.search.ProductoSearchRepository;
 import com.angelchanquin.pharmacrm.service.ProductoService;
+import com.angelchanquin.pharmacrm.repository.search.ProductoSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -67,14 +67,17 @@ public class ProductoResourceIntTest {
     private static final EstadoDeProducto DEFAULT_ESTADO = EstadoDeProducto.ACTIVO;
     private static final EstadoDeProducto UPDATED_ESTADO = EstadoDeProducto.INACTIVO;
 
+    private static final Integer DEFAULT_MINIMO_EN_EXISTENCIA = 0;
+    private static final Integer UPDATED_MINIMO_EN_EXISTENCIA = 1;
+
     @Autowired
     private ProductoRepository productoRepository;
 
     @Autowired
-    private ProductoSearchRepository productoSearchRepository;
+    private ProductoService productoService;
 
     @Autowired
-    private ProductoService productoService;
+    private ProductoSearchRepository productoSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -95,7 +98,7 @@ public class ProductoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ProductoResource productoResource = new ProductoResource(productoRepository, productoSearchRepository, productoService);
+        final ProductoResource productoResource = new ProductoResource(productoService);
         this.restProductoMockMvc = MockMvcBuilders.standaloneSetup(productoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -118,17 +121,18 @@ public class ProductoResourceIntTest {
             .precioDeVenta3(DEFAULT_PRECIO_DE_VENTA_3)
             .precioDeCosto(DEFAULT_PRECIO_DE_COSTO)
             .unidadesEnStock(DEFAULT_UNIDADES_EN_STOCK)
-            .estado(DEFAULT_ESTADO);
-        // Add required entity
-        PresentacionDeProducto presentacion = PresentacionDeProductoResourceIntTest.createEntity(em);
-        em.persist(presentacion);
-        em.flush();
-        producto.setPresentacion(presentacion);
+            .estado(DEFAULT_ESTADO)
+            .minimoEnExistencia(DEFAULT_MINIMO_EN_EXISTENCIA);
         // Add required entity
         Proveedor proveedor = ProveedorResourceIntTest.createEntity(em);
         em.persist(proveedor);
         em.flush();
         producto.setProveedor(proveedor);
+        // Add required entity
+        PresentacionDeProducto presentacion = PresentacionDeProductoResourceIntTest.createEntity(em);
+        em.persist(presentacion);
+        em.flush();
+        producto.setPresentacion(presentacion);
         return producto;
     }
 
@@ -161,6 +165,7 @@ public class ProductoResourceIntTest {
         assertThat(testProducto.getPrecioDeCosto()).isEqualTo(DEFAULT_PRECIO_DE_COSTO);
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(DEFAULT_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(DEFAULT_ESTADO);
+        assertThat(testProducto.getMinimoEnExistencia()).isEqualTo(DEFAULT_MINIMO_EN_EXISTENCIA);
 
         // Validate the Producto in Elasticsearch
         Producto productoEs = productoSearchRepository.findOne(testProducto.getId());
@@ -242,6 +247,42 @@ public class ProductoResourceIntTest {
 
     @Test
     @Transactional
+    public void checkPrecioDeVenta2IsRequired() throws Exception {
+        int databaseSizeBeforeTest = productoRepository.findAll().size();
+        // set the field null
+        producto.setPrecioDeVenta2(null);
+
+        // Create the Producto, which fails.
+
+        restProductoMockMvc.perform(post("/api/productos")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(producto)))
+            .andExpect(status().isBadRequest());
+
+        List<Producto> productoList = productoRepository.findAll();
+        assertThat(productoList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkPrecioDeVenta3IsRequired() throws Exception {
+        int databaseSizeBeforeTest = productoRepository.findAll().size();
+        // set the field null
+        producto.setPrecioDeVenta3(null);
+
+        // Create the Producto, which fails.
+
+        restProductoMockMvc.perform(post("/api/productos")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(producto)))
+            .andExpect(status().isBadRequest());
+
+        List<Producto> productoList = productoRepository.findAll();
+        assertThat(productoList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkPrecioDeCostoIsRequired() throws Exception {
         int databaseSizeBeforeTest = productoRepository.findAll().size();
         // set the field null
@@ -296,6 +337,24 @@ public class ProductoResourceIntTest {
 
     @Test
     @Transactional
+    public void checkMinimoEnExistenciaIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productoRepository.findAll().size();
+        // set the field null
+        producto.setMinimoEnExistencia(null);
+
+        // Create the Producto, which fails.
+
+        restProductoMockMvc.perform(post("/api/productos")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(producto)))
+            .andExpect(status().isBadRequest());
+
+        List<Producto> productoList = productoRepository.findAll();
+        assertThat(productoList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllProductos() throws Exception {
         // Initialize the database
         productoRepository.saveAndFlush(producto);
@@ -312,7 +371,8 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.[*].precioDeVenta3").value(hasItem(DEFAULT_PRECIO_DE_VENTA_3.doubleValue())))
             .andExpect(jsonPath("$.[*].precioDeCosto").value(hasItem(DEFAULT_PRECIO_DE_COSTO.doubleValue())))
             .andExpect(jsonPath("$.[*].unidadesEnStock").value(hasItem(DEFAULT_UNIDADES_EN_STOCK)))
-            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())));
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
+            .andExpect(jsonPath("$.[*].minimoEnExistencia").value(hasItem(DEFAULT_MINIMO_EN_EXISTENCIA)));
     }
 
     @Test
@@ -333,7 +393,8 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.precioDeVenta3").value(DEFAULT_PRECIO_DE_VENTA_3.doubleValue()))
             .andExpect(jsonPath("$.precioDeCosto").value(DEFAULT_PRECIO_DE_COSTO.doubleValue()))
             .andExpect(jsonPath("$.unidadesEnStock").value(DEFAULT_UNIDADES_EN_STOCK))
-            .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()));
+            .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()))
+            .andExpect(jsonPath("$.minimoEnExistencia").value(DEFAULT_MINIMO_EN_EXISTENCIA));
     }
 
     @Test
@@ -348,8 +409,8 @@ public class ProductoResourceIntTest {
     @Transactional
     public void updateProducto() throws Exception {
         // Initialize the database
-        productoRepository.saveAndFlush(producto);
-        productoSearchRepository.save(producto);
+        productoService.save(producto);
+
         int databaseSizeBeforeUpdate = productoRepository.findAll().size();
 
         // Update the producto
@@ -364,7 +425,8 @@ public class ProductoResourceIntTest {
             .precioDeVenta3(UPDATED_PRECIO_DE_VENTA_3)
             .precioDeCosto(UPDATED_PRECIO_DE_COSTO)
             .unidadesEnStock(UPDATED_UNIDADES_EN_STOCK)
-            .estado(UPDATED_ESTADO);
+            .estado(UPDATED_ESTADO)
+            .minimoEnExistencia(UPDATED_MINIMO_EN_EXISTENCIA);
 
         restProductoMockMvc.perform(put("/api/productos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -383,6 +445,7 @@ public class ProductoResourceIntTest {
         assertThat(testProducto.getPrecioDeCosto()).isEqualTo(UPDATED_PRECIO_DE_COSTO);
         assertThat(testProducto.getUnidadesEnStock()).isEqualTo(UPDATED_UNIDADES_EN_STOCK);
         assertThat(testProducto.getEstado()).isEqualTo(UPDATED_ESTADO);
+        assertThat(testProducto.getMinimoEnExistencia()).isEqualTo(UPDATED_MINIMO_EN_EXISTENCIA);
 
         // Validate the Producto in Elasticsearch
         Producto productoEs = productoSearchRepository.findOne(testProducto.getId());
@@ -411,8 +474,8 @@ public class ProductoResourceIntTest {
     @Transactional
     public void deleteProducto() throws Exception {
         // Initialize the database
-        productoRepository.saveAndFlush(producto);
-        productoSearchRepository.save(producto);
+        productoService.save(producto);
+
         int databaseSizeBeforeDelete = productoRepository.findAll().size();
 
         // Get the producto
@@ -433,8 +496,7 @@ public class ProductoResourceIntTest {
     @Transactional
     public void searchProducto() throws Exception {
         // Initialize the database
-        productoRepository.saveAndFlush(producto);
-        productoSearchRepository.save(producto);
+        productoService.save(producto);
 
         // Search the producto
         restProductoMockMvc.perform(get("/api/_search/productos?query=id:" + producto.getId()))
@@ -448,7 +510,8 @@ public class ProductoResourceIntTest {
             .andExpect(jsonPath("$.[*].precioDeVenta3").value(hasItem(DEFAULT_PRECIO_DE_VENTA_3.doubleValue())))
             .andExpect(jsonPath("$.[*].precioDeCosto").value(hasItem(DEFAULT_PRECIO_DE_COSTO.doubleValue())))
             .andExpect(jsonPath("$.[*].unidadesEnStock").value(hasItem(DEFAULT_UNIDADES_EN_STOCK)))
-            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())));
+            .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())))
+            .andExpect(jsonPath("$.[*].minimoEnExistencia").value(hasItem(DEFAULT_MINIMO_EN_EXISTENCIA)));
     }
 
     @Test

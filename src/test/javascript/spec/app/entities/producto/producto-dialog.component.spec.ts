@@ -8,8 +8,8 @@ import { PharmacrmTestModule } from '../../../test.module';
 import { ProductoDialogComponent } from '../../../../../../main/webapp/app/entities/producto/producto-dialog.component';
 import { ProductoService } from '../../../../../../main/webapp/app/entities/producto/producto.service';
 import { Producto } from '../../../../../../main/webapp/app/entities/producto/producto.model';
-import { PresentacionDeProductoService } from '../../../../../../main/webapp/app/entities/presentacion-de-producto';
 import { ProveedorService } from '../../../../../../main/webapp/app/entities/proveedor';
+import { PresentacionDeProductoService } from '../../../../../../main/webapp/app/entities/presentacion-de-producto';
 
 describe('Component Tests', () => {
 
@@ -25,8 +25,8 @@ describe('Component Tests', () => {
                 imports: [PharmacrmTestModule],
                 declarations: [ProductoDialogComponent],
                 providers: [
-                    PresentacionDeProductoService,
                     ProveedorService,
+                    PresentacionDeProductoService,
                     ProductoService
                 ]
             })

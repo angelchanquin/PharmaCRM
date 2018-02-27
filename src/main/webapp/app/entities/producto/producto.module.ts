@@ -13,6 +13,7 @@ import {
     ProductoDeleteDialogComponent,
     productoRoute,
     productoPopupRoute,
+    ProductoResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -43,6 +44,7 @@ const ENTITY_STATES = [
     providers: [
         ProductoService,
         ProductoPopupService,
+        ProductoResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -34,11 +34,11 @@
             </column>
 
             <column name="precio_de_venta_2" type="double">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="precio_de_venta_3" type="double">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="precio_de_costo" type="double">
@@ -57,21 +57,21 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="presentacion_id" type="bigint">
+            <column name="proveedor_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
-            <column name="proveedor_id" type="bigint">
+            <column name="presentacion_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-
+        
     </changeSet>
-
+    
     <!-- Added the entity audit columns -->
-    <changeSet id="20180223182509-audit-1" author="jhipster-entity-audit">
+    <changeSet id="20180129021547-audit-1" author="jhipster-entity-audit">
         <addColumn tableName="producto">
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
