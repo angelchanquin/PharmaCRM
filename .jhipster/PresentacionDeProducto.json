@@ -20,8 +20,9 @@
     "changelogDate": "20180129021546",
     "entityTableName": "presentacion_de_producto",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no",
     "jpaMetamodelFiltering": false,
+    "searchEngine": "elasticsearch",
     "enableEntityAudit": true
 }

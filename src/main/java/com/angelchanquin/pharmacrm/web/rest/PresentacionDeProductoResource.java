@@ -7,9 +7,14 @@ import com.angelchanquin.pharmacrm.repository.PresentacionDeProductoRepository;
 import com.angelchanquin.pharmacrm.repository.search.PresentacionDeProductoSearchRepository;
 import com.angelchanquin.pharmacrm.web.rest.errors.BadRequestAlertException;
 import com.angelchanquin.pharmacrm.web.rest.util.HeaderUtil;
+import com.angelchanquin.pharmacrm.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -91,14 +96,17 @@ public class PresentacionDeProductoResource {
     /**
      * GET  /presentacion-de-productos : get all the presentacionDeProductos.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of presentacionDeProductos in body
      */
     @GetMapping("/presentacion-de-productos")
     @Timed
-    public List<PresentacionDeProducto> getAllPresentacionDeProductos() {
-        log.debug("REST request to get all PresentacionDeProductos");
-        return presentacionDeProductoRepository.findAll();
-        }
+    public ResponseEntity<List<PresentacionDeProducto>> getAllPresentacionDeProductos(Pageable pageable) {
+        log.debug("REST request to get a page of PresentacionDeProductos");
+        Page<PresentacionDeProducto> page = presentacionDeProductoRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/presentacion-de-productos");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /presentacion-de-productos/:id : get the "id" presentacionDeProducto.
@@ -134,15 +142,16 @@ public class PresentacionDeProductoResource {
      * to the query.
      *
      * @param query the query of the presentacionDeProducto search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/presentacion-de-productos")
     @Timed
-    public List<PresentacionDeProducto> searchPresentacionDeProductos(@RequestParam String query) {
-        log.debug("REST request to search PresentacionDeProductos for query {}", query);
-        return StreamSupport
-            .stream(presentacionDeProductoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<PresentacionDeProducto>> searchPresentacionDeProductos(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of PresentacionDeProductos for query {}", query);
+        Page<PresentacionDeProducto> page = presentacionDeProductoSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/presentacion-de-productos");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }
