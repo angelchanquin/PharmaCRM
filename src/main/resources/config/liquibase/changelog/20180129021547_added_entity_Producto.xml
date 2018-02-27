@@ -53,6 +53,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="minimo_en_existencia" type="integer">
+                <constraints nullable="false" />
+            </column>
+
             <column name="presentacion_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -63,9 +67,9 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
-    
+
     <!-- Added the entity audit columns -->
     <changeSet id="20180223182509-audit-1" author="jhipster-entity-audit">
         <addColumn tableName="producto">

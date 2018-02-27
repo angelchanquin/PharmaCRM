@@ -24,6 +24,7 @@
             "precioDeCosto": "Precio de Costo",
             "unidadesEnStock": "Existencia",
             "estado": "Estado",
+            "minimoEnExistencia": "Minimo En Existencia",
             "inventario": "Inventario",
             "orden": "Orden",
             "presentacion": "Presentacion",

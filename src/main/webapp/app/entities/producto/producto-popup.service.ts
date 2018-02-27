@@ -1,7 +1,7 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import {EstadoDeProducto, Producto} from './producto.model';
+import { EstadoDeProducto, Producto } from './producto.model';
 import { ProductoService } from './producto.service';
 
 @Injectable()
