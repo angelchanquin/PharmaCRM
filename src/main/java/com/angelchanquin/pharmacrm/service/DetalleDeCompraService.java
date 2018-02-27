@@ -100,7 +100,6 @@ public class DetalleDeCompraService {
         return result;
     }
 
-    @Transactional
     public DetalleDeCompra createDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
         if (ordenDeCompra != null) {
@@ -114,14 +113,11 @@ public class DetalleDeCompraService {
         return  this.save(detalleDeCompra);
     }
 
-    @Transactional
     public DetalleDeCompra updateDetalleDeCompra(DetalleDeCompra detalleDeCompra) {
-
-        DetalleDeCompra oldDetalleDeCompra = detalleDeCompraRepository.findOne(detalleDeCompra.getId());
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
         if (ordenDeCompra != null) {
             Double previousTotal = ordenDeCompra.getTotal();
-            ordenDeCompra.setTotal(previousTotal - oldDetalleDeCompra.getSubTotal() + detalleDeCompra.getSubTotal());
+            ordenDeCompra.setTotal(previousTotal - detalleDeCompraRepository.findOne(detalleDeCompra.getId()).getSubTotal() + detalleDeCompra.getSubTotal());
             ordenDeCompraRepository.save(ordenDeCompra);
         } else {
             throw new BadRequestAlertException("A new detalleDeCompra cannot have an invalid ordenDeCompra", ENTITY_NAME, "ordenDeCompraDontexists");
@@ -130,7 +126,6 @@ public class DetalleDeCompraService {
         return this.save(detalleDeCompra);
     }
 
-    @Transactional
     public void deleteDetalleDeCompra(Long id) {
         DetalleDeCompra detalleDeCompra = detalleDeCompraRepository.findOne(id);
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(detalleDeCompra.getOrdenDeCompra().getId());
@@ -145,6 +140,7 @@ public class DetalleDeCompraService {
         this.delete(id);
     }
 
+    @Transactional(readOnly = true)
     public List<DetalleDeCompra> getDetalleDeCompraByOrdenId(Long id) {
         OrdenDeCompra ordenDeCompra = ordenDeCompraRepository.findOne(id);
         if (ordenDeCompra == null) {
