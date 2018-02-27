@@ -55,6 +55,13 @@ public class CacheConfiguration {
             cm.createCache(com.angelchanquin.pharmacrm.domain.Inventario.class.getName(), jcacheConfiguration);
             cm.createCache(com.angelchanquin.pharmacrm.domain.RecepcionDeCompra.class.getName(), jcacheConfiguration);
             cm.createCache(com.angelchanquin.pharmacrm.domain.EntityAuditEvent.class.getName(), jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.Proveedor.class.getName() + ".ordenDeCompras", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.Producto.class.getName() + ".detalleDeCompras", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.Producto.class.getName() + ".detalleDeRecepcionDeCompras", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.OrdenDeCompra.class.getName() + ".detalleDeCompras", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.OrdenDeCompra.class.getName() + ".recepcionDeCompras", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.RecepcionDeCompra.class.getName() + ".detalleDeRecepcionDeCompras", jcacheConfiguration);
+            cm.createCache(com.angelchanquin.pharmacrm.domain.DetalleDeRecepcionDeCompra.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

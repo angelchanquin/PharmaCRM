@@ -41,6 +41,10 @@ public class ElasticsearchIndexService {
 
     private final DetalleDeCompraSearchRepository detalleDeCompraSearchRepository;
 
+    private final DetalleDeRecepcionDeCompraRepository detalleDeRecepcionDeCompraRepository;
+
+    private final DetalleDeRecepcionDeCompraSearchRepository detalleDeRecepcionDeCompraSearchRepository;
+
     private final InventarioRepository inventarioRepository;
 
     private final InventarioSearchRepository inventarioSearchRepository;
@@ -78,6 +82,8 @@ public class ElasticsearchIndexService {
         UserSearchRepository userSearchRepository,
         DetalleDeCompraRepository detalleDeCompraRepository,
         DetalleDeCompraSearchRepository detalleDeCompraSearchRepository,
+        DetalleDeRecepcionDeCompraRepository detalleDeRecepcionDeCompraRepository,
+        DetalleDeRecepcionDeCompraSearchRepository detalleDeRecepcionDeCompraSearchRepository,
         InventarioRepository inventarioRepository,
         InventarioSearchRepository inventarioSearchRepository,
         OrdenDeCompraRepository ordenDeCompraRepository,
@@ -95,6 +101,8 @@ public class ElasticsearchIndexService {
         this.userSearchRepository = userSearchRepository;
         this.detalleDeCompraRepository = detalleDeCompraRepository;
         this.detalleDeCompraSearchRepository = detalleDeCompraSearchRepository;
+        this.detalleDeRecepcionDeCompraRepository = detalleDeRecepcionDeCompraRepository;
+        this.detalleDeRecepcionDeCompraSearchRepository = detalleDeRecepcionDeCompraSearchRepository;
         this.inventarioRepository = inventarioRepository;
         this.inventarioSearchRepository = inventarioSearchRepository;
         this.ordenDeCompraRepository = ordenDeCompraRepository;
@@ -116,6 +124,7 @@ public class ElasticsearchIndexService {
         if(reindexLock.tryLock()) {
             try {
                 reindexForClass(DetalleDeCompra.class, detalleDeCompraRepository, detalleDeCompraSearchRepository);
+                reindexForClass(DetalleDeRecepcionDeCompra.class, detalleDeRecepcionDeCompraRepository, detalleDeRecepcionDeCompraSearchRepository);
                 reindexForClass(Inventario.class, inventarioRepository, inventarioSearchRepository);
                 reindexForClass(OrdenDeCompra.class, ordenDeCompraRepository, ordenDeCompraSearchRepository);
                 reindexForClass(PresentacionDeProducto.class, presentacionDeProductoRepository, presentacionDeProductoSearchRepository);

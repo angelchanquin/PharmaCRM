@@ -1,0 +1,135 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDetalleDeRecepcionDeCompraLabel" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.home.createOrEditLabel">Create or edit a Detalle De Recepcion De Compra</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!detalleDeRecepcionDeCompra.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="detalleDeRecepcionDeCompra.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.cantidadOrdenada" for="field_cantidadOrdenada">Cantidad Ordenada</label>
+            <input type="number" class="form-control" name="cantidadOrdenada" id="field_cantidadOrdenada"
+                [(ngModel)]="detalleDeRecepcionDeCompra.cantidadOrdenada" required min="0"/>
+            <div [hidden]="!(editForm.controls.cantidadOrdenada?.dirty && editForm.controls.cantidadOrdenada?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.cantidadOrdenada?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.cantidadOrdenada?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.cantidadOrdenada?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.cantidadRecibida" for="field_cantidadRecibida">Cantidad Recibida</label>
+            <input type="number" class="form-control" name="cantidadRecibida" id="field_cantidadRecibida"
+                [(ngModel)]="detalleDeRecepcionDeCompra.cantidadRecibida" required min="0"/>
+            <div [hidden]="!(editForm.controls.cantidadRecibida?.dirty && editForm.controls.cantidadRecibida?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.cantidadRecibida?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.cantidadRecibida?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.cantidadRecibida?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.precio" for="field_precio">Precio</label>
+            <input type="number" class="form-control" name="precio" id="field_precio"
+                [(ngModel)]="detalleDeRecepcionDeCompra.precio" required min="0"/>
+            <div [hidden]="!(editForm.controls.precio?.dirty && editForm.controls.precio?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.precio?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.precio?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.precio?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.noDeLote" for="field_noDeLote">No De Lote</label>
+            <input type="text" class="form-control" name="noDeLote" id="field_noDeLote"
+                [(ngModel)]="detalleDeRecepcionDeCompra.noDeLote" required/>
+            <div [hidden]="!(editForm.controls.noDeLote?.dirty && editForm.controls.noDeLote?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.noDeLote?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.fechaDeVencimiento" for="field_fechaDeVencimiento">Fecha De Vencimiento</label>
+            <div class="input-group">
+                <input id="field_fechaDeVencimiento" type="text" class="form-control" name="fechaDeVencimiento" ngbDatepicker  #fechaDeVencimientoDp="ngbDatepicker" [(ngModel)]="detalleDeRecepcionDeCompra.fechaDeVencimiento"
+                required/>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-secondary" (click)="fechaDeVencimientoDp.toggle()"><i class="fa fa-calendar"></i></button>
+                </span>
+            </div>
+            <div [hidden]="!(editForm.controls.fechaDeVencimiento?.dirty && editForm.controls.fechaDeVencimiento?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.fechaDeVencimiento?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.producto" for="field_producto">Producto</label>
+            <select class="form-control" id="field_producto" name="producto" [(ngModel)]="detalleDeRecepcionDeCompra.producto"  required>
+                <option *ngIf="!editForm.value.producto" [ngValue]="null" selected></option>
+                <option [ngValue]="productoOption.id === detalleDeRecepcionDeCompra.producto?.id ? detalleDeRecepcionDeCompra.producto : productoOption" *ngFor="let productoOption of productos; trackBy: trackProductoById">{{productoOption.nombre}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.producto?.dirty && editForm.controls.producto?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.producto?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="pharmacrmApp.detalleDeRecepcionDeCompra.recepcionDeCompra" for="field_recepcionDeCompra">Recepcion De Compra</label>
+            <select class="form-control" id="field_recepcionDeCompra" name="recepcionDeCompra" [(ngModel)]="detalleDeRecepcionDeCompra.recepcionDeCompra"  required>
+                <option *ngIf="!editForm.value.recepcionDeCompra" [ngValue]="null" selected></option>
+                <option [ngValue]="recepcionDeCompraOption.id === detalleDeRecepcionDeCompra.recepcionDeCompra?.id ? detalleDeRecepcionDeCompra.recepcionDeCompra : recepcionDeCompraOption" *ngFor="let recepcionDeCompraOption of recepciondecompras; trackBy: trackRecepcionDeCompraById">{{recepcionDeCompraOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.recepcionDeCompra?.dirty && editForm.controls.recepcionDeCompra?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.recepcionDeCompra?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

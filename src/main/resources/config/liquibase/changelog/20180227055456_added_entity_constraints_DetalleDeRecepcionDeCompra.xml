@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity DetalleDeRecepcionDeCompra.
+    -->
+    <changeSet id="20180227055456-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="producto_id"
+                                 baseTableName="detalle_de_recepcion_de_compra"
+                                 constraintName="fk_detalle_de_recepcion_de_compra_producto_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="producto"/>
+
+        <addForeignKeyConstraint baseColumnNames="recepcion_de_compra_id"
+                                 baseTableName="detalle_de_recepcion_de_compra"
+                                 constraintName="fk_detalle_de_recepcion_de_compra_recepcion_de_compra_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="recepcion_de_compra"/>
+
+    </changeSet>
+</databaseChangeLog>

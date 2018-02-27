@@ -1,0 +1,28 @@
+{
+    "pharmacrmApp": {
+        "detalleDeRecepcionDeCompra" : {
+            "home": {
+                "title": "Detalle De Recepcion De Compras",
+                "createLabel": "Create a new Detalle De Recepcion De Compra",
+                "createOrEditLabel": "Create or edit a Detalle De Recepcion De Compra",
+                "search": "Search for Detalle De Recepcion De Compra"
+            },
+            "created": "A new Detalle De Recepcion De Compra is created with identifier {{ param }}",
+            "updated": "A Detalle De Recepcion De Compra is updated with identifier {{ param }}",
+            "deleted": "A Detalle De Recepcion De Compra is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Detalle De Recepcion De Compra {{ id }}?"
+            },
+            "detail": {
+                "title": "Detalle De Recepcion De Compra"
+            },
+            "cantidadOrdenada": "Cantidad Ordenada",
+            "cantidadRecibida": "Cantidad Recibida",
+            "precio": "Precio",
+            "noDeLote": "No De Lote",
+            "fechaDeVencimiento": "Fecha De Vencimiento",
+            "producto": "Producto",
+            "recepcionDeCompra": "Recepcion De Compra"
+        }
+    }
+}
